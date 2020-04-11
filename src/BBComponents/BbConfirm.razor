@@ -1,0 +1,41 @@
+﻿@* Modal *@
+<div class="modal fade show bb-confirm" 
+     id="staticBackdrop" 
+     style="display:block;" 
+     data-backdrop="static" 
+     tabindex="-1" 
+     role="dialog" 
+     aria-labelledby="staticBackdropLabel" 
+     aria-modal="true">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            @* Header *@
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">@Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="OnCancelClick">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            @* Body *@
+            <div class="modal-body">
+
+                <p>@Text</p>
+
+            </div>
+
+            @* Footer *@
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" @onclick="OnCancelClick">@BtnCancelText</button>
+                <button type="button" class="btn btn-primary" @onclick="OnOkClick">
+                    @BtnOkText
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
