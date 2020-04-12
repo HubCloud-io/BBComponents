@@ -1,0 +1,11 @@
+﻿@typeparam TValue
+
+<input id="@Id" 
+       class="bb-number-input @ClassExpression" 
+       style="@StyleExpression"
+       readonly=@IsReadOnly
+       disabled=@IsDisabled
+       value="@_stringValue" 
+       @onchange="(e => OnValueChange(e))" />
+
+

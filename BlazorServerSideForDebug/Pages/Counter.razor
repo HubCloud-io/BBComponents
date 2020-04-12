@@ -1,0 +1,21 @@
+﻿@page "/counter"
+
+<h1>Number input</h1>
+
+<BBComponents.BbNumberInput TValue="decimal" @bind-Value="_number" Digits="3" ></BBComponents.BbNumberInput>
+
+<h3>Input result: @_number</h3>
+
+<hr />
+
+<BBComponents.BbNumberInput TValue="int" @bind-Value="_numberInt"  ></BBComponents.BbNumberInput>
+
+<h3>Int: @_numberInt</h3>
+
+
+@code {
+
+    private decimal _number;
+    private int _numberInt;
+
+}

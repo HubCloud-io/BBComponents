@@ -1,0 +1,35 @@
+﻿@page "/NumberInputExamples"
+
+<h3 class="text-primary">Number input examples</h3>
+
+<hr />
+
+<h4 class="text-primary">Basic usage</h4>
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="form-group">
+            <label class="col-sm-4 col-form-label-sm">Number</label>
+            <div class="col-sm-8">
+                <BbNumberInput TValue="decimal" 
+                               @bind-Value="_number" 
+                               ClassExpression="form-control"></BbNumberInput>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-6">
+
+        <div class="form-group">
+            <label class="col-sm-4 col-form-label-sm">Input result</label>
+            <div class="col-sm-8">
+                @_number
+            </div>
+        </div>
+
+    </div>
+
+</div>
