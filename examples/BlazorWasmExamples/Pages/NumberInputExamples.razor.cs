@@ -8,6 +8,6 @@ namespace BlazorWasmExamples.Pages
 {
     public partial class NumberInputExamples: ComponentBase
     {
-        private decimal _number;
+        private decimal _number = 10000.234M;
     }
 }

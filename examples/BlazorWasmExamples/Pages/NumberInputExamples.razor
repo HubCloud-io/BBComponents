@@ -10,12 +10,58 @@
 
     <div class="col-sm-6">
 
-        <div class="form-group">
-            <label class="col-sm-4 col-form-label-sm">Number</label>
+        @* Default settings *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">Default settings</label>
             <div class="col-sm-8">
-                <BbNumberInput TValue="decimal" 
-                               @bind-Value="_number" 
+                <BbNumberInput TValue="decimal"
+                               @bind-Value="_number"
                                ClassExpression="form-control"></BbNumberInput>
+            </div>
+        </div>
+
+        @* No digits *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">No digits</label>
+            <div class="col-sm-8">
+                <BbNumberInput TValue="decimal"
+                               @bind-Value="_number"
+                               ClassExpression="form-control"
+                               Digits="0"></BbNumberInput>
+            </div>
+        </div>
+
+        @* 3 Digits *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">3 digits</label>
+            <div class="col-sm-8">
+                <BbNumberInput TValue="decimal"
+                               @bind-Value="_number"
+                               ClassExpression="form-control"
+                               Digits="3"></BbNumberInput>
+            </div>
+        </div>
+
+        @* No group separator *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">No group separator</label>
+            <div class="col-sm-8">
+                <BbNumberInput TValue="decimal"
+                               @bind-Value="_number"
+                               ClassExpression="form-control"
+                               GroupSeparator=""></BbNumberInput>
+            </div>
+        </div>
+
+        @* Custom group and decimal separator *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">Custom group and decimal separator</label>
+            <div class="col-sm-8">
+                <BbNumberInput TValue="decimal"
+                               @bind-Value="_number"
+                               ClassExpression="form-control"
+                               GroupSeparator="." 
+                               DecimalSeparator=","></BbNumberInput>
             </div>
         </div>
 
@@ -23,7 +69,7 @@
 
     <div class="col-sm-6">
 
-        <div class="form-group">
+        <div class="form-group form-row">
             <label class="col-sm-4 col-form-label-sm">Input result</label>
             <div class="col-sm-8">
                 @_number
@@ -33,3 +79,8 @@
     </div>
 
 </div>
+
+
+
+
+
