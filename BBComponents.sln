@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWasmExamples", "examp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{938DC291-2E55-4101-A3DE-4607DD0D3F35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerSideForDebug", "BlazorServerSideForDebug\BlazorServerSideForDebug.csproj", "{809FC11F-4BF1-44A8-8904-4294D392E8E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerSideForDebug", "BlazorServerSideForDebug\BlazorServerSideForDebug.csproj", "{809FC11F-4BF1-44A8-8904-4294D392E8E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

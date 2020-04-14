@@ -1,0 +1,57 @@
+﻿@page "/SelectExamples"
+
+<h3 class="text-primary">Select examples</h3>
+
+<hr />
+
+<h4 class="text-primary">Basic usage</h4>
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        @* Select by code *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">Currency ( select by code)</label>
+            <div class="col-sm-8">
+                <BbSelect TValue="int"
+                          ItemsSource="_currencies"
+                          ValueName="Id"
+                          TextName="Code"
+                          @bind-Value="_selectedValue"
+                          ClassExpression="form-control form-control-sm"></BbSelect>
+            </div>
+        </div>
+
+        @* Select by title *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">Currency ( select by title)</label>
+            <div class="col-sm-8">
+                <BbSelect TValue="int"
+                          ItemsSource="_currencies"
+                          ValueName="Id"
+                          TextName="Title"
+                          @bind-Value="_selectedValue"
+                          ClassExpression="form-control form-control-sm"></BbSelect>
+            </div>
+        </div>
+
+        @* Select by title add not selected item *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">Currency ( add not selected item)</label>
+            <div class="col-sm-8">
+                <BbSelect TValue="int"
+                          ItemsSource="_currencies"
+                          ValueName="Id"
+                          TextName="Title"
+                          @bind-Value="_selectedValue"
+                          AddNotSelectedItem="true"
+                          ClassExpression="form-control form-control-sm"></BbSelect>
+            </div>
+        </div>
+
+    </div>
+
+   
+
+</div>

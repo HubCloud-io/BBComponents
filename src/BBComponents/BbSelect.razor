@@ -1,0 +1,17 @@
+﻿@typeparam TValue
+
+<select id="@Id"
+        name="@Name"
+        class="bb-select @ClassExpression"
+        style="@StyleExpression"
+        readonly=@IsReadOnly
+        disabled=@IsDisabled
+        value="@_value"
+        @onchange="(e => OnValueChanged(e))">
+
+    @foreach (var item in _source)
+    {
+        <option value="@item.Item1">@item.Item2</option>
+    }
+
+</select>
