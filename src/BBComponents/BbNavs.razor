@@ -1,0 +1,13 @@
+﻿@typeparam TValue
+
+    <ul class="nav  @NavsClass(NavStyle) @HtmlClass" style="@HtmlStyle">
+
+        @foreach (var tabModel in _source)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(EqualityComparer<TValue>.Default.Equals(Value, tabModel.Item1) ? "active":"")" href="#"
+                   @onclick="(e=>OnTabClick(e, tabModel.Item1))" @onclick:preventDefault>@tabModel.Item2</a>
+            </li>
+        }
+       
+    </ul>

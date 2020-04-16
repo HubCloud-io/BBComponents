@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BBComponents\BBComponents.csproj" />
+    <ProjectReference Include="..\..\src\BBComponents\BBComponents.csproj" />
   </ItemGroup>
 
 </Project>

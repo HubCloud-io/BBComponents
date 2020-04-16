@@ -1,0 +1,68 @@
+﻿@page "/counter"
+
+<h1>Number input</h1>
+
+<BBComponents.BbNumberInput TValue="decimal" @bind-Value="_number" Digits="3"></BBComponents.BbNumberInput>
+
+<h3>Input result: @_number</h3>
+
+<hr />
+
+<BBComponents.BbNumberInput TValue="int" @bind-Value="_numberInt"></BBComponents.BbNumberInput>
+
+<h3>Int: @_numberInt</h3>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <BBComponents.BbNavs TValue="int" 
+                                     ItemsSource="_tabsSource" 
+                                     ValueName="Item1" 
+                                     TextName="Item2" 
+                                     NavStyle="BBComponents.Enums.NavStyles.Tabs"
+                                     @bind-Value="_activeTab"></BBComponents.BbNavs>
+
+                @if(_activeTab == 0)
+                {
+                    <div>
+                        <h1>Main content</h1>
+                    </div>
+                }
+                else if (_activeTab == 1)
+                {
+                    <div>
+                        <h1>Other content</h1>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@code {
+
+    private decimal _number;
+    private int _numberInt;
+
+    private List<Tuple<int, string>> _tabsSource;
+    private int _activeTab = 0;
+
+    protected override void OnInitialized()
+    {
+        _tabsSource = new List<Tuple<int, string>>();
+        _tabsSource.Add(new Tuple<int, string>(0, "Main"));
+        _tabsSource.Add(new Tuple<int, string>(1, "Other"));
+    }
+
+}
