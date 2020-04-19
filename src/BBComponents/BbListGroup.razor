@@ -1,0 +1,16 @@
+﻿@typeparam TValue
+
+<div class="list-group">
+
+    @foreach (var item in ItemsSource)
+    {
+        <div class="list-group-item @(EqualityComparer<TValue>.Default.Equals(item, _selectedItem) ? "active":"")" 
+             @onclick="(e=> OnItemClick(e, item))"  
+             @ondblclick="(e=> OnItemDblClick(e, item))">
+
+           @ItemTemplate(item)
+
+        </div>
+    }
+
+</div>

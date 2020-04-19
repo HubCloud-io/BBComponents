@@ -1,5 +1,7 @@
 ﻿@page "/counter"
 
+@using BlazorServerSideForDebug.Data
+
 <h1>Number input</h1>
 
 <BBComponents.BbNumberInput TValue="decimal" @bind-Value="_number" Digits="3"></BBComponents.BbNumberInput>
@@ -50,6 +52,30 @@
 
 </div>
 
+<hr/>
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <BBComponents.BbListGroup TValue="Currency" ItemsSource="_currencies" >
+                    <ItemTemplate Context="item">
+                        <span>@item.Code</span><span class="float-right">@item.CodeNumeric</span>
+                    </ItemTemplate>
+                </BBComponents.BbListGroup>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 @code {
 
     private decimal _number;
@@ -58,11 +84,15 @@
     private List<Tuple<int, string>> _tabsSource;
     private int _activeTab = 0;
 
+    private List<Currency> _currencies;
+
     protected override void OnInitialized()
     {
         _tabsSource = new List<Tuple<int, string>>();
         _tabsSource.Add(new Tuple<int, string>(0, "Main"));
         _tabsSource.Add(new Tuple<int, string>(1, "Other"));
+
+        _currencies = Currency.SampleData().ToList();
     }
 
 }
