@@ -1,16 +1,27 @@
 ﻿@typeparam TValue
 
-<div class="list-group">
+@if (ItemsSource.Any())
+{
+    <div class="list-group @HtmlClass" style="@HtmlStyle">
 
-    @foreach (var item in ItemsSource)
+        @foreach (var item in ItemsSource)
+        {
+            <div class="list-group-item @(EqualityComparer<TValue>.Default.Equals(item, _selectedItem) ? "active":"")"
+                 @onclick="(e=> OnItemClick(e, item))"
+                 @ondblclick="(e=> OnItemDblClick(e, item))">
+
+                @ItemTemplate(item)
+
+            </div>
+        }
+
+    </div>
+}
+else
+{
+    if (NoDataTemplate != null)
     {
-        <div class="list-group-item @(EqualityComparer<TValue>.Default.Equals(item, _selectedItem) ? "active":"")" 
-             @onclick="(e=> OnItemClick(e, item))"  
-             @ondblclick="(e=> OnItemDblClick(e, item))">
-
-           @ItemTemplate(item)
-
-        </div>
+        @NoDataTemplate
     }
+}
 
-</div>

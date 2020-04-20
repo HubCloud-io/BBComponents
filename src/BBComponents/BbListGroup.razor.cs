@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BBComponents
 {
@@ -32,14 +29,37 @@ namespace BBComponents
         [Parameter]
         public IEnumerable<TValue> ItemsSource { get; set; }
 
+        /// <summary>
+        /// Callback for item onclick event. 
+        /// </summary>
         [Parameter]
         public EventCallback<TValue> ItemClick { get; set; }
 
+        /// <summary>
+        /// Callback for item ondblclick event.
+        /// </summary>
         [Parameter]
         public EventCallback<TValue> ItemDblClick { get; set; }
 
+        /// <summary>
+        /// Render fragment to display item.
+        /// </summary>
         [Parameter]
         public RenderFragment<TValue> ItemTemplate { get; set; }
+
+        /// <summary>
+        /// Render fragment to display when no data in ItemsSource.
+        /// </summary>
+        [Parameter]
+        public RenderFragment NoDataTemplate { get; set; }
+
+        protected override void OnParametersSet()
+        {
+            if (ItemsSource.Any())
+            {
+                _selectedItem = ItemsSource.FirstOrDefault();
+            }
+        }
 
         private async Task OnItemClick(MouseEventArgs e, TValue item)
         {
