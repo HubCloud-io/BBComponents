@@ -24,13 +24,13 @@ namespace BBComponents
         /// Classes for input. Optional.
         /// </summary>
         [Parameter]
-        public string ClassExpression { get; set; }
+        public string HtmlClass { get; set; }
 
         /// <summary>
         /// Style for HTML input. Optional.
         /// </summary>
         [Parameter]
-        public string StyleExpression { get; set; }
+        public string HtmlStyle { get; set; }
 
         /// <summary>
         /// Indicates that component is read-only.

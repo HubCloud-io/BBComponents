@@ -34,13 +34,13 @@ namespace BBComponents
         /// Classes for HTML element. Optional.
         /// </summary>
         [Parameter]
-        public string ClassExpression { get; set; }
+        public string HtmlClass { get; set; }
 
         /// <summary>
         /// Style for HTML element. Optional.
         /// </summary>
         [Parameter]
-        public string StyleExpression { get; set; }
+        public string HtmlStyle { get; set; }
 
         /// <summary>
         /// Indicates that component is read-only.
