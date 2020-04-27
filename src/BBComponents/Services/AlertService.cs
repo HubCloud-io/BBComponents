@@ -13,17 +13,7 @@ namespace BBComponents.Services
 
         }
 
-        public void Add(string text, BootstrapColors color)
-        {
-            var newAlert = new AlertInstance(text, color);
-
-            if (OnAlertAdd != null)
-            {
-                OnAlertAdd(newAlert);
-            }
-        }
-
-        public void AddDismissable(string text, BootstrapColors color, int dismissTimeSeconds = 5)
+        public void Add(string text, BootstrapColors color, int dismissTimeSeconds = 5)
         {
             var newAlert = new AlertInstance(text, color, dismissTimeSeconds);
 
@@ -32,5 +22,6 @@ namespace BBComponents.Services
                 OnAlertAdd(newAlert);
             }
         }
+     
     }
 }

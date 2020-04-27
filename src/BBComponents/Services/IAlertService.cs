@@ -15,18 +15,13 @@ namespace BBComponents.Services
         event Action<AlertInstance> OnAlertAdd;
 
         /// <summary>
-        /// Add non-dismissable alert
-        /// </summary>
-        /// <param name="text">Alert text</param>
-        /// <param name="color">Alert color</param>
-        void Add(string text, BootstrapColors color);
-
-        /// <summary>
-        /// Add auto dismissable alert
+        /// Add alert. If dismissTimeSeconds > 0 alert will be dismissed after specified interval, 
+        /// if dismissTimeSeconds = 0 alert can be close manual only.
         /// </summary>
         /// <param name="text">Alert text</param>
         /// <param name="color">Alert color</param>
         /// <param name="dismissTimeSeconds">Time in seconds after that alert will be dismissed</param>
-        void AddDismissable(string text, BootstrapColors color, int dismissTimeSeconds = 5);
+        void Add(string text, BootstrapColors color, int dismissTimeSeconds = 5);
+
     }
 }
