@@ -1,5 +1,4 @@
-﻿using BBComponents.Enums;
-using BBComponents.Models;
+﻿using BBComponents.Models;
 using BBComponents.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,27 +7,42 @@ using System.Text;
 
 namespace BBComponents
 {
+    /// <summary>
+    /// Component to show alerts.
+    /// </summary>
     public partial class BbAlertHub : ComponentBase
     {
         private List<AlertInstance> _alerts = new List<AlertInstance>();
 
+        /// <summary>
+        /// Service to add alert instances.
+        /// </summary>
         [Inject]
         public IAlertService AlertService { get; set; }
 
+        /// <summary>
+        /// Top position of alert.
+        /// </summary>
         [Parameter]
         public int? Top { get; set; } = 55;
 
+        /// <summary>
+        /// Left position of alert.
+        /// </summary>
         [Parameter]
         public int? Left { get; set; }
 
+        /// <summary>
+        /// Right position of alert.
+        /// </summary>
         [Parameter]
         public int? Right { get; set; } = 30;
 
+        /// <summary>
+        /// Bottom position of alert.
+        /// </summary>
         [Parameter]
         public int? Bottom { get; set; }
-
-        [Parameter]
-        public VerticalExpandDirections ExpandDirection { get; set; }
 
         protected override void OnInitialized()
         {

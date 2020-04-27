@@ -3,13 +3,35 @@ using System;
 
 namespace BBComponents.Models
 {
+    /// <summary>
+    /// Describes alert instance
+    /// </summary>
     public interface IAlertInstance
     {
-        BootstrapColors Color { get; set; }
-        int DismissTimeSeconds { get; set; }
-        string HtmlClass { get; }
+        /// <summary>
+        /// Event fires when alert hide
+        /// </summary>
+        event Action<AlertInstance> OnAlertHide;
+
+        /// <summary>
+        /// Alert text
+        /// </summary>
         string Text { get; set; }
 
-        event Action<AlertInstance> OnAlertHide;
+        /// <summary>
+        /// Alert color
+        /// </summary>
+        BootstrapColors Color { get; set; }
+
+        /// <summary>
+        /// Time in seconds after that alert will be dismissed
+        /// </summary>
+        int DismissTimeSeconds { get; set; }
+
+        /// <summary>
+        /// Html class of alert
+        /// </summary>
+        string HtmlClass { get; }
+
     }
 }
