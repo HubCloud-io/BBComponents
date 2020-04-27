@@ -1,0 +1,25 @@
+﻿@page "/AlertExamples"
+
+<h3 class="text-primary">Alert examples</h3>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="btn-group btn-group-sm">
+
+            <button class="btn btn-outline-success" @onclick="OnAlertSuccessAddClick">Alert success</button>
+            <button class="btn btn-outline-danger" @onclick="OnAlertDangerAddClick">Alert danger</button>
+
+            <button class="btn btn-outline-info" @onclick="OnAlertDismissableClick">Alert dismissable</button>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<BBComponents.BbAlertHub></BBComponents.BbAlertHub>

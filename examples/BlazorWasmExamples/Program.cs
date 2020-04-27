@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using BBComponents.Services;
 
 namespace BlazorWasmExamples
 {
@@ -15,6 +16,9 @@ namespace BlazorWasmExamples
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
+
+            // Service to add alerts.
+            builder.Services.AddScoped<IAlertService, AlertService>();
 
             await builder.Build().RunAsync();
         }
