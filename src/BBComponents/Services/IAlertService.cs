@@ -27,6 +27,6 @@ namespace BBComponents.Services
         /// <param name="text">Alert text</param>
         /// <param name="color">Alert color</param>
         /// <param name="dismissTimeSeconds">Time in seconds after that alert will be dismissed</param>
-        void Add(string text, BootstrapColors color, int dismissTimeSeconds);
+        void AddDismissable(string text, BootstrapColors color, int dismissTimeSeconds);
     }
 }

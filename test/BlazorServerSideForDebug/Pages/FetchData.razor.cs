@@ -23,7 +23,7 @@ namespace BlazorServerSideForDebug.Pages
 
         private void OnAlertDismissableClick()
         {
-            AlertService.Add($"Dismissable info at: {DateTime.Now}", BBComponents.Enums.BootstrapColors.Info, 3);
+            AlertService.AddDismissable($"Dismissable info at: {DateTime.Now}", BBComponents.Enums.BootstrapColors.Info, 3);
         }
     }
 }
