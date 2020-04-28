@@ -1,0 +1,17 @@
+﻿
+<div class="input-group bb-date-picker">
+    <input class="form-control" type="text" />
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" @onclick="OnOpenClick"></button>
+    </div>
+
+    @if (_isOpen)
+    {
+        <div class="bb-dropdown">
+            <h3>Date picker drop down</h3>
+        </div>
+    }
+
+</div>
+
+

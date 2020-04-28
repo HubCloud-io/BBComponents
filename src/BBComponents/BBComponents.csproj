@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <Version>0.0.9</Version>
+    <Version>0.1.2</Version>
     <Authors>Mikhail Zyubin</Authors>
     <Description>Free components for Blazor created with Bootstrap css framework</Description>
     <PackageId>ZyuDev.BBComponents</PackageId>
@@ -19,6 +19,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.3" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="wwwroot\styles.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
