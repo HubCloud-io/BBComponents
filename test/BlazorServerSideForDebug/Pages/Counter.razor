@@ -4,13 +4,13 @@
 
 <h1>Number input</h1>
 
-<BBComponents.BbNumberInput TValue="decimal" @bind-Value="_number" Digits="3"></BBComponents.BbNumberInput>
+<BbNumberInput TValue="decimal" @bind-Value="_number" Digits="3"></BbNumberInput>
 
 <h3>Input result: @_number</h3>
 
 <hr />
 
-<BBComponents.BbNumberInput TValue="int" @bind-Value="_numberInt"></BBComponents.BbNumberInput>
+<BbNumberInput TValue="int" @bind-Value="_numberInt"></BbNumberInput>
 
 <h3>Int: @_numberInt</h3>
 
@@ -24,12 +24,12 @@
 
             <div class="card-body">
 
-                <BBComponents.BbNavs TValue="int" 
+                <BbNavs TValue="int" 
                                      ItemsSource="_tabsSource" 
                                      ValueName="Item1" 
                                      TextName="Item2" 
                                      NavStyle="BBComponents.Enums.NavStyles.Tabs"
-                                     @bind-Value="_activeTab"></BBComponents.BbNavs>
+                                     @bind-Value="_activeTab"></BbNavs>
 
                 @if(_activeTab == 0)
                 {
@@ -60,11 +60,11 @@
 
         <div class="card">
 
-            <BBComponents.BbListGroup TValue="Currency" ItemsSource="_currencies" HtmlClass="list-group-flush">
+            <BbListGroup TValue="Currency" ItemsSource="_currencies" HtmlClass="list-group-flush">
                 <ItemTemplate Context="item">
                     <span>@item.Code</span><span class="float-right">@item.CodeNumeric</span>
                 </ItemTemplate>
-            </BBComponents.BbListGroup>
+            </BbListGroup>
 
         </div>
 

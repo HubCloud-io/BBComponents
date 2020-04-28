@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BBComponents
+namespace BBComponents.Components
 {
     /// <summary>
     /// Component to show alerts.

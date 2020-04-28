@@ -3,7 +3,7 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace BBComponents
+namespace BBComponents.Components
 {
     /// <summary>
     /// Component to input numbers.

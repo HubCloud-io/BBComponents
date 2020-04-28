@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BBComponents
+namespace BBComponents.Components
 {
     public partial class BbNavs<TValue> : ComponentBase where TValue : struct
     {
