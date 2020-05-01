@@ -67,6 +67,13 @@ namespace BBComponents.Components
         public EventCallback<TValue> ValueChanged { get; set; }
 
         /// <summary>
+        /// Duplicate event call back for value changed. 
+        /// It is necessary to have possibility catch changed even whet we use @bind-Value.
+        /// </summary>
+        [Parameter]
+        public EventCallback<TValue> Changed { get; set; }
+
+        /// <summary>
         /// Colllection for select options.
         /// </summary>
         [Parameter]
@@ -145,13 +152,12 @@ namespace BBComponents.Components
         {
             _value = e.Value?.ToString();
 
-            TValue result = default(TValue);
-
             var parseResult = TryParse(_value);
 
             if (parseResult.Item2)
             {
-                await ValueChanged.InvokeAsync(result);
+                await ValueChanged.InvokeAsync(parseResult.Item1);
+                await Changed.InvokeAsync(parseResult.Item1);
             }
 
         }
@@ -167,6 +173,7 @@ namespace BBComponents.Components
                 if (Guid.TryParse(stringValue, out var guid))
                 {
                     value = (TValue)Convert.ChangeType(guid, typeof(Guid));
+                    isParsed = true;
                 }
             }
             else if (valueType == typeof(byte))
@@ -174,6 +181,7 @@ namespace BBComponents.Components
                 if (byte.TryParse(stringValue, out var byteValue))
                 {
                     value = (TValue)Convert.ChangeType(byteValue, typeof(byte));
+                    isParsed = true;
                 }
             }
             else if (valueType == typeof(int))
@@ -181,6 +189,7 @@ namespace BBComponents.Components
                 if (int.TryParse(stringValue, out var intValue))
                 {
                     value = (TValue)Convert.ChangeType(intValue, typeof(int));
+                    isParsed = true;
                 }
             }
             else if (valueType == typeof(long))
@@ -188,11 +197,13 @@ namespace BBComponents.Components
                 if (long.TryParse(stringValue, out var longValue))
                 {
                     value = (TValue)Convert.ChangeType(longValue, typeof(long));
+                    isParsed = true;
                 }
             }
             else if (valueType == typeof(string))
             {
                 value = (TValue)Convert.ChangeType(stringValue, typeof(string));
+                isParsed = true;
             }
 
             return new Tuple<TValue, bool>(value, isParsed);
