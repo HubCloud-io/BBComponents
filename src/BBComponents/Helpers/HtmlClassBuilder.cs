@@ -9,9 +9,16 @@ namespace BBComponents.Helpers
     {
         public static string BuildColorClass(string componentName, BootstrapColors standardColor)
         {
-            var cssClass = $"{componentName}-{standardColor.ToString().ToLower()}";
+            var htmlClass = $"{componentName}-{standardColor.ToString().ToLower()}";
 
-            return cssClass;
+            return htmlClass;
+        }
+
+        public static string BuildModalSizeClass(BootstrapModalSizes size)
+        {
+            var htmlClass = size == BootstrapModalSizes.Default ? "" : $"modal-{size.ToString().ToLower()}";
+
+            return htmlClass;
         }
     }
 }

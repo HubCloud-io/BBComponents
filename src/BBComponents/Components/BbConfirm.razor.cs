@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BBComponents.Enums;
+using BBComponents.Helpers;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BBComponents.Components
@@ -21,7 +20,12 @@ namespace BBComponents.Components
         public string BtnCancelText { get; set; } = "Cancel";
 
         [Parameter]
+        public BootstrapModalSizes Size { get; set; }
+
+        [Parameter]
         public EventCallback<bool> OnClose { get; set; }
+
+        public string SizeClass => HtmlClassBuilder.BuildModalSizeClass(Size);
 
         private async Task OnCancelClick()
         {

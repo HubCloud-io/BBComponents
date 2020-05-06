@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace BBComponents.Components
     /// <summary>
     /// Select component.
     /// </summary>
-    /// <typeparam name="TValue">byte, int, long, Guid, string</typeparam>
+    /// <typeparam name="TValue">byte, int, long, Guid, string, Enum</typeparam>
     public partial class BbSelect<TValue>: ComponentBase
     {
 
@@ -110,7 +111,8 @@ namespace BBComponents.Components
                 || valueType == typeof(int)
                 || valueType == typeof(long)
                 || valueType == typeof(byte)
-                || valueType == typeof(string))
+                || valueType == typeof(string) 
+                || valueType.IsEnum)
             {
                 return;
             }
@@ -204,6 +206,19 @@ namespace BBComponents.Components
             {
                 value = (TValue)Convert.ChangeType(stringValue, typeof(string));
                 isParsed = true;
+            }
+            else if (valueType.IsEnum)
+            {
+                try
+                {
+                    var enumValue = Enum.Parse(valueType, stringValue, true);
+                    value = (TValue)enumValue;
+                    isParsed = true;
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine($"Cannot parse enum value {stringValue}. Message: {e.Message}");
+                }
             }
 
             return new Tuple<TValue, bool>(value, isParsed);
