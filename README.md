@@ -1,5 +1,5 @@
 # BBComponents
-Free components for Blazor created with Bootstrap css framework. [WASM Demo] (https://bbcomponentsdemo.z6.web.core.windows.net/)
+Free components for Blazor created with Bootstrap css framework. [WASM Demo.](https://bbcomponentsdemo.z6.web.core.windows.net/)
 
 # Disclaimer
 This project is experimental and can be deeply refactored in future.
