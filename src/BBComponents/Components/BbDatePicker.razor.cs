@@ -1,4 +1,5 @@
 ﻿using BBComponents.Enums;
+using BBComponents.Helpers;
 using BBComponents.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -34,7 +35,34 @@ namespace BBComponents.Components
         public FirstWeekDays FirstWeekDay { get; set; }
 
         [Parameter]
+        public BootstrapElementSizes Size { get; set; }
+
+        [Parameter]
         public string Format { get; set; } = "dd.MM.yyyy";
+
+        public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
+
+        public string TopDrowdown
+        {
+            get
+            {
+                int topValue;
+                switch (Size)
+                {
+                    case BootstrapElementSizes.Sm:
+                        topValue = 32;
+                        break;
+                    case BootstrapElementSizes.Lg:
+                        topValue = 49;
+                        break;
+                    default:
+                        topValue = 39;
+                        break;
+                }
+
+                return $"{topValue}px";
+            }
+        }
 
         protected override void OnInitialized()
         {
@@ -100,7 +128,7 @@ namespace BBComponents.Components
             _year = Value.Year;
             _monthName = Value.ToString("MMMM");
 
-            _stringValue = Value.ToString(Format);
+            _stringValue = Value.ToString(Format, CultureInfo.InvariantCulture);
 
             _weeks = FillCalendarDays(Value, FirstWeekDay);
 
@@ -111,7 +139,7 @@ namespace BBComponents.Components
         private async Task OnDayClick(MouseEventArgs e, CalendarDay day)
         {
             Value = day.Date;
-            _stringValue = Value.ToString(Format);
+            _stringValue = Value.ToString(Format, CultureInfo.InvariantCulture);
 
             await ValueChanged.InvokeAsync(Value);
 

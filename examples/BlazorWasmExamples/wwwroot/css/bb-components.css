@@ -1,0 +1,68 @@
+﻿
+.bb-date-picker {
+    position: relative;
+}
+
+.bb-calendar {
+    position: absolute;
+    width: 230px;
+    height: 225px;
+    top: 40px;
+    left: 1px;
+    padding: 10px;
+    border: 1px solid #cecece;
+    background-color: white;
+    z-index: 10;
+}
+
+.bb-calendar__header {
+    height: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.bb-calendar__button {
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.bb-calendar__week-days {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 25px;
+    float: left;
+}
+
+.bb-calendar__week-day {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    display: inline-block;
+}
+
+.bb-calendar__day {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    .bb-calendar__day:hover {
+        background-color: #dcdcdc;
+    }
+
+.bb-calendar__day_weekend {
+    font-weight: bold;
+}
+
+.bb-calendar__day_active {
+    background-color: navy;
+    color: white;
+}
+
+.bb-calendar__day_another {
+    color: grey;
+}

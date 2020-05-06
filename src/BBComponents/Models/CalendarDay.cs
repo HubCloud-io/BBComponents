@@ -21,7 +21,8 @@ namespace BBComponents.Models
 
                 if (IsActive)
                 {
-                    sb.Append("bb-calendar__day_active");
+                    //sb.Append("bb-calendar__day_active");
+                    sb.Append("bg-info text-light");
                 }
 
                 if (IsAnotherMonth)
@@ -39,7 +40,7 @@ namespace BBComponents.Models
                     {
                         sb.Append(" ");
                     }
-                    sb.Append("bb-calendar__day_weekend");
+                    sb.Append("bb-calendar__day_weekend text-danger");
                 }
 
                 return sb.ToString();

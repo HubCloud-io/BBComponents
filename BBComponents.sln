@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{938DC291-2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerSideForDebug", "test\BlazorServerSideForDebug\BlazorServerSideForDebug.csproj", "{809FC11F-4BF1-44A8-8904-4294D392E8E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BbComponents.UnitTests", "test\BbComponents.UnitTests\BbComponents.UnitTests.csproj", "{4F3FD80D-6155-4704-BB6D-631D6DBF9F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BbComponents.UnitTests", "test\BbComponents.UnitTests\BbComponents.UnitTests.csproj", "{4F3FD80D-6155-4704-BB6D-631D6DBF9F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

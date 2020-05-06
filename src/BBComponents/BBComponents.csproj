@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <Content Update="wwwroot\styles.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

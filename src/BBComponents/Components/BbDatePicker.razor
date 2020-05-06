@@ -1,13 +1,14 @@
 ﻿
-<div class="input-group input-group-sm bb-date-picker">
+<div class="input-group @SizeClass bb-date-picker">
     <input class="form-control" type="text" value="@_stringValue" @onchange="(e=> OnStringValueChange(e))"/>
     <div class="input-group-append ">
-        <button type="button" class="btn btn-outline-secondary" @onclick="OnOpenClick">&#x25BC</button>
+        @*<button type="button" class="btn btn-outline-secondary" @onclick="OnOpenClick">&#x25BC</button>*@
+        <span class="input-group-text" style="cursor:pointer;" @onclick="OnOpenClick">&#x25BC</span>
     </div>
 
     @if (_isOpen)
     {
-        <div class="bb-calendar bb-dropdown">
+        <div class="bb-calendar bb-dropdown" style="top:@TopDrowdown">
             
             <div class="bb-calendar__header text-primary">
 

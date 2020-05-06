@@ -20,5 +20,12 @@ namespace BBComponents.Helpers
 
             return htmlClass;
         }
+
+        public static string BuildSizeClass(string elementName, BootstrapElementSizes size)
+        {
+            var htmlClass = size == BootstrapElementSizes.Default ? "" : $"{elementName}-{size.ToString().ToLower()}";
+
+            return htmlClass;
+        }
     }
 }

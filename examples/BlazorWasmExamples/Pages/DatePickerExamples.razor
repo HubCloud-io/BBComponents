@@ -1,0 +1,68 @@
+﻿@page "/DatePickerExamples"
+
+<h3 class="text-primary">Date picker examples</h3>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        @* Default *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label">Default</label>
+            <div class="col-sm-8">
+                <BbDatePicker @bind-Value="_dateTimeDefault"></BbDatePicker>
+            </div>
+        </div>
+
+        @* With time *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label">With time</label>
+            <div class="col-sm-8">
+                <BbDatePicker @bind-Value="_dateTimeDefault" Format="dd.MM.yyyy hh:mm:ss"></BbDatePicker>
+            </div>
+        </div>
+
+        @* US Format *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label">US Format</label>
+            <div class="col-sm-8">
+                <BbDatePicker @bind-Value="_dateTimeDefault" Format="MM/dd/yyyy"></BbDatePicker>
+            </div>
+        </div>
+
+        @* US Format with time *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label">US Format</label>
+            <div class="col-sm-8">
+                <BbDatePicker @bind-Value="_dateTimeDefault" Format="MM/dd/yyyy hh:mm tt"></BbDatePicker>
+            </div>
+        </div>
+
+        @* Small size *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label">Small size</label>
+            <div class="col-sm-8">
+                <BbDatePicker @bind-Value="_dateTimeDefault" Size="BBComponents.Enums.BootstrapElementSizes.Sm"></BbDatePicker>
+            </div>
+        </div>
+
+        @* Big size *@
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label">Big size</label>
+            <div class="col-sm-8">
+                <BbDatePicker @bind-Value="_dateTimeDefault" Size="BBComponents.Enums.BootstrapElementSizes.Lg"></BbDatePicker>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-sm-6">
+
+        <span>@_dateTimeDefault</span>
+
+    </div>
+
+</div>
