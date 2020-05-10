@@ -21,7 +21,7 @@ namespace BlazorWasmExamples.Pages
             AlertService.Add($"Error at: {DateTime.Now}", BBComponents.Enums.BootstrapColors.Danger);
         }
 
-        private void OnAlertDismissableClick()
+        private void OnAlertNonDismissableClick()
         {
             AlertService.Add($"Non dismissable info at: {DateTime.Now}", BBComponents.Enums.BootstrapColors.Info, 0);
         }
