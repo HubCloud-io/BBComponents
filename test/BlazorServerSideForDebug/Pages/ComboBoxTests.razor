@@ -1,0 +1,28 @@
+﻿@page "/combobox"
+
+<h3>ComboBoxTests</h3>
+
+<div class="row">
+
+    <div class="col-sm-6">
+       <BbComboBox TValue="int" 
+                   ItemsSource="_products" 
+                   TextName="Title" 
+                   ValueName="Id" 
+                   IsDeletedName="IsDeleted" 
+                   @bind-Value="_selectedId"></BbComboBox>
+    </div>
+
+    <div class="col-sm-6">
+
+        <div class="form-group form-row">
+
+            <label class="col-form-label col-sm-4">Selected value:</label>
+            <div class="col-sm-8">@_selectedId</div>
+
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,32 @@
+﻿@typeparam TValue
+
+    <div class="input-group  bb-combo-box">
+
+        <input class="form-control" type="text" value="@_inputValue" 
+               @onchange="(e=> OnInputValueChange(e))" 
+               @oninput="(e=>OnInput(e))" 
+               @onkeypress="(e=>OnInputKeyPress(e))" />
+
+        <div class="input-group-append ">
+
+            <span class="input-group-text" style="cursor:pointer;" @onclick="OnOpenClick">&#x25BC;</span>
+            <span class="input-group-text" style="cursor:pointer;" @onclick="OnClearClick">x</span>
+
+        </div>
+
+        @if (_isOpen)
+        {
+            <div class="bb-combo-box bb-dropdown" style="top:@TopDrowdown">
+
+                <ul class="bb-combo-box__items">
+                    @foreach (var item in SourceFiltered)
+                    {
+                        <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
+                    }
+
+                </ul>
+
+            </div>
+        }
+
+    </div>
