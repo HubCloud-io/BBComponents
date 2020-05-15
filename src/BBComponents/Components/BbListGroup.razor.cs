@@ -55,7 +55,7 @@ namespace BBComponents.Components
 
         protected override void OnParametersSet()
         {
-            if (ItemsSource.Any())
+            if (ItemsSource.Any() && _selectedItem == null)
             {
                 _selectedItem = ItemsSource.FirstOrDefault();
             }

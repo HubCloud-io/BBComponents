@@ -23,5 +23,10 @@ namespace BlazorServerSideForDebug.Data
             return collection;
 
         }
+
+        public override string ToString()
+        {
+            return $"{CodeNumeric} {Code}";
+        }
     }
 }
