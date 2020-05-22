@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BBComponents.Components
@@ -13,6 +14,7 @@ namespace BBComponents.Components
     {
 
         private string _inputValue;
+        private string _searchString;
         private bool _isOpen;
         private bool _stopListenOnInputValueChange;
         private List<SelectItem<TValue>> _source = new List<SelectItem<TValue>>();
@@ -93,13 +95,13 @@ namespace BBComponents.Components
             {
                 var sourceFiltered = new List<SelectItem<TValue>>();
 
-                if (string.IsNullOrEmpty(_inputValue))
+                if (string.IsNullOrEmpty(_searchString))
                 {
                     sourceFiltered = _source;
                 }
                 else
                 {
-                    var searchString = _inputValue.ToLower().Trim();
+                    var searchString = _searchString.ToLower().Trim();
                     var parts = searchString.Split(' ');
                     
                     foreach(var item in _source)
@@ -157,16 +159,31 @@ namespace BBComponents.Components
                     _source.Add(new SelectItem<TValue>(text,value, isDeleted));
                 }
             }
+
+            // Set initial value
+            var selectedItem = _source.FirstOrDefault(x => EqualityComparer<TValue>.Default.Equals(x.Value, Value));
+
+            if (selectedItem != null)
+            {
+                _inputValue = selectedItem.Text;
+            }
+            else if (string.IsNullOrEmpty(Text))
+            {
+                _inputValue = Text;
+            }
+
         }
 
         private void OnOpenClick()
         {
+            _searchString = "";
             _isOpen = !_isOpen;
         }
 
         private async Task OnClearClick()
         {
             _inputValue = "";
+            _searchString = "";
 
             var defaultValue = default(TValue);
             await ValueChanged.InvokeAsync(defaultValue);
@@ -184,12 +201,14 @@ namespace BBComponents.Components
             }
 
             _inputValue = e.Value?.ToString();
+            _searchString = _inputValue;
             Console.WriteLine($"InputValueChange {_inputValue}");
         }
 
         private void OnInput(ChangeEventArgs e)
         {
             _inputValue = e.Value?.ToString();
+            _searchString = _inputValue;
 
             Console.WriteLine($"InputValue {_inputValue}");
 
@@ -219,6 +238,7 @@ namespace BBComponents.Components
                     await ValueChanged.InvokeAsync(item.Value);
                     await Changed.InvokeAsync(item.Value);
                     _isOpen = false;
+                    _searchString = "";
 
                 }
             }
@@ -230,6 +250,7 @@ namespace BBComponents.Components
             await ValueChanged.InvokeAsync(item.Value);
             await Changed.InvokeAsync(item.Value);
             _isOpen = false;
+            _searchString = "";
         }
     }
 }

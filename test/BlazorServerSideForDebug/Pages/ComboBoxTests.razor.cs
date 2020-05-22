@@ -1,9 +1,6 @@
 ﻿using BlazorServerSideForDebug.Data;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlazorServerSideForDebug.Pages
 {
@@ -11,6 +8,7 @@ namespace BlazorServerSideForDebug.Pages
     {
         private List<Product> _products;
         private int _selectedId;
+        private int _selectedId2;
 
         protected override void OnInitialized()
         {
@@ -35,6 +33,8 @@ namespace BlazorServerSideForDebug.Pages
 
                 _products.Add(new Product() { Id = n, Title = title, IsDeleted = isDeleted });
             }
+
+            _selectedId2 = 3;
         }
     }
 }

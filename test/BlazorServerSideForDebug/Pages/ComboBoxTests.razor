@@ -27,3 +27,28 @@
 
 </div>
 
+<div class="row">
+
+    <div class="col-sm-6">
+        <BbComboBox TValue="int"
+                    ItemsSource="_products"
+                    TextName="Title"
+                    ValueName="Id"
+                    Size="BBComponents.Enums.BootstrapElementSizes.Sm"
+                    IsDeletedName="IsDeleted"
+                    @bind-Value="_selectedId2"></BbComboBox>
+    </div>
+
+    <div class="col-sm-6">
+
+        <div class="form-group form-row">
+
+            <label class="col-form-label col-sm-4">Selected value:</label>
+            <div class="col-sm-8">@_selectedId2</div>
+
+        </div>
+
+    </div>
+
+</div>
+
