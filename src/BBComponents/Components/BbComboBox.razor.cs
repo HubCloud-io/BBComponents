@@ -67,6 +67,8 @@ namespace BBComponents.Components
 
         public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
 
+        public bool IsValueSelected => EqualityComparer<TValue>.Default.Equals(Value, default(TValue));
+
         public string TopDrowdown
         {
             get
