@@ -146,7 +146,7 @@ namespace BBComponents.Components
                 }
             }
 
-            _value = Value.ToString();
+            _value = Value?.ToString();
 
         }
 

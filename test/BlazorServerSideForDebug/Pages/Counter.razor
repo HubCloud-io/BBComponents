@@ -20,11 +20,19 @@
 
 <div class="col-sm-6">
 
-    <BbSelect TValue="int"
+    @*<BbSelect TValue="int"
+        ItemsSource="_currencies"
+        TextName="Code"
+        ValueName="Id"
+        @bind-Value="_selectedCurrencyId"
+        Changed="OnSelectChange"
+        HtmlClass="form-control"></BbSelect>*@
+
+    <BbSelect TValue="string"
               ItemsSource="_currencies"
-              TextName="Code"
-              ValueName="Id"
-              @bind-Value="_selectedCurrencyId"
+              TextName="Title"
+              ValueName="Code"
+              @bind-Value="_selectedCurrencyCode"
               Changed="OnSelectChange"
               HtmlClass="form-control"></BbSelect>
 
@@ -33,6 +41,13 @@
         <label class="col-sm-4">Currency Id</label>
         <div class="col-sm-8">
             @_selectedCurrencyId
+        </div>
+    </div>
+
+    <div class="form-group form-group-sm row">
+        <label class="col-sm-4">Currency code</label>
+        <div class="col-sm-8">
+            @_selectedCurrencyCode
         </div>
     </div>
 
@@ -120,6 +135,7 @@
     private decimal _number;
     private int _numberInt;
     private int _selectedCurrencyId;
+    private string _selectedCurrencyCode;
 
     private List<Tuple<int, string>> _tabsSource;
     private int _activeTab = 0;
