@@ -40,6 +40,9 @@ namespace BBComponents.Components
         [Parameter]
         public EventCallback<TValue> Changed { get; set; }
 
+        /// <summary>
+        /// Event for text changed.
+        /// </summary>
         [Parameter]
         public EventCallback<string> TextChanged { get; set; }
 
@@ -197,9 +200,9 @@ namespace BBComponents.Components
             _searchString = "";
 
             var defaultValue = default(TValue);
+            await TextChanged.InvokeAsync("");
             await ValueChanged.InvokeAsync(defaultValue);
             await Changed.InvokeAsync(defaultValue);
-            await TextChanged.InvokeAsync("");
 
 
         }
@@ -239,10 +242,9 @@ namespace BBComponents.Components
 
                     _inputValue = item.Text;
                     StateHasChanged();
-
+                    await TextChanged.InvokeAsync(item.Text);
                     await ValueChanged.InvokeAsync(item.Value);
                     await Changed.InvokeAsync(item.Value);
-                    await TextChanged.InvokeAsync(item.Text);
 
                     _isOpen = false;
                     _searchString = "";
@@ -254,9 +256,9 @@ namespace BBComponents.Components
         private async Task OnItemClick(MouseEventArgs e, SelectItem<TValue> item)
         {
             _inputValue = item.Text;
+            await TextChanged.InvokeAsync(item.Text);
             await ValueChanged.InvokeAsync(item.Value);
             await Changed.InvokeAsync(item.Value);
-            await TextChanged.InvokeAsync(item.Text);
 
             _isOpen = false;
             _searchString = "";
