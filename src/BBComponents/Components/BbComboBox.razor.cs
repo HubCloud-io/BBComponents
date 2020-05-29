@@ -3,7 +3,6 @@ using BBComponents.Helpers;
 using BBComponents.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace BBComponents.Components
         /// It is necessary to have possibility catch changed even whet we use @bind-Value.
         /// </summary>
         [Parameter]
-        public EventCallback<TValue> Changed { get; set; }
+        public EventCallback<SelectItem<TValue>> Changed { get; set; }
 
         /// <summary>
         /// Colllection for select options.
@@ -135,7 +134,8 @@ namespace BBComponents.Components
             }
         }
 
-        protected override void OnParametersSet()
+
+        protected override async Task OnParametersSetAsync()
         {
             _source = new List<SelectItem<TValue>>();
 
@@ -167,7 +167,13 @@ namespace BBComponents.Components
 
             if (selectedItem != null)
             {
-                _inputValue = selectedItem.Text;
+                
+                if (_inputValue != selectedItem.Text)
+                {
+                    _inputValue = selectedItem.Text;
+                    await Changed.InvokeAsync(selectedItem);
+                }
+
             }
             else if (string.IsNullOrEmpty(Text))
             {
@@ -189,8 +195,7 @@ namespace BBComponents.Components
 
             var defaultValue = default(TValue);
             await ValueChanged.InvokeAsync(defaultValue);
-            await Changed.InvokeAsync(defaultValue);
-
+            await Changed.InvokeAsync(null);
 
         }
 
@@ -204,16 +209,12 @@ namespace BBComponents.Components
 
             _inputValue = e.Value?.ToString();
             _searchString = _inputValue;
-            Console.WriteLine($"InputValueChange {_inputValue}");
         }
 
         private void OnInput(ChangeEventArgs e)
         {
             _inputValue = e.Value?.ToString();
             _searchString = _inputValue;
-
-            Console.WriteLine($"InputValue {_inputValue}");
-
 
             if (!_isOpen)
             {
@@ -234,11 +235,9 @@ namespace BBComponents.Components
                     _inputValue = item.Text;
                     StateHasChanged();
 
-                    Console.WriteLine($"KeyPress {_inputValue}");
-
-
                     await ValueChanged.InvokeAsync(item.Value);
-                    await Changed.InvokeAsync(item.Value);
+                    await Changed.InvokeAsync(item);
+
                     _isOpen = false;
                     _searchString = "";
 
@@ -250,7 +249,8 @@ namespace BBComponents.Components
         {
             _inputValue = item.Text;
             await ValueChanged.InvokeAsync(item.Value);
-            await Changed.InvokeAsync(item.Value);
+            await Changed.InvokeAsync(item);
+
             _isOpen = false;
             _searchString = "";
         }

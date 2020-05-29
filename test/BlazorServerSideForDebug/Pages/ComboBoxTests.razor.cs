@@ -1,4 +1,5 @@
-﻿using BlazorServerSideForDebug.Data;
+﻿using BBComponents.Models;
+using BlazorServerSideForDebug.Data;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,13 @@ namespace BlazorServerSideForDebug.Pages
     public partial class ComboBoxTests : ComponentBase
     {
         private List<Product> _products;
+
         private int _selectedId;
+        private string _selectedText;
+
         private int _selectedId2;
+        private string _selectedText2;
+
         private List<Tuple<int, string>> _itemsPerPageSource = new List<Tuple<int, string>>();
         private int _itemsPerPage = 15;
 
@@ -52,5 +58,16 @@ namespace BlazorServerSideForDebug.Pages
 
 
         }
+
+        private void OnProductChanged(SelectItem<int> item)
+        {
+            _selectedText = item.Text;
+        }
+
+        private void OnProduct2Changed(SelectItem<int> item)
+        {
+            _selectedText2 = item.Text;
+        }
+
     }
 }
