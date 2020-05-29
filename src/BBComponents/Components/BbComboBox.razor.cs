@@ -38,7 +38,10 @@ namespace BBComponents.Components
         /// It is necessary to have possibility catch changed even whet we use @bind-Value.
         /// </summary>
         [Parameter]
-        public EventCallback<SelectItem<TValue>> Changed { get; set; }
+        public EventCallback<TValue> Changed { get; set; }
+
+        [Parameter]
+        public EventCallback<string> TextChanged { get; set; }
 
         /// <summary>
         /// Colllection for select options.
@@ -171,7 +174,7 @@ namespace BBComponents.Components
                 if (_inputValue != selectedItem.Text)
                 {
                     _inputValue = selectedItem.Text;
-                    await Changed.InvokeAsync(selectedItem);
+                    await TextChanged.InvokeAsync(_inputValue);
                 }
 
             }
@@ -195,7 +198,9 @@ namespace BBComponents.Components
 
             var defaultValue = default(TValue);
             await ValueChanged.InvokeAsync(defaultValue);
-            await Changed.InvokeAsync(null);
+            await Changed.InvokeAsync(defaultValue);
+            await TextChanged.InvokeAsync("");
+
 
         }
 
@@ -236,7 +241,8 @@ namespace BBComponents.Components
                     StateHasChanged();
 
                     await ValueChanged.InvokeAsync(item.Value);
-                    await Changed.InvokeAsync(item);
+                    await Changed.InvokeAsync(item.Value);
+                    await TextChanged.InvokeAsync(item.Text);
 
                     _isOpen = false;
                     _searchString = "";
@@ -249,7 +255,8 @@ namespace BBComponents.Components
         {
             _inputValue = item.Text;
             await ValueChanged.InvokeAsync(item.Value);
-            await Changed.InvokeAsync(item);
+            await Changed.InvokeAsync(item.Value);
+            await TextChanged.InvokeAsync(item.Text);
 
             _isOpen = false;
             _searchString = "";
