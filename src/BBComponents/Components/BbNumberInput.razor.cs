@@ -57,6 +57,13 @@ namespace BBComponents.Components
         public EventCallback<TValue> ValueChanged { get; set; }
 
         /// <summary>
+        /// Duplicate event call back for value changed. 
+        /// It is necessary to have possibility catch changed even whet we use @bind-Value.
+        /// </summary>
+        [Parameter]
+        public EventCallback<TValue> Changed { get; set; }
+
+        /// <summary>
         /// Number of decimal digits in number presentation. Default value is 2.
         /// </summary>
         [Parameter]
@@ -122,6 +129,7 @@ namespace BBComponents.Components
             {
                 Value = parseResult.Item1;
                 await ValueChanged.InvokeAsync(Value);
+                await Changed.InvokeAsync(Value);
             }
 
         }

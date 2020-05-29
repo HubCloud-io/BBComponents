@@ -31,6 +31,14 @@ namespace BBComponents.Components
         [Parameter]
         public EventCallback<DateTime> ValueChanged { get; set; }
 
+        /// <summary>
+        /// Duplicate event call back for value changed. 
+        /// It is necessary to have possibility catch changed even whet we use @bind-Value.
+        /// </summary>
+        [Parameter]
+        public EventCallback<DateTime> Changed { get; set; }
+
+
         [Parameter]
         public FirstWeekDays FirstWeekDay { get; set; }
 
@@ -142,6 +150,7 @@ namespace BBComponents.Components
             _stringValue = Value.ToString(Format, CultureInfo.InvariantCulture);
 
             await ValueChanged.InvokeAsync(Value);
+            await Changed.InvokeAsync(Value);
 
             _isOpen = false;
 
@@ -157,6 +166,7 @@ namespace BBComponents.Components
                 _stringValue = Value.ToString(Format);
 
                 await ValueChanged.InvokeAsync(Value);
+                await Changed.InvokeAsync(Value);
 
             }
             else
