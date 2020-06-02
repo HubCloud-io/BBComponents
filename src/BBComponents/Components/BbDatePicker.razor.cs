@@ -26,6 +26,12 @@ namespace BBComponents.Components
         public DateTime Value { get; set; }
 
         /// <summary>
+        /// Tooltip for component.
+        /// </summary>
+        [Parameter]
+        public string Tooltip { get; set; }
+
+        /// <summary>
         /// Event call back for value changed.
         /// </summary>
         [Parameter]

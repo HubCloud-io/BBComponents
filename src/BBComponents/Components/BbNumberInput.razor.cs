@@ -51,6 +51,12 @@ namespace BBComponents.Components
         public TValue Value { get; set; } = default(TValue);
 
         /// <summary>
+        /// Tooltip for component.
+        /// </summary>
+        [Parameter]
+        public string Tooltip { get; set; }
+
+        /// <summary>
         /// Event call back for value changed.
         /// </summary>
         [Parameter]

@@ -1,11 +1,13 @@
 ﻿@typeparam TValue
 
-<input id="@Id" 
-       class="bb-number-input @HtmlClass" 
+<input id="@Id"
+       class="bb-number-input @HtmlClass"
        style="@HtmlStyle"
        readonly=@IsReadOnly
        disabled=@IsDisabled
-       value="@_stringValue" 
+       data-toggle="tooltip"
+       title="@Tooltip"
+       value="@_stringValue"
        @onchange="(e => OnValueChange(e))" />
 
 

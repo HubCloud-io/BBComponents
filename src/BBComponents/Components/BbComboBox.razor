@@ -2,7 +2,10 @@
 
 <div class="input-group @SizeClass bb-combo-box">
 
-    <input class="form-control" type="text" value="@_inputValue"
+    <input class="form-control" type="text" 
+           value="@_inputValue" 
+           data-toggle="tooltip" 
+           title="@Tooltip"
            @onchange="(e=> OnInputValueChange(e))"
            @oninput="(e=>OnInput(e))"
            @onkeypress="(e=>OnInputKeyPress(e))" />

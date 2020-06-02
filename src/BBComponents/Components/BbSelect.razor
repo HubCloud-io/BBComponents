@@ -6,6 +6,8 @@
         style="@HtmlStyle"
         readonly=@IsReadOnly
         disabled=@IsDisabled
+        data-toggle="tooltip"
+        title="@Tooltip"
         value="@_value"
         @onchange="(e => OnValueChanged(e))">
 
