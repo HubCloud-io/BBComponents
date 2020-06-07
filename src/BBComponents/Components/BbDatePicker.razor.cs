@@ -85,11 +85,6 @@ namespace BBComponents.Components
 
         protected override void OnParametersSet()
         {
-            if (Value == DateTime.MinValue)
-            {
-                Value = DateTime.Now;
-
-            }
 
             // Fill day names
             if (FirstWeekDay == FirstWeekDays.Sunday)
@@ -116,6 +111,12 @@ namespace BBComponents.Components
 
         private void OnOpenClick()
         {
+            if (Value == DateTime.MinValue)
+            {
+                Value = DateTime.Now;
+            }
+
+
             _isOpen = !_isOpen;
             InitCalendar();
 
@@ -139,6 +140,11 @@ namespace BBComponents.Components
 
         private void InitCalendar()
         {
+            if (Value == DateTime.MinValue)
+            {
+                return;
+            }
+
             _year = Value.Year;
             _monthName = Value.ToString("MMMM");
 
