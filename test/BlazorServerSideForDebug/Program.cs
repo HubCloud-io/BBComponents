@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +17,12 @@ namespace BlazorServerSideForDebug
     {
         public static void Main(string[] args)
         {
+
+            //var culture = "en";
+            //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(culture);
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(culture);
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+
             CreateHostBuilder(args).Build().Run();
         }
 
