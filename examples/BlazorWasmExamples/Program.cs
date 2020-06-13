@@ -22,7 +22,7 @@ namespace BlazorWasmExamples
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddBaseAddressHttpClient();
+           // builder.Services.AddBaseAddressHttpClient();
 
             // Service to add alerts.
             builder.Services.AddScoped<IAlertService, AlertService>();
