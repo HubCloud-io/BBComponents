@@ -66,3 +66,42 @@
 .bb-calendar__day_another {
     color: grey;
 }
+
+.bb-combo-box {
+    position: relative;
+}
+
+    .bb-combo-box .bb-dropdown {
+        position: absolute;
+        width: 100%;
+        min-width: 230px;
+        height: 225px;
+        overflow-y: auto;
+        left: 1px;
+        border: 1px solid #cecece;
+        background-color: white;
+        z-index: 10;
+    }
+
+.bb-combo-box__items {
+    margin: 0;
+    padding: 0;
+}
+
+.bb-combo-box__item {
+    list-style: none;
+    border-bottom: 1px solid #dedede;
+    cursor: pointer;
+    line-height: 25px;
+    padding-left: 3px;
+    font-size: 10pt;
+}
+
+    .bb-combo-box__item:hover {
+        background-color: #dedede;
+    }
+
+.bb-combo-box__item_deleted {
+    text-decoration: line-through;
+    color: red;
+}
