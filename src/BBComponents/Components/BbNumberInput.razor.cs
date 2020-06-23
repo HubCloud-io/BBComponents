@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BBComponents.Helpers;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -129,77 +130,15 @@ namespace BBComponents.Components
             _stringValue = ToNumericString(e.Value?.ToString(), decimalSeparator);
             StateHasChanged();
 
-            var parseResult = TryParse(_stringValue, _nfi);
+            var parseResult =  ValueParser.TryParse<TValue>(_stringValue, _nfi);
 
-            if (parseResult.Item2)
+            if (parseResult.IsParsed)
             {
-                Value = parseResult.Item1;
+                Value = parseResult.Value;
                 await ValueChanged.InvokeAsync(Value);
                 await Changed.InvokeAsync(Value);
             }
 
-        }
-
-        public static Tuple<TValue, bool> TryParse(string stringValue, NumberFormatInfo nfi)
-        {
-            var value = default(TValue);
-            var isParsed = false;
-
-            if (value is decimal)
-            {
-                if (decimal.TryParse(stringValue, NumberStyles.Any, nfi, out var decimalValue))
-                {
-                    value = (TValue)Convert.ChangeType(decimalValue, typeof(decimal));
-                    isParsed = true;
-                }
-            }
-            else if (value is double)
-            {
-                if (double.TryParse(stringValue, NumberStyles.Any, nfi, out var doubleValue))
-                {
-                    value = (TValue)Convert.ChangeType(doubleValue, typeof(double));
-                    isParsed = true;
-                }
-
-            }
-            else if (value is float)
-            {
-                if (float.TryParse(stringValue, NumberStyles.Any, nfi, out var floatValue))
-                {
-                    value = (TValue)Convert.ChangeType(floatValue, typeof(float));
-                    isParsed = true;
-                }
-
-            }
-            else if (value is int)
-            {
-                if (int.TryParse(stringValue, NumberStyles.Integer, nfi, out var intValue))
-                {
-                    value = (TValue)Convert.ChangeType(intValue, typeof(int));
-                    isParsed = true;
-                }
-
-            }
-            else if (value is long)
-            {
-                if (long.TryParse(stringValue, NumberStyles.Integer, nfi, out var longValue))
-                {
-                    value = (TValue)Convert.ChangeType(longValue, typeof(long));
-                    isParsed = true;
-                }
-
-            }
-            else if (value is byte)
-            {
-                if (byte.TryParse(stringValue, NumberStyles.Integer, nfi, out var byteValue))
-                {
-                    value = (TValue)Convert.ChangeType(byteValue, typeof(byte));
-                    isParsed = true;
-                }
-
-            }
-
-            return new Tuple<TValue, bool>(value, isParsed);
         }
 
         public static string ToNumericString(string initialString, char? decimalSeparator)
