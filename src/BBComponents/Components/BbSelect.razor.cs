@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BBComponents.Helpers;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -160,7 +161,7 @@ namespace BBComponents.Components
         {
             _value = e.Value?.ToString();
 
-            var parseResult = TryParse(_value);
+            var parseResult = ValueParser.TryParse<TValue>(_value);
 
             if (parseResult.Item2)
             {
@@ -170,67 +171,6 @@ namespace BBComponents.Components
 
         }
 
-        public static Tuple<TValue, bool> TryParse(string stringValue)
-        {
-            var value = default(TValue);
-            var valueType = typeof(TValue);
-            var isParsed = false;
-
-            if (valueType == typeof(Guid))
-            {
-                if (Guid.TryParse(stringValue, out var guid))
-                {
-                    value = (TValue)Convert.ChangeType(guid, typeof(Guid));
-                    isParsed = true;
-                }
-            }
-            else if (valueType == typeof(byte))
-            {
-                if (byte.TryParse(stringValue, out var byteValue))
-                {
-                    value = (TValue)Convert.ChangeType(byteValue, typeof(byte));
-                    isParsed = true;
-                }
-            }
-            else if (valueType == typeof(int))
-            {
-                if (int.TryParse(stringValue, out var intValue))
-                {
-                    value = (TValue)Convert.ChangeType(intValue, typeof(int));
-                    isParsed = true;
-                }
-            }
-            else if (valueType == typeof(long))
-            {
-                if (long.TryParse(stringValue, out var longValue))
-                {
-                    value = (TValue)Convert.ChangeType(longValue, typeof(long));
-                    isParsed = true;
-                }
-            }
-            else if (valueType == typeof(string))
-            {
-                value = (TValue)Convert.ChangeType(stringValue, typeof(string));
-                isParsed = true;
-            }
-            else if (valueType.IsEnum)
-            {
-                try
-                {
-                    var enumValue = Enum.Parse(valueType, stringValue, true);
-                    value = (TValue)enumValue;
-                    isParsed = true;
-                }
-                catch(Exception e)
-                {
-                    Debug.WriteLine($"Cannot parse enum value {stringValue}. Message: {e.Message}");
-                }
-            }
-
-            return new Tuple<TValue, bool>(value, isParsed);
-
-
-        }
 
     }
 }
