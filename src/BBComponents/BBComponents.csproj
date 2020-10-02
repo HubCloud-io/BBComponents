@@ -6,13 +6,14 @@
     <Version>0.2.8</Version>
     <Authors>Mikhail Zyubin</Authors>
     <Description>Free components for Blazor created with Bootstrap css framework</Description>
-    <PackageId>ZyuDev.BBComponents</PackageId>
-    <PackageProjectUrl>https://github.com/ZyuDev/BBComponents</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ZyuDev/BBComponents</RepositoryUrl>
+    <PackageId>HubCloud.BBComponents</PackageId>
+    <PackageProjectUrl>https://github.com/HubCloud-io/BBComponents</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HubCloud-io/BBComponents</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Mikhail Zyubin</Copyright>
+    <Copyright>HubCloud</Copyright>
     <PackageTags>Blazor Components</PackageTags>
+    <Company>HubCloud.io</Company>
   </PropertyGroup>
 
 
