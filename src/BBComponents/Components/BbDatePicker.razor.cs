@@ -44,6 +44,14 @@ namespace BBComponents.Components
         [Parameter]
         public EventCallback<DateTime> Changed { get; set; }
 
+        [Parameter]
+        public string DropdownPosition { get; set; } = "absolute";
+
+        [Parameter]
+        public int DropdownTopValue { get; set; }
+
+        [Parameter]
+        public int DropdownLeftValue { get; set; }
 
         [Parameter]
         public FirstWeekDays FirstWeekDay { get; set; }
@@ -54,12 +62,24 @@ namespace BBComponents.Components
         [Parameter]
         public string Format { get; set; } = "dd.MM.yyyy";
 
+        [Parameter]
+        public string HtmlStyle { get; set; }
+
+        [Parameter]
+        public string HtmlClass { get; set; }
+
+
         public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
 
-        public string TopDrowdown
+        public string DropdownTop
         {
             get
             {
+                if (DropdownPosition == "fixed")
+                {
+                    return $"{DropdownTopValue}px";
+                }
+
                 int topValue;
                 switch (Size)
                 {
@@ -75,6 +95,22 @@ namespace BBComponents.Components
                 }
 
                 return $"{topValue}px";
+            }
+        }
+
+        public string DropdownLeft
+        {
+            get
+            {
+                if (DropdownPosition == "fixed")
+                {
+                    return $"{DropdownLeftValue}px";
+                }
+                else
+                {
+                    return "";
+                }
+
             }
         }
 
