@@ -5,6 +5,10 @@
     {
       "library": "font-awesome@5.13.0",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "rainbow@1.2.0",
+      "destination": "wwwroot/rainbow/"
     }
   ]
 }

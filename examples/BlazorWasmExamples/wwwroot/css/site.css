@@ -181,3 +181,24 @@ app {
         display: block;
     }
 }
+
+/*pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    background: #faf8f0;
+    font-family: monospace;
+}
+
+code {
+    display: block;
+    border: 1px solid #bebab0;
+}*/
+
+span.support.tag.close {
+    float: none;
+    font-size: 13px;
+    font-weight: normal;
+    color: navy;
+    opacity: 1;
+}
