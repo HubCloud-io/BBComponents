@@ -4,8 +4,6 @@
 
 <hr />
 
-<h4 class="text-primary">Basic usage</h4>
-
 <div class="row">
 
     <div class="col-sm-6">
@@ -52,6 +50,95 @@
 
     </div>
 
-   
+    <div class="col-sm-6">
+
+        <div class="form-group form-row">
+            <label class="col-sm-4 col-form-label-sm">Selected Id</label>
+            <div class="col-sm-8">
+                @_selectedValue
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-12 text-info">Razor</div>
+
+    <div class="col-sm-12">
+        <pre>
+        <code data-language="html">
+
+                &lt!-- Select by code -->
+                &lt;BbSelect TValue="int"
+                            ItemsSource="_currencies"
+                            ValueName="Id"
+                            TextName="Code"
+                            @@bind-Value="_selectedValue"
+                            HtmlClass="form-control form-control-sm">&lt;/BbSelect>
+
+                &lt!-- Select by title -->
+                &lt;BbSelect TValue="int"
+                          ItemsSource="_currencies"
+                          ValueName="Id"
+                          TextName="Title"
+                          @@bind-Value="_selectedValue"
+                          HtmlClass="form-control form-control-sm">&lt;/BbSelect>
+
+                &lt!-- Select by title add not selected item -->
+                &lt;BbSelect TValue="int"
+                          ItemsSource="_currencies"
+                          ValueName="Id"
+                          TextName="Title"
+                          @@bind-Value="_selectedValue"
+                          AddNotSelectedItem="true"
+                          HtmlClass="form-control form-control-sm">&lt;/BbSelect>
+
+            </code>
+         </pre>
+
+    </div>
+
+    <div class="col-sm-12 text-info">C#</div>
+
+    <div class="col-sm-12">
+
+        <pre>
+        <code data-language="csharp">
+
+                public partial class SelectExamples: ComponentBase
+                {
+                    private IEnumerable&lt;Currency> _currencies = Currency.SampleData();
+                    private int _selectedValue;
+                }
+
+                public class Currency
+                {
+                    public int Id { get; set; }
+                    public string CodeNumeric { get; set; }
+                    public string Code { get; set; }
+                    public string Title { get; set; }
+
+                    public static IEnumerable&lt;Currency> SampleData()
+                    {
+                        var collection = new List&lt;Currency>();
+
+                        collection.Add(new Currency { Id = 1, CodeNumeric = "978", Code = "EUR", Title = "Euro" });
+                        collection.Add(new Currency { Id = 2, CodeNumeric = "826", Code = "GBP", Title = "Pound Sterling" });
+                        collection.Add(new Currency { Id = 3, CodeNumeric = "840", Code = "USD", Title = "US Dollar" });
+
+                        return collection;
+
+                    }
+                 }
+            </code>
+        </pre>
+    </div>
+
+
 
 </div>
