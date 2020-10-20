@@ -1,5 +1,6 @@
 ﻿using BlazorWasmExamples.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,18 @@ namespace BlazorWasmExamples.Pages
     {
         private List<Currency> _currencies;
 
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
+
         protected override void OnInitialized()
         {
             _currencies = Currency.SampleData().ToList();
 
         }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("Rainbow.color");
+        }
+
     }
 }

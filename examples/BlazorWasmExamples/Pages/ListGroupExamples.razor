@@ -24,3 +24,61 @@
     </div>
 
 </div>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-12 text-info">Razor</div>
+    <div class="col-sm-12">
+
+        <pre>
+        <code data-language="html">
+
+                &lt;BbListGroup TValue="Currency" ItemsSource="_currencies" HtmlClass="list-group-flush">
+                    &lt;ItemTemplate Context="item">
+                        &lt;span>@@item.Code&lt;/span>&lt;span class="float-right">@@item.CodeNumeric&lt;/span>
+                    &lt;/ItemTemplate>
+                &lt;/BbListGroup>
+
+            </code>
+        </pre>
+
+    </div>
+
+    <div class="col-sm-12 text-info">C#</div>
+
+    <div class="col-sm-12">
+
+        <pre>
+            <code data-language="csharp">
+
+                public partial class ListGroupExamples: ComponentBase
+                {
+                    private IEnumerable&lt;Currency> _currencies = Currency.SampleData();
+                }
+
+                public class Currency
+                {
+                    public int Id { get; set; }
+                    public string CodeNumeric { get; set; }
+                    public string Code { get; set; }
+                    public string Title { get; set; }
+
+                    public static IEnumerable&lt;Currency> SampleData()
+                    {
+                        var collection = new List&lt;Currency>();
+
+                        collection.Add(new Currency { Id = 1, CodeNumeric = "978", Code = "EUR", Title = "Euro" });
+                        collection.Add(new Currency { Id = 2, CodeNumeric = "826", Code = "GBP", Title = "Pound Sterling" });
+                        collection.Add(new Currency { Id = 3, CodeNumeric = "840", Code = "USD", Title = "US Dollar" });
+
+                        return collection;
+
+                    }
+                }
+            </code>
+        </pre>
+    </div>
+
+</div>
