@@ -66,3 +66,56 @@
     </div>
 
 </div>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-12 text-info">Razor</div>
+    <div class="col-sm-12">
+
+        <pre>
+            <code data-language="html">
+
+                &lt;!-- Default -->
+                &lt;BbDatePicker @@bind-Value="_dateTimeDefault">&lt;/BbDatePicker>
+
+                &lt;!-- With time -->
+                &lt;BbDatePicker @@bind-Value="_dateTimeDefault" Format="dd.MM.yyyy hh:mm:ss">&lt;/BbDatePicker>
+
+                &lt;!-- US Format -->
+                &lt;BbDatePicker @@bind-Value="_dateTimeDefault" Format="MM/dd/yyyy">&lt;/BbDatePicker>
+
+                &lt;!-- US Format with time -->
+                &lt;BbDatePicker @@bind-Value="_dateTimeDefault" Format="MM/dd/yyyy hh:mm tt">&lt;/BbDatePicker>
+
+                &lt;!-- Small size -->
+                &lt;BbDatePicker @@bind-Value="_dateTimeDefault" Size="BootstrapElementSizes.Sm">&lt;/BbDatePicker>
+
+                &lt;!-- Big size -->
+                &lt;BbDatePicker @@bind-Value="_dateTimeDefault" Size="BootstrapElementSizes.Lg">&lt;/BbDatePicker>
+
+            </code>
+        </pre>
+
+    </div>
+
+    <div class="col-sm-12 text-info">C#</div>
+    <pre>
+        <code data-language="csharp">
+
+            public partial class DatePickerExamples: ComponentBase
+            {
+                private DateTime _dateTimeDefault;
+
+                protected override void OnInitialized()
+                {
+                    _dateTimeDefault = DateTime.Now;
+                }
+
+            }
+
+        </code>
+        </pre>
+
+</div>

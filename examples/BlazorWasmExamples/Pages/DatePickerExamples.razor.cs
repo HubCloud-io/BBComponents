@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,18 @@ namespace BlazorWasmExamples.Pages
     {
         private DateTime _dateTimeDefault;
 
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
+
         protected override void OnInitialized()
         {
             _dateTimeDefault = DateTime.Now;
         }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("Rainbow.color");
+        }
+
     }
 }
