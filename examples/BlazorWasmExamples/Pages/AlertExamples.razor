@@ -23,3 +23,82 @@
 </div>
 
 <BbAlertHub></BbAlertHub>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-12 text-info">Razor</div>
+
+    <div class="col-sm-12">
+        <pre>
+        <code data-language="html">
+
+                &lt;!-- Button to show success alert -->
+                &lt;button class="btn btn-outline-success" @@onclick="OnAlertSuccessAddClick">Alert success&lt;/button>
+
+                &lt;!-- Button to show danger alert -->
+                &lt;button class="btn btn-outline-danger" @@onclick="OnAlertDangerAddClick">Alert danger&lt;/button>
+
+                &lt;!-- Button to show non dismissable alert -->
+                &lt;button class="btn btn-outline-info" @@onclick="OnAlertNonDismissableClick">Alert non dismissable&lt;/button>
+
+                &lt;!-- Alert Hub -->
+                &lt;BbAlertHub>&lt;/BbAlertHub>
+
+            </code>
+         </pre>
+
+    </div>
+
+    <div class="col-sm-12 text-info">C#</div>
+
+    <div class="col-sm-12">
+
+        <pre>
+        <code data-language="csharp">
+                public partial class AlertExamples: ComponentBase
+                {
+
+                   [Inject]
+                   public BBComponents.Services.IAlertService AlertService { get; set; }
+
+                   private void OnAlertSuccessAddClick()
+                   {
+                       AlertService.Add($"Success message at: {DateTime.Now}", BBComponents.Enums.BootstrapColors.Success);
+                   }
+
+                   private void OnAlertDangerAddClick()
+                   {
+                       AlertService.Add($"Error at: {DateTime.Now}", BBComponents.Enums.BootstrapColors.Danger);
+                   }
+
+                   private void OnAlertNonDismissableClick()
+                   {
+                      AlertService.Add($"Non dismissable info at: {DateTime.Now}", BBComponents.Enums.BootstrapColors.Info, 0);
+                   }
+
+                }
+
+                public class Program
+                {
+                   public static async Task Main(string[] args)
+                     {
+
+                        ...
+
+                       // Service to add alerts.
+                       builder.Services.AddScoped&lt;IAlertService, AlertService>();
+
+                        ...
+
+                     }
+                }
+
+            </code>
+        </pre>
+    </div>
+
+
+
+</div>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ namespace BlazorWasmExamples.Pages
     {
         [Inject]
         public BBComponents.Services.IAlertService AlertService { get; set; }
+
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
 
         private void OnAlertSuccessAddClick()
         {
@@ -25,6 +29,12 @@ namespace BlazorWasmExamples.Pages
         {
             AlertService.Add($"Non dismissable info at: {DateTime.Now}", BBComponents.Enums.BootstrapColors.Info, 0);
         }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("Rainbow.color");
+        }
+
 
     }
 }
