@@ -1,5 +1,6 @@
 ﻿using BBComponents.Enums;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace BlazorWasmExamples.Pages
 
         private List<Tuple<BootstrapModalSizes, string>> _availableSizes;
 
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
+
         protected override void OnInitialized()
         {
             _availableSizes = new List<Tuple<BootstrapModalSizes, string>>();
@@ -25,6 +29,11 @@ namespace BlazorWasmExamples.Pages
             _availableSizes.Add(new Tuple<BootstrapModalSizes, string>(BootstrapModalSizes.Xl, "Extra large"));
 
 
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("Rainbow.color");
         }
 
         private void OnConfirmShowClick()

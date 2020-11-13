@@ -44,3 +44,57 @@
 {
     <BbConfirm Text="Do agree with... ?" OnClose="OnConfirmClose" Size="_size"></BbConfirm>
 }
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-12 text-info">Razor</div>
+
+    <div class="col-sm-12">
+        <pre>
+            <code data-language="html">
+
+                &lt;!-- Button to show confirm -->
+                &lt;button class="btn btn-success" @@onclick="OnConfirmShowClick">Show confirm&lt;/button>
+
+                &lt;!-- Confirm component -->
+                @@if (_isConfirmOpen)
+                {
+                    &lt;BbConfirm Text="Do agree with... ?" OnClose="OnConfirmClose" Size="_size">&lt;/BbConfirm>
+                }
+
+            </code>
+         </pre>
+
+    </div>
+
+    <div class="col-sm-12 text-info">C#</div>
+
+    <div class="col-sm-12">
+
+        <pre>
+        <code data-language="csharp">
+                public partial class ConfirmExamples: ComponentBase
+                {
+                    private bool _isConfirmOpen;
+                    private List&lt;string> _results = new List&lt;string>();
+
+                    private void OnConfirmShowClick()
+                    {
+                       _isConfirmOpen = true;
+                    }
+
+                    private void OnConfirmClose(bool answer)
+                    {
+                       _results.Add($"Answer: {answer} at {DateTime.Now}");
+                       _isConfirmOpen = false;
+                    }
+                }
+            </code>
+        </pre>
+    </div>
+
+
+
+</div>
