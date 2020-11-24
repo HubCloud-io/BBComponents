@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
   <data name="April" xml:space="preserve">
     <value>Апрель</value>
   </data>
   <data name="August" xml:space="preserve">
     <value>Август</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="CannotFindItem" xml:space="preserve">
+    <value>Не найдено</value>
   </data>
   <data name="December" xml:space="preserve">
     <value>Декабрь</value>

@@ -1,10 +1,11 @@
 ﻿@typeparam TValue
+@using BBComponents.Resources
 
 <div class="input-group @SizeClass bb-combo-box">
 
-    <input class="form-control" type="text" 
-           value="@_inputValue" 
-           data-toggle="tooltip" 
+    <input class="form-control" type="text"
+           value="@_inputValue"
+           data-toggle="tooltip"
            title="@Tooltip"
            @onchange="(e=> OnInputValueChange(e))"
            @oninput="(e=>OnInput(e))"
@@ -15,28 +16,46 @@
         <span class="input-group-text" style="cursor:pointer;" @onclick="OnOpenClick">
             <i class="fa fa-chevron-down"></i>
         </span>
-        @if (!IsValueSelected){
+        @if (!IsValueSelected)
+        {
 
-        <span class="input-group-text" style="cursor:pointer;" @onclick="OnClearClick">
-            <i class="fa fa-times"></i>
-        </span>
-            }
+            <span class="input-group-text" style="cursor:pointer;" @onclick="OnClearClick">
+                <i class="fa fa-times"></i>
+            </span>
+        }
 
     </div>
 
     @if (_isOpen)
-        {
-    <div class="bb-combo-box bb-dropdown" style="top:@TopDrowdown">
+    {
+        <div class="bb-combo-box bb-dropdown" style="top:@TopDrowdown">
 
-        <ul class="bb-combo-box__items">
-            @foreach (var item in SourceFiltered)
-                    {
-            <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
-                    }
+            <ul class="bb-combo-box__items">
+                @foreach (var item in SourceFiltered)
+                {
+                    <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
+                }
 
-        </ul>
+            </ul>
 
-    </div>
-        }
+        </div>
+    }
+
+    @if (_isAddOpen)
+    {
+        <div class="bb-combo-box bb-dropdown" style="min-width:280px;top:@TopDrowdown; max-height:45px;">
+            <div style="height:40px; padding:5px 15px;">
+                <span class="text-danger">@BbResources.CannotFindItem</span>
+                <button class="btn btn-outline-secondary btn-sm btn-default" style="font-size:10px;" @onclick="OnCancelAddNewClick">
+                    <span>@BbResources.Cancel</span>
+                </button>
+                <button class="btn btn-primary btn-sm btn-primary" style="font-size:10px;" @onclick="OnAddNewClick">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>@BbResources.Add</span>
+                </button>
+
+            </div>
+        </div>
+    }
 
 </div>

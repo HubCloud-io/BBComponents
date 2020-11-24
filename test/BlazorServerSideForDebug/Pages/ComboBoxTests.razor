@@ -89,3 +89,33 @@
 
 </div>
 
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <BbComboBox Id="1" 
+                    TValue="int"
+                    ItemsSource="_products"
+                    TextName="Title"
+                    ValueName="Id"
+                    Size="BBComponents.Enums.BootstrapElementSizes.Sm"
+                    IsDeletedName="IsDeleted"
+                    @bind-Value="_selectedId"
+                    @bind-Text="_selectedText"
+                    AllowAdd="true"
+                    AddNewClicked="OnAddNewClicked"></BbComboBox>
+
+
+    </div>
+
+    <div class="col-sm-6">
+
+        <p>@_addNewResult</p>
+
+    </div>
+
+
+</div>
+
+
+

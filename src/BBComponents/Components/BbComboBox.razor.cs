@@ -15,8 +15,12 @@ namespace BBComponents.Components
         private string _inputValue;
         private string _searchString;
         private bool _isOpen;
+        private bool _isAddOpen;
         private bool _stopListenOnInputValueChange;
         private List<SelectItem<TValue>> _source = new List<SelectItem<TValue>>();
+
+        [Parameter]
+        public string Id { get; set; }
 
         [Parameter]
         public BootstrapElementSizes Size { get; set; }
@@ -53,6 +57,12 @@ namespace BBComponents.Components
         public EventCallback<string> TextChanged { get; set; }
 
         /// <summary>
+        /// Event for add new.
+        /// </summary>
+        [Parameter] 
+        public EventCallback<ComboBoxAddNewArgs> AddNewClicked { get; set; }
+
+        /// <summary>
         /// Colllection for select options.
         /// </summary>
         [Parameter]
@@ -75,6 +85,9 @@ namespace BBComponents.Components
         /// </summary>
         [Parameter]
         public string TextName { get; set; }
+
+        [Parameter]
+        public bool AllowAdd { get; set; }
 
         public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
 
@@ -140,7 +153,18 @@ namespace BBComponents.Components
                         }
                     }
 
+
                 }
+
+                //if (AllowAdd)
+                //{
+                //    _isAddOpen = !sourceFiltered.Any();
+                //    if (_isAddOpen)
+                //    {
+                //        _isOpen = false;
+                //    }
+                //}
+
 
                 return sourceFiltered;
             }
@@ -198,6 +222,7 @@ namespace BBComponents.Components
         {
             _searchString = "";
             _isOpen = !_isOpen;
+            _isAddOpen = false;
         }
 
         private async Task OnClearClick()
@@ -234,6 +259,19 @@ namespace BBComponents.Components
             {
                 _isOpen = true;
             }
+
+            if (SourceFiltered.Count == 0)
+            {
+                if (AllowAdd)
+                {
+                    _isAddOpen = true;
+                    _isOpen = false;
+                }
+            }
+            else
+            {
+                _isAddOpen = false;
+            }
         }
 
         private async Task OnInputKeyPress(KeyboardEventArgs e)
@@ -253,6 +291,7 @@ namespace BBComponents.Components
                     await Changed.InvokeAsync(item.Value);
 
                     _isOpen = false;
+                    _isAddOpen = false;
                     _searchString = "";
 
                 }
@@ -267,7 +306,28 @@ namespace BBComponents.Components
             await Changed.InvokeAsync(item.Value);
 
             _isOpen = false;
+            _isAddOpen = false;
             _searchString = "";
+        }
+
+        private void OnCancelAddNewClick()
+        {
+            _isAddOpen = false;
+            _isOpen = false;
+            _inputValue = "";
+        }
+
+        private async Task OnAddNewClick()
+        {
+            _isAddOpen = false;
+            _isOpen = false;
+
+            var args = new ComboBoxAddNewArgs()
+            {
+                Id = Id,
+                Text = _inputValue
+            };
+            await AddNewClicked.InvokeAsync(args);
         }
     }
 }

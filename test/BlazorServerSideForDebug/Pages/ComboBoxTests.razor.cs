@@ -16,6 +16,8 @@ namespace BlazorServerSideForDebug.Pages
         private int _selectedId2;
         private string _selectedText2;
 
+        private string _addNewResult;
+
         private List<Tuple<int, string>> _itemsPerPageSource = new List<Tuple<int, string>>();
         private int _itemsPerPage = 15;
 
@@ -69,5 +71,9 @@ namespace BlazorServerSideForDebug.Pages
             _selectedText2 = item.Text;
         }
 
+        private void OnAddNewClicked(ComboBoxAddNewArgs args)
+        {
+            _addNewResult = args.ToString();
+        }
     }
 }
