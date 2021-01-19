@@ -105,3 +105,19 @@
     text-decoration: line-through;
     color: red;
 }
+
+.bb-context-menu {
+    position: fixed;
+    background-color: white;
+    z-index: 1000;
+}
+
+.bb-context-menu__item {
+    padding: 5px;
+    font-size: 14px;
+}
+
+.bb-context-menu__delimiter {
+    padding: 0px;
+    font-size: 14px;
+}

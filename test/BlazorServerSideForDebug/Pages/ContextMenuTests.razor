@@ -1,0 +1,43 @@
+﻿@page "/contextmenu"
+
+
+<h3>ContextMenuTests</h3>
+
+<div class="row">
+
+    <div class="col-sm-6" style="border: 1px solid #ececec; height: 50px;" 
+         @oncontextmenu:preventDefault 
+         @oncontextmenu="(e=>OnContextMenu(e))">
+
+        <span>Right click here...</span>
+
+    </div>
+
+    <div class="col-sm-6">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="list-group list-group-flush">
+
+                    @foreach(var selectedItem in _selectedItems)
+                    {
+                        <div class="list-group-item">@selectedItem.Title</div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@if (_isCustomMenuOpen)
+{
+    <BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
+}

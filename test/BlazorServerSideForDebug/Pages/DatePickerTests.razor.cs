@@ -9,5 +9,6 @@ namespace BlazorServerSideForDebug.Pages
     public partial class DatePickerTests: ComponentBase
     {
         private DateTime _lastDay = DateTime.Now.AddDays(-1);
+        private DateTime _manualDate; 
     }
 }
