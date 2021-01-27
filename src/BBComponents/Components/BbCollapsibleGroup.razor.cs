@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BBComponents.Components
 {
-    public partial class CollapsibleGroup<TValue>: ComponentBase
+    public partial class BbCollapsibleGroup<TValue>: ComponentBase
     {
         private bool _isOpen = true;
 
