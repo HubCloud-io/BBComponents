@@ -1,0 +1,25 @@
+﻿@typeparam TValue
+
+<div class="bb-colapsible-group">
+
+    <a href="#" class="bb-colapsible-group__header @HtmlClass" style="@HtmlStyle"
+       @onclick:preventDefault
+       @onclick="OnTitleClicked">
+
+        <span>@Title</span>
+        @if (_isOpen)
+        {
+            <span class="fa fa-chevron-down"></span>
+        }
+        else
+        {
+            <span class="fa fa-chevron-right"></span>
+        }
+    </a>
+
+</div>
+
+@if (_isOpen)
+{
+    @ChildContent(DataItem)
+}

@@ -121,3 +121,12 @@
     padding: 0px;
     font-size: 14px;
 }
+
+.bb-colapsible-group {
+    width: 100%;
+    display: flex;
+}
+
+.bb-colapsible-group__header {
+    margin-left: auto;
+}
