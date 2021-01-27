@@ -22,7 +22,7 @@ namespace BBComponents.Components
         public TValue DataItem { get; set; }
 
         [Parameter]
-        public bool Open { get; set; }
+        public bool Open { get; set; } = true;
 
         [Parameter]
         public RenderFragment<TValue> ChildContent { get; set; }
