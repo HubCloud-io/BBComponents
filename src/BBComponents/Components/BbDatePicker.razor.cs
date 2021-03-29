@@ -53,6 +53,12 @@ namespace BBComponents.Components
         [Parameter]
         public EventCallback<DateTime> Changed { get; set; }
 
+        /// <summary>
+        /// Indicates that component is disabled.
+        /// </summary>
+        [Parameter]
+        public bool IsDisabled { get; set; }
+
         [Parameter]
         public DropdownPositions DropdownPosition { get; set; } = DropdownPositions.Absolute;
 
@@ -267,6 +273,11 @@ namespace BBComponents.Components
 
         private async Task OnStringValueChange(ChangeEventArgs e)
         {
+            if (IsDisabled)
+            {
+                return;
+            }
+
             _stringValue = e.Value?.ToString();
 
             if (DateTime.TryParseExact(_stringValue, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))

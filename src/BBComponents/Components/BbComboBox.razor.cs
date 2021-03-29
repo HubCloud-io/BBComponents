@@ -95,6 +95,13 @@ namespace BBComponents.Components
         [Parameter]
         public string TextName { get; set; }
 
+        /// <summary>
+        /// Indicates that component is disabled.
+        /// </summary>
+        [Parameter]
+        public bool IsDisabled { get; set; }
+
+
         [Parameter]
         public bool AllowAdd { get; set; }
 
@@ -348,6 +355,11 @@ namespace BBComponents.Components
 
         private async Task OnInput(ChangeEventArgs e)
         {
+            if (IsDisabled)
+            {
+                return;
+            }
+
             _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
 
             _inputValue = e.Value?.ToString();
@@ -374,6 +386,11 @@ namespace BBComponents.Components
 
         private async Task OnInputKeyPress(KeyboardEventArgs e)
         {
+            if (IsDisabled)
+            {
+                return;
+            }
+
             if (e.Code == "Enter")
             {
                 if (SourceFiltered.Count == 1)

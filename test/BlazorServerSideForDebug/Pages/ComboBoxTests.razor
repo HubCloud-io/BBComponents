@@ -7,15 +7,15 @@
 <div class="row">
 
     <div class="col-sm-6">
-       <BbComboBox TValue="int" 
-                   ItemsSource="_products" 
-                   TextName="Title" 
-                   ValueName="Id"
-                   Size="BBComponents.Enums.BootstrapElementSizes.Sm"
-                   IsDeletedName="IsDeleted"
-                   Tooltip="Select product"
-                   @bind-Value="_selectedId" 
-                   @bind-Text="_selectedText"></BbComboBox>
+        <BbComboBox TValue="int"
+                    ItemsSource="_products"
+                    TextName="Title"
+                    ValueName="Id"
+                    Size="BBComponents.Enums.BootstrapElementSizes.Sm"
+                    IsDeletedName="IsDeleted"
+                    Tooltip="Select product"
+                    @bind-Value="_selectedId"
+                    @bind-Text="_selectedText"></BbComboBox>
     </div>
 
     <div class="col-sm-6">
@@ -43,6 +43,26 @@
 <div class="row">
 
     <div class="col-sm-6">
+        <BbComboBox TValue="int"
+                    ItemsSource="_products"
+                    TextName="Title"
+                    ValueName="Id"
+                    IsDisabled="true"
+                    Size="BBComponents.Enums.BootstrapElementSizes.Sm"
+                    IsDeletedName="IsDeleted"
+                    Tooltip="Select product"
+                    @bind-Value="_selectedId"
+                    @bind-Text="_selectedText"></BbComboBox>
+    </div>
+
+    
+
+</div>
+
+
+<div class="row">
+
+    <div class="col-sm-6">
 
         <BbComboBox TValue="int"
                     ItemsSource="_products"
@@ -50,7 +70,7 @@
                     ValueName="Id"
                     Size="BBComponents.Enums.BootstrapElementSizes.Sm"
                     IsDeletedName="IsDeleted"
-                    @bind-Value="_selectedId2" 
+                    @bind-Value="_selectedId2"
                     @bind-Text="_selectedText2"></BbComboBox>
 
     </div>
@@ -78,46 +98,46 @@
 
 @*<div class="row">
 
-    <div class="col-sm-6">
+        <div class="col-sm-6">
 
-        <BbSelect TValue="int"
-                  ItemsSource="_itemsPerPageSource"
-                  TextName="Item2"
-                  ValueName="Item1"
-                  @bind-Value="_itemsPerPage"></BbSelect>
+            <BbSelect TValue="int"
+                      ItemsSource="_itemsPerPageSource"
+                      TextName="Item2"
+                      ValueName="Item1"
+                      @bind-Value="_itemsPerPage"></BbSelect>
 
 
-    </div>
+        </div>
 
-</div>*@
+    </div>*@
 
 @*<div class="row">
 
-    <div class="col-sm-6">
+        <div class="col-sm-6">
 
-        <BbComboBox Id="1" 
-                    TValue="int"
-                    ItemsSource="_products"
-                    TextName="Title"
-                    ValueName="Id"
-                    Size="BBComponents.Enums.BootstrapElementSizes.Sm"
-                    IsDeletedName="IsDeleted"
-                    @bind-Value="_selectedId"
-                    @bind-Text="_selectedText"
-                    AllowAdd="true"
-                    AddNewClicked="OnAddNewClicked"></BbComboBox>
-
-
-    </div>
-
-    <div class="col-sm-6">
-
-        <p>@_addNewResult</p>
-
-    </div>
+            <BbComboBox Id="1"
+                        TValue="int"
+                        ItemsSource="_products"
+                        TextName="Title"
+                        ValueName="Id"
+                        Size="BBComponents.Enums.BootstrapElementSizes.Sm"
+                        IsDeletedName="IsDeleted"
+                        @bind-Value="_selectedId"
+                        @bind-Text="_selectedText"
+                        AllowAdd="true"
+                        AddNewClicked="OnAddNewClicked"></BbComboBox>
 
 
-</div>*@
+        </div>
+
+        <div class="col-sm-6">
+
+            <p>@_addNewResult</p>
+
+        </div>
+
+
+    </div>*@
 
 <div class="row">
 
@@ -138,9 +158,11 @@
                     {
                         <tr>
                             <td>@(_orderTable.IndexOf(row)+1)</td>
-                            <td><BbDatePicker DropdownPosition="DropdownPositions.Fixed"
+                            <td>
+                                <BbDatePicker DropdownPosition="DropdownPositions.Fixed"
                                               Size="BootstrapElementSizes.Sm"
-                                              @bind-Value="@row.Period"></BbDatePicker></td>
+                                              @bind-Value="@row.Period"></BbDatePicker>
+                            </td>
                             <td>
                                 <BbComboBox TValue="int"
                                             DropdownPosition="DropdownPositions.Fixed"
