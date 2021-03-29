@@ -1,4 +1,5 @@
 ﻿@page "/datepicker"
+@using BBComponents.Enums
 
 <h1>Date picker tests</h1>
 
@@ -45,8 +46,9 @@
 
     <div class="col-sm-6">
         <BbDatePicker Format="MM/dd/yyyy"
-                      FirstWeekDay="BBComponents.Enums.FirstWeekDays.Sunday"
-                      Size="BBComponents.Enums.BootstrapElementSizes.Sm" DropdownPosition="fixed" DropdownTopValue="100" DropdownLeftValue="200"></BbDatePicker>
+                      FirstWeekDay="FirstWeekDays.Sunday"
+                      Size="BootstrapElementSizes.Sm" 
+                      DropdownPosition="DropdownPositions.Fixed"></BbDatePicker>
     </div>
 
 </div>

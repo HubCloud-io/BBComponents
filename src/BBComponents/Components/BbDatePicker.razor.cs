@@ -3,6 +3,7 @@ using BBComponents.Helpers;
 using BBComponents.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -19,8 +20,16 @@ namespace BBComponents.Components
         private int _year;
         private int _month;
         private string[] _dayNames;
+
+        private ElementReference _inputElementReference;
+        private HtmlElementInfo _inputElementInfo;
+
         private CultureInfo _culture;
         private List<List<CalendarDay>> _weeks;
+
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
+
 
         [Parameter]
         public DateTime Value { get; set; }
@@ -45,13 +54,7 @@ namespace BBComponents.Components
         public EventCallback<DateTime> Changed { get; set; }
 
         [Parameter]
-        public string DropdownPosition { get; set; } = "absolute";
-
-        [Parameter]
-        public int DropdownTopValue { get; set; }
-
-        [Parameter]
-        public int DropdownLeftValue { get; set; }
+        public DropdownPositions DropdownPosition { get; set; } = DropdownPositions.Absolute;
 
         [Parameter]
         public FirstWeekDays FirstWeekDay { get; set; }
@@ -68,6 +71,8 @@ namespace BBComponents.Components
         [Parameter]
         public string HtmlClass { get; set; }
 
+        [Parameter]
+        public int DropdownWidth { get; set; } = 230;
 
         public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
 
@@ -75,9 +80,9 @@ namespace BBComponents.Components
         {
             get
             {
-                if (DropdownPosition == "fixed")
+                if (DropdownPosition == DropdownPositions.Fixed)
                 {
-                    return $"{DropdownTopValue}px";
+                    return $"{_inputElementInfo.TopInt}px";
                 }
 
                 int topValue;
@@ -102,15 +107,69 @@ namespace BBComponents.Components
         {
             get
             {
-                if (DropdownPosition == "fixed")
+                if (DropdownPosition == DropdownPositions.Fixed)
                 {
-                    return $"{DropdownLeftValue}px";
+                    return $"{_inputElementInfo.LeftInt}px";
                 }
                 else
                 {
                     return "";
                 }
 
+            }
+        }
+
+        public string DropdownWidthValue
+        {
+            get
+            {
+                return $"{DropdownWidth}px";
+            }
+        }
+
+        public string DropdownPositionValue
+        {
+            get
+            {
+                if (DropdownPosition == DropdownPositions.Absolute)
+                {
+                    return "absolute";
+                }
+                else if (DropdownPosition == DropdownPositions.Fixed)
+                {
+                    return "fixed";
+                }
+                else
+                {
+                    return "absolute";
+                }
+            }
+        }
+
+        public string DropdownMarginTop
+        {
+            get
+            {
+                if (DropdownPosition == DropdownPositions.Fixed)
+                {
+                    int topValue;
+                    switch (Size)
+                    {
+                        case BootstrapElementSizes.Sm:
+                            topValue = 32;
+                            break;
+                        case BootstrapElementSizes.Lg:
+                            topValue = 49;
+                            break;
+                        default:
+                            topValue = 39;
+                            break;
+                    }
+
+                    return $"{topValue}px";
+                }
+
+                return "0";
             }
         }
 
@@ -145,8 +204,10 @@ namespace BBComponents.Components
 
         }
 
-        private void OnOpenClick()
+        private async Task OnOpenClick()
         {
+            _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+
             if (Value == DateTime.MinValue)
             {
                 Value = DateTime.Now;

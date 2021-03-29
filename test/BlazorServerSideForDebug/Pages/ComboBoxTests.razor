@@ -1,5 +1,7 @@
 ﻿@page "/combobox"
 
+@using BBComponents.Enums
+
 <h3>ComboBoxTests</h3>
 
 <div class="row">
@@ -74,7 +76,7 @@
 
 </div>
 
-<div class="row">
+@*<div class="row">
 
     <div class="col-sm-6">
 
@@ -87,9 +89,9 @@
 
     </div>
 
-</div>
+</div>*@
 
-<div class="row">
+@*<div class="row">
 
     <div class="col-sm-6">
 
@@ -115,7 +117,53 @@
     </div>
 
 
+</div>*@
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div style="height:300px; overflow-y:auto">
+            <table @ref=_tableElementReference class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Period</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in _orderTable)
+                    {
+                        <tr>
+                            <td>@(_orderTable.IndexOf(row)+1)</td>
+                            <td><BbDatePicker DropdownPosition="DropdownPositions.Fixed"
+                                              Size="BootstrapElementSizes.Sm"
+                                              @bind-Value="@row.Period"></BbDatePicker></td>
+                            <td>
+                                <BbComboBox TValue="int"
+                                            DropdownPosition="DropdownPositions.Fixed"
+                                            ItemsSource="_products"
+                                            TextName="Title"
+                                            ValueName="Id"
+                                            Size="BootstrapElementSizes.Sm"
+                                            IsDeletedName="IsDeleted"
+                                            @bind-Value="@row.ProductId"></BbComboBox>
+                            </td>
+                            <td><BbNumberInput TValue="decimal" @bind-Value="@row.Amount"></BbNumberInput></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+
+        <button class="btn btn-sm btn-outline-dark" @onclick="OnTestClick">Test</button>
+
+    </div>
 </div>
-
-
 

@@ -3,7 +3,7 @@
 
 <div class="input-group @SizeClass bb-combo-box">
 
-    <input class="form-control" type="text"
+    <input @ref=_inputElementReference class="form-control" type="text"
            value="@_inputValue"
            data-toggle="tooltip"
            title="@Tooltip"
@@ -13,7 +13,7 @@
 
     <div class="input-group-append ">
 
-        <span class="input-group-text" style="cursor:pointer;" @onclick="OnOpenClick">
+        <span class="input-group-text" style="cursor:pointer;" @onclick="(e=>OnOpenClick(e))">
             <i class="fa fa-chevron-down"></i>
         </span>
         @if (!IsValueSelected)
@@ -28,7 +28,7 @@
 
     @if (_isOpen)
     {
-        <div class="bb-combo-box bb-dropdown" style="top:@TopDrowdown">
+        <div class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
 
             <ul class="bb-combo-box__items">
                 @foreach (var item in SourceFiltered)
@@ -43,7 +43,7 @@
 
     @if (_isAddOpen)
     {
-        <div class="bb-combo-box bb-dropdown" style="min-width:280px;top:@TopDrowdown; max-height:45px;">
+        <div class="bb-combo-box bb-dropdown" style="min-width:280px;top:@DrowdownTop; left:@DropdownLeft; max-height:45px;">
             <div style="height:40px; padding:5px 15px;">
                 <span class="text-danger">@BbResources.CannotFindItem</span>
                 <button class="btn btn-outline-secondary btn-sm btn-default" style="font-size:10px;" @onclick="OnCancelAddNewClick">

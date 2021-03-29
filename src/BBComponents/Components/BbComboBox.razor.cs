@@ -3,6 +3,7 @@ using BBComponents.Helpers;
 using BBComponents.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,15 @@ namespace BBComponents.Components
         private bool _isOpen;
         private bool _isAddOpen;
         private bool _stopListenOnInputValueChange;
+
+        private ElementReference _inputElementReference;
+        private HtmlElementInfo _inputElementInfo;
+
         private List<SelectItem<TValue>> _source = new List<SelectItem<TValue>>();
+
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
+
 
         [Parameter]
         public string Id { get; set; }
@@ -89,14 +98,58 @@ namespace BBComponents.Components
         [Parameter]
         public bool AllowAdd { get; set; }
 
+        [Parameter]
+        public DropdownPositions DropdownPosition { get; set; } = DropdownPositions.Absolute;
+
+        [Parameter]
+        public int DropdownWidth { get; set; } = 250;
+
         public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
 
         public bool IsValueSelected => EqualityComparer<TValue>.Default.Equals(Value, default(TValue));
 
-        public string TopDrowdown
+        public string DropdownPositionValue
         {
             get
             {
+                if (DropdownPosition == DropdownPositions.Absolute)
+                {
+                    return "absolute";
+                }
+                else if (DropdownPosition == DropdownPositions.Fixed)
+                {
+                    return "fixed";
+                }
+                else
+                {
+                    return "absolute";
+                }
+            }
+        }
+
+        public string DropdownWidthValue
+        {
+            get
+            {
+                if (DropdownPosition == DropdownPositions.Fixed)
+                {
+                    return $"{DropdownWidth}px";
+                }
+
+                return "100%";
+            }
+        }
+
+        public string DrowdownTop
+        {
+            get
+            {
+                if (DropdownPosition == DropdownPositions.Fixed)
+                {
+
+                    return $"{_inputElementInfo.TopInt}px";
+                }
+
                 int topValue;
                 switch (Size)
                 {
@@ -112,6 +165,46 @@ namespace BBComponents.Components
                 }
 
                 return $"{topValue}px";
+            }
+        }
+
+        public string DropdownMarginTop
+        {
+            get
+            {
+                if (DropdownPosition == DropdownPositions.Fixed)
+                {
+                    int topValue;
+                    switch (Size)
+                    {
+                        case BootstrapElementSizes.Sm:
+                            topValue = 32;
+                            break;
+                        case BootstrapElementSizes.Lg:
+                            topValue = 49;
+                            break;
+                        default:
+                            topValue = 39;
+                            break;
+                    }
+
+                    return $"{topValue}px";
+                }
+
+                return "0";
+            }
+        }
+
+        public string DropdownLeft
+        {
+            get
+            {
+                if (DropdownPosition == DropdownPositions.Fixed)
+                {
+                    return $"{_inputElementInfo.LeftInt}px";
+                }
+
+                return "1px";
             }
         }
 
@@ -218,8 +311,11 @@ namespace BBComponents.Components
 
         }
 
-        private void OnOpenClick()
+        private async Task OnOpenClick(MouseEventArgs args)
         {
+
+           _inputElementInfo =  await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+
             _searchString = "";
             _isOpen = !_isOpen;
             _isAddOpen = false;
@@ -250,8 +346,10 @@ namespace BBComponents.Components
             _searchString = _inputValue;
         }
 
-        private void OnInput(ChangeEventArgs e)
+        private async Task OnInput(ChangeEventArgs e)
         {
+            _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+
             _inputValue = e.Value?.ToString();
             _searchString = _inputValue;
 

@@ -1,8 +1,10 @@
 ﻿using BBComponents.Models;
 using BlazorServerSideForDebug.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BlazorServerSideForDebug.Pages
 {
@@ -21,6 +23,12 @@ namespace BlazorServerSideForDebug.Pages
         private List<Tuple<int, string>> _itemsPerPageSource = new List<Tuple<int, string>>();
         private int _itemsPerPage = 15;
 
+        private List<OrderRow> _orderTable = new List<OrderRow>();
+
+        private ElementReference _tableElementReference;
+
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
 
         protected override void OnInitialized()
         {
@@ -57,7 +65,11 @@ namespace BlazorServerSideForDebug.Pages
             _itemsPerPageSource.Add(new Tuple<int, string>(50, "50"));
             _itemsPerPageSource.Add(new Tuple<int, string>(100, "100"));
 
-
+            for(var i = 0; i < 21; i++)
+            {
+                var currentRow = new OrderRow();
+                _orderTable.Add(currentRow);
+            }
 
         }
 
@@ -74,6 +86,18 @@ namespace BlazorServerSideForDebug.Pages
         private void OnAddNewClicked(ComboBoxAddNewArgs args)
         {
             _addNewResult = args.ToString();
+        }
+
+        private async Task OnTestClick()
+        {
+           var elementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _tableElementReference);
+        }
+
+        private class OrderRow
+        {
+            public DateTime Period { get; set; }
+            public int ProductId { get; set; }
+            public decimal Amount { get; set; }
         }
     }
 }

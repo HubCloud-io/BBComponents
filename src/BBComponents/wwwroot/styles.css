@@ -12,7 +12,7 @@
     padding: 10px;
     border: 1px solid #cecece;
     background-color: white;
-    z-index: 10;
+    z-index: 100;
 }
 
 .bb-calendar__header {
@@ -80,7 +80,7 @@
         left: 1px;
         border: 1px solid #cecece;
         background-color: white;
-        z-index: 10;
+        z-index: 100;
     }
 
 .bb-combo-box__items {
