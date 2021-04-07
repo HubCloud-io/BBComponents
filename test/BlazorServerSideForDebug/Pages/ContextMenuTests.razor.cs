@@ -18,16 +18,22 @@ namespace BlazorServerSideForDebug.Pages
 
         private List<IMenuItem> _menuItems = new List<IMenuItem>();
         private List<IMenuItem> _selectedItems = new List<IMenuItem>();
+        private List<string> _dummy = new List<string>();
 
         protected override void OnInitialized()
         {
-            _menuItems.Add(new MenuItem()
+
+            for(var i = 1; i < 10; i++)
             {
-                Title = "Option 1",
-                Name = "opt1",
-                Kind = BBComponents.Enums.MenuItemKinds.Item,
-                IconClass = "fa fa-sync text-primary"
-            });
+                _menuItems.Add(new MenuItem()
+                {
+                    Title = $"Option {i}",
+                    Name = $"opt{i}",
+                    Kind = BBComponents.Enums.MenuItemKinds.Item,
+                    IconClass = "fa fa-sync text-primary"
+                });
+
+            }
 
             _menuItems.Add(new MenuItem() { Kind = BBComponents.Enums.MenuItemKinds.Delimiter });
 
@@ -39,7 +45,10 @@ namespace BlazorServerSideForDebug.Pages
                 IconClass = "fa fa-times text-danger"
             });
 
+            for (var i = 1; i < 10; i++){
 
+                _dummy.Add($"Item {i}");
+            }
         }
 
         private void OnContextMenu(MouseEventArgs e)

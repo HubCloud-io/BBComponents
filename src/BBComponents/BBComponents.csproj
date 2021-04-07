@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <Version>0.2.17</Version>
+    <Version>0.2.18</Version>
     <Authors>Mikhail Zyubin</Authors>
     <Description>Free components for Blazor created with Bootstrap css framework</Description>
     <PackageId>HubCloud.BBComponents</PackageId>

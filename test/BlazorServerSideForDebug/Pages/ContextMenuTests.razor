@@ -5,8 +5,8 @@
 
 <div class="row">
 
-    <div class="col-sm-6" style="border: 1px solid #ececec; height: 50px;" 
-         @oncontextmenu:preventDefault 
+    <div class="col-sm-6" style="border: 1px solid #ececec; height: 50px;"
+         @oncontextmenu:preventDefault
          @oncontextmenu="(e=>OnContextMenu(e))">
 
         <span>Right click here...</span>
@@ -23,7 +23,7 @@
 
                     @foreach(var selectedItem in _selectedItems)
                     {
-                        <div class="list-group-item">@selectedItem.Title</div>
+                    <div class="list-group-item">@selectedItem.Title</div>
                     }
 
                 </div>
@@ -36,8 +36,54 @@
 
 </div>
 
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="card">
+
+
+            <div class="card-body">
+
+                <div class="list-group list-group-flush">
+
+                    @foreach(var item in _dummy){
+
+                    <div class="list-group-item">@item</div>
+
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-sm-6" style="border: 1px solid #ececec; height: 50px;"
+         @oncontextmenu:preventDefault
+         @oncontextmenu="(e=>OnContextMenu(e))">
+
+        <span>Right click here...</span>
+
+    </div>
+
+    <div class="col-sm-6" style="border: 1px solid #ececec; height: 50px;"
+         @oncontextmenu:preventDefault
+         @oncontextmenu="(e=>OnContextMenu(e))">
+
+        <span>Right click here...</span>
+
+    </div>
+
+</div>
 
 @if (_isCustomMenuOpen)
 {
-    <BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
+<BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
 }

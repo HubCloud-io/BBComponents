@@ -14,3 +14,15 @@ function getElementInfo(element) {
 
     return info;
 }
+
+window.bbComponents = {
+
+    windowHeight: function () {
+        return window.innerHeight;
+    },
+    windowWidth: function () {
+        return window.innerWidth;
+    },
+
+
+};
