@@ -27,7 +27,7 @@
 }
 
 .bb-calendar__week-days {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: normal;
     line-height: 25px;
     float: left;
@@ -39,6 +39,12 @@
     line-height: 25px;
     text-align: center;
     display: inline-block;
+    font-size: 1rem;
+}
+
+.bb-calendar__week {
+    height: 25px;
+    float: left;
 }
 
 .bb-calendar__day {
@@ -48,6 +54,7 @@
     text-align: center;
     display: inline-block;
     cursor: pointer;
+    font-size: 14px;
 }
 
     .bb-calendar__day:hover {

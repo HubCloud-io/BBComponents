@@ -46,7 +46,7 @@
                 {
                     @foreach (var week in _weeks)
                     {
-                        <div>
+                        <div class="bb-calendar__week">
                             @foreach (var day in week)
                             {
                                 <div class="bb-calendar__day @day.ModificatorClass" @onclick="(e=>OnDayClick(e, day))">@day.Day</div>
