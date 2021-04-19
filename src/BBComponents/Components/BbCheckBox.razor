@@ -1,0 +1,12 @@
+﻿
+<input type="checkbox"  
+       id="@Id" 
+       class="bb-checkbox-input @HtmlClass" 
+       style="@HtmlStyle" 
+       readonly=@IsReadOnly 
+       disabled=@IsDisabled 
+       data-toggle="tooltip" 
+       title="@Tooltip" 
+       value="@_value"
+       checked="@_value"
+       @onchange="(e => OnValueChange(e))" />

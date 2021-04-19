@@ -1,0 +1,35 @@
+﻿@page "/checkbox"
+
+    <h3>Check box tests</h3>
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <BbCheckBox Id="flag-input" @bind-Value="_flagFirstValue"></BbCheckBox>
+        <label for="flag-input">Flag first</label>
+
+    </div>
+
+    <div class="col-sm-6">
+        <span>Flag first:</span>&nbsp;
+        <span>@_flagFirstValue</span>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <BbCheckBox Id="flag-input" @bind-Value="_flagSecondValue"></BbCheckBox>
+        <label for="flag-input">Flag second</label>
+
+    </div>
+
+    <div class="col-sm-6">
+        <span>Flag second:</span>&nbsp;
+        <span>@_flagSecondValue</span>
+    </div>
+
+</div>
