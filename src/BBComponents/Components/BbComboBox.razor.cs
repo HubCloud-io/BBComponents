@@ -5,15 +5,20 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
+
 
 namespace BBComponents.Components
 {
     public partial class BbComboBox<TValue>: ComponentBase
     {
+        private const int InputTimerInterval = 500;
 
         private string _inputValue;
+        private string _inputValueTmp;
         private string _searchString;
         private bool _isOpen;
         private bool _isAddOpen;
@@ -21,6 +26,8 @@ namespace BBComponents.Components
 
         private ElementReference _inputElementReference;
         private HtmlElementInfo _inputElementInfo;
+
+        private Timer _timer;
 
         private List<SelectItem<TValue>> _source = new List<SelectItem<TValue>>();
 
@@ -341,34 +348,62 @@ namespace BBComponents.Components
 
         }
 
-        private void OnInputValueChange(ChangeEventArgs e)
+        private async Task OnInputValueChange(ChangeEventArgs e)
         {
-            if (_stopListenOnInputValueChange)
-            {
-                _stopListenOnInputValueChange = false;
-                return;
-            }
+            //Debug.WriteLine($"ValueChange: {e.Value}");
 
-            _inputValue = e.Value?.ToString();
-            _searchString = _inputValue;
+            //if (_stopListenOnInputValueChange)
+            //{
+            //    _stopListenOnInputValueChange = false;
+            //    return;
+            //}
+
+            //_inputValue = e.Value?.ToString();
+            //_searchString = _inputValue;
+
+
+
         }
 
         private async Task OnInput(ChangeEventArgs e)
         {
+            Debug.WriteLine($"Input: {e.Value}");
+
             if (IsDisabled)
             {
                 return;
             }
 
-            _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+            _inputValueTmp = e.Value?.ToString();
 
-            _inputValue = e.Value?.ToString();
-            _searchString = _inputValue;
+            if (_timer != null)
+            {
+                _timer.Stop();
+            }
+
+            // Try to search items only when input stopped or interupted
+            _timer = new Timer();
+            _timer.Elapsed += async (s, args) => await OnTimerTick();
+            _timer.Interval = InputTimerInterval;
+            _timer.Enabled = true;
+            _timer.Start();
+
+
+        }
+
+        private async Task OnTimerTick()
+        {
+            Debug.WriteLine($"Timer tick: {_inputValueTmp}");
+            _timer.Stop();
+
+            _searchString = _inputValueTmp;
 
             if (!_isOpen)
             {
+                _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
                 _isOpen = true;
             }
+
 
             if (SourceFiltered.Count == 0)
             {
@@ -377,11 +412,17 @@ namespace BBComponents.Components
                     _isAddOpen = true;
                     _isOpen = false;
                 }
+                else
+                {
+                    _isAddOpen = false;
+                }
             }
             else
             {
                 _isAddOpen = false;
             }
+
+           await InvokeAsync(() => { this.StateHasChanged(); });
         }
 
         private async Task OnInputKeyPress(KeyboardEventArgs e)
