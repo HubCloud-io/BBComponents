@@ -69,6 +69,7 @@
                     TextName="Title"
                     ValueName="Id"
                     Size="BBComponents.Enums.BootstrapElementSizes.Sm"
+                    AllowAdd="true"
                     IsDeletedName="IsDeleted"
                     @bind-Value="_selectedId2"
                     @bind-Text="_selectedText2"></BbComboBox>
@@ -169,6 +170,7 @@
                                             ItemsSource="_products"
                                             TextName="Title"
                                             ValueName="Id"
+                                            AllowAdd="true"
                                             Size="BootstrapElementSizes.Sm"
                                             IsDeletedName="IsDeleted"
                                             @bind-Value="@row.ProductId"></BbComboBox>

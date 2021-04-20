@@ -48,19 +48,19 @@
 
         @if (_isAddOpen)
         {
-            <div class="bb-combo-box bb-dropdown" style="min-width:280px;top:@DrowdownTop; left:@DropdownLeft; max-height:45px;">
-                <div style="height:40px; padding:5px 15px;">
-                    <span class="text-danger">@BbResources.CannotFindItem</span>
-                    <button class="btn btn-outline-secondary btn-sm btn-default" style="font-size:10px;" @onclick="OnCancelAddNewClick">
-                        <span>@BbResources.Cancel</span>
-                    </button>
-                    <button class="btn btn-primary btn-sm btn-primary" style="font-size:10px;" @onclick="OnAddNewClick">
-                        <span class="glyphicon glyphicon-plus"></span>
-                        <span>@BbResources.Add</span>
-                    </button>
+    <div class="bb-combo-box bb-dropdown" style="min-width:280px; max-height:45px; top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
+        <div style="height:40px; padding:5px 15px;">
+            <span class="text-danger">@BbResources.CannotFindItem</span>
+            <button class="btn btn-outline-secondary btn-sm btn-default" style="font-size:10px;" @onclick="OnCancelAddNewClick">
+                <span>@BbResources.Cancel</span>
+            </button>
+            <button class="btn btn-primary btn-sm btn-primary" style="font-size:10px;" @onclick="OnAddNewClick">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span>@BbResources.Add</span>
+            </button>
 
-                </div>
-            </div>
+        </div>
+    </div>
         }
 
     </div>
