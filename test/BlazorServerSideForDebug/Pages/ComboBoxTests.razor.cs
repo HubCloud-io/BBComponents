@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace BlazorServerSideForDebug.Pages
@@ -98,6 +99,11 @@ namespace BlazorServerSideForDebug.Pages
             public DateTime Period { get; set; }
             public int ProductId { get; set; }
             public decimal Amount { get; set; }
+        }
+
+        private void OnOpenClicked(ComboBoxOpenArgs<int> args)
+        {
+            Debug.WriteLine($"Combo box open clicked: {args}");
         }
     }
 }

@@ -43,7 +43,8 @@
 <div class="row">
 
     <div class="col-sm-6">
-        <BbComboBox TValue="int"
+        <BbComboBox Id="product-1"
+                    TValue="int"
                     ItemsSource="_products"
                     TextName="Title"
                     ValueName="Id"
@@ -52,7 +53,8 @@
                     IsDeletedName="IsDeleted"
                     Tooltip="Select product"
                     @bind-Value="_selectedId"
-                    @bind-Text="_selectedText"></BbComboBox>
+                    @bind-Text="_selectedText" 
+                    OpenClicked="OnOpenClicked"></BbComboBox>
     </div>
 
     
@@ -64,7 +66,8 @@
 
     <div class="col-sm-6">
 
-        <BbComboBox TValue="int"
+        <BbComboBox Id="product-3" 
+                    TValue="int"
                     ItemsSource="_products"
                     TextName="Title"
                     ValueName="Id"
@@ -72,7 +75,8 @@
                     AllowAdd="true"
                     IsDeletedName="IsDeleted"
                     @bind-Value="_selectedId2"
-                    @bind-Text="_selectedText2"></BbComboBox>
+                    @bind-Text="_selectedText2" 
+                    OpenClicked="OnOpenClicked"></BbComboBox>
 
     </div>
 
@@ -112,7 +116,7 @@
 
     </div>*@
 
-@*<div class="row">
+<div class="row">
 
         <div class="col-sm-6">
 
@@ -138,7 +142,7 @@
         </div>
 
 
-    </div>*@
+    </div>
 
 <div class="row">
 

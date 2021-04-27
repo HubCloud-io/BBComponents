@@ -17,6 +17,7 @@ namespace BBComponents.Components
     {
         private const int InputTimerInterval = 500;
 
+        private TValue _value;
         private string _inputValue;
         private string _inputValueTmp;
         private string _searchString;
@@ -77,6 +78,12 @@ namespace BBComponents.Components
         /// </summary>
         [Parameter] 
         public EventCallback<ComboBoxAddNewArgs> AddNewClicked { get; set; }
+
+        /// <summary>
+        /// Event for add new.
+        /// </summary>
+        [Parameter]
+        public EventCallback<ComboBoxOpenArgs<TValue>> OpenClicked { get; set; }
 
         /// <summary>
         /// Colllection for select options.
@@ -280,6 +287,7 @@ namespace BBComponents.Components
 
         protected override async Task OnParametersSetAsync()
         {
+            _value = Value;
             _source = new List<SelectItem<TValue>>();
 
             if (ItemsSource != null)
@@ -310,7 +318,7 @@ namespace BBComponents.Components
 
             if (selectedItem != null)
             {
-                
+                _value = selectedItem.Value;
                 if (_inputValue != selectedItem.Text)
                 {
                     _inputValue = selectedItem.Text;
@@ -337,35 +345,12 @@ namespace BBComponents.Components
 
         private async Task OnClearClick()
         {
-            _inputValue = "";
-            _searchString = "";
-
-            var defaultValue = default(TValue);
-            await TextChanged.InvokeAsync("");
-            await ValueChanged.InvokeAsync(defaultValue);
-            await Changed.InvokeAsync(defaultValue);
-
-
+            await Clear();
         }
 
-        private async Task OnInputValueChange(ChangeEventArgs e)
-        {
-            //Debug.WriteLine($"ValueChange: {e.Value}");
+     
 
-            //if (_stopListenOnInputValueChange)
-            //{
-            //    _stopListenOnInputValueChange = false;
-            //    return;
-            //}
-
-            //_inputValue = e.Value?.ToString();
-            //_searchString = _inputValue;
-
-
-
-        }
-
-        private async Task OnInput(ChangeEventArgs e)
+        private void OnInput(ChangeEventArgs e)
         {
             Debug.WriteLine($"Input: {e.Value}");
 
@@ -441,6 +426,7 @@ namespace BBComponents.Components
                     var item = SourceFiltered[0];
 
                     _inputValue = item.Text;
+                    _value = item.Value;
                     StateHasChanged();
                     await TextChanged.InvokeAsync(item.Text);
                     await ValueChanged.InvokeAsync(item.Value);
@@ -454,9 +440,43 @@ namespace BBComponents.Components
             }
         }
 
+        private async Task OnInputKeyDown(KeyboardEventArgs e)
+        {
+            if (e.AltKey == true && e.Code == "KeyO")
+            {
+                if (EqualityComparer<TValue>.Default.Equals(_value, default(TValue)))
+                {
+                    return;
+                }
+
+                var openArgs = new ComboBoxOpenArgs<TValue>()
+                {
+                    Id = Id,
+                    Text = _inputValue,
+                    Value = _value
+                };
+
+                await OpenClicked.InvokeAsync(openArgs);
+
+            }
+            else if( e.AltKey == true && e.Code == "Delete")
+            {
+               
+                if (IsDisabled)
+                {
+                    return;
+                }
+
+                await Clear();
+
+            }
+        }
+
         private async Task OnItemClick(MouseEventArgs e, SelectItem<TValue> item)
         {
             _inputValue = item.Text;
+            _value = item.Value;
+
             await TextChanged.InvokeAsync(item.Text);
             await ValueChanged.InvokeAsync(item.Value);
             await Changed.InvokeAsync(item.Value);
@@ -481,9 +501,21 @@ namespace BBComponents.Components
             var args = new ComboBoxAddNewArgs()
             {
                 Id = Id,
-                Text = _inputValue
+                Text = _inputValueTmp
             };
             await AddNewClicked.InvokeAsync(args);
+        }
+
+        private async Task Clear()
+        {
+            _inputValue = "";
+            _value = default(TValue);
+            _searchString = "";
+
+            var defaultValue = default(TValue);
+            await TextChanged.InvokeAsync("");
+            await ValueChanged.InvokeAsync(defaultValue);
+            await Changed.InvokeAsync(defaultValue);
         }
     }
 }

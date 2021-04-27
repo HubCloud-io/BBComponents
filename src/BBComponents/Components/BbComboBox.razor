@@ -8,9 +8,9 @@
                disabled=@IsDisabled
                data-toggle="tooltip"
                title="@Tooltip"
-               @onchange="(e=> OnInputValueChange(e))"
                @oninput="(e=>OnInput(e))"
-               @onkeypress="(e=>OnInputKeyPress(e))" />
+               @onkeypress="(e=>OnInputKeyPress(e))" 
+               @onkeydown="@(e=>OnInputKeyDown(e))"/>
 
 
         @if (!IsDisabled)
