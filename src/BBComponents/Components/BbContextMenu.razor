@@ -1,24 +1,28 @@
 ﻿
+@if (_isVisible)
+{
+    <div class="list-group bb-context-menu" style="width: @WidthPx;  position: fixed; left: @_leftPx; top:@_topPx; bottom: @_bottomPx; right:@_rightPx;">
 
-<div class="list-group bb-context-menu" style="width: @WidthPx;  position: fixed; left: @_leftPx; top:@_topPx; bottom: @_bottomPx; right:@_rightPx;">
-
-    @foreach (var item in Items)
-    {
-        @if (item.Kind == Enums.MenuItemKinds.Delimiter)
+        @foreach (var item in Items)
         {
-            <div class="list-group-item list-group-item-dark bb-context-menu__delimiter">
-            </div>
-        }
-        else if (item.Kind == Enums.MenuItemKinds.Item)
-        {
-            <a class="list-group-item list-group-item-action bb-context-menu__item"  href="#"
-               @onclick:preventDefault @onclick="(e=>OnMenuItemClick(item))">
-                <i class="@item.IconClass" aria-hidden="true"></i>
-                <span>@item.Title</span>
-            </a>
-        }
-    }
+            @if (item.Kind == Enums.MenuItemKinds.Delimiter)
+            {
+                <div class="list-group-item list-group-item-dark bb-context-menu__delimiter">
+                </div>
+            }
+            else if (item.Kind == Enums.MenuItemKinds.Item)
+            {
+                <a class="list-group-item list-group-item-action bb-context-menu__item" href="#"
+                   @onclick:preventDefault @onclick="(e => OnMenuItemClick(item))">
+                    <i class="@item.IconClass" aria-hidden="true"></i>
+                    <span>@item.Title</span>
 
-</div>
+                    <small class="text-secondary" style="float:right">@item.HotKeyTooltip</small>
+                </a>
+            }
+        }
+
+    </div>
+}
 
 

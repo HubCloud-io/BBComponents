@@ -1,4 +1,5 @@
-﻿using BBComponents.Enums;
+﻿using BBComponents.Abstract;
+using BBComponents.Enums;
 using BBComponents.Helpers;
 using BBComponents.Models;
 using Microsoft.AspNetCore.Components;
@@ -13,7 +14,7 @@ using System.Timers;
 
 namespace BBComponents.Components
 {
-    public partial class BbComboBox<TValue>: ComponentBase
+    public partial class BbComboBox<TValue> : ComponentBase
     {
         private const int InputTimerInterval = 500;
 
@@ -24,6 +25,13 @@ namespace BBComponents.Components
         private bool _isOpen;
         private bool _isAddOpen;
         private bool _stopListenOnInputValueChange;
+
+        private bool _isCustomMenuOpen;
+        private double _clientX;
+        private double _clientY;
+
+        private List<IMenuItem> _menuItems = new List<IMenuItem>();
+
 
         private ElementReference _inputElementReference;
         private HtmlElementInfo _inputElementInfo;
@@ -76,7 +84,7 @@ namespace BBComponents.Components
         /// <summary>
         /// Event for add new.
         /// </summary>
-        [Parameter] 
+        [Parameter]
         public EventCallback<ComboBoxAddNewArgs> AddNewClicked { get; set; }
 
         /// <summary>
@@ -243,8 +251,8 @@ namespace BBComponents.Components
                 {
                     var searchString = _searchString.ToLower().Trim();
                     var parts = searchString.Split(' ');
-                    
-                    foreach(var item in _source)
+
+                    foreach (var item in _source)
                     {
                         if (string.IsNullOrWhiteSpace(item.Text))
                         {
@@ -252,7 +260,7 @@ namespace BBComponents.Components
                         }
 
                         var flagAdd = true;
-                        foreach(var part in parts)
+                        foreach (var part in parts)
                         {
                             if (!item.Text.ToLower().Contains(part))
                             {
@@ -284,6 +292,40 @@ namespace BBComponents.Components
             }
         }
 
+        protected override void OnInitialized()
+        {
+            _menuItems = new List<IMenuItem>();
+
+            _menuItems.Add(new MenuItem()
+            {
+                Title = $"Open",
+                Name = $"open",
+                Kind = MenuItemKinds.Item,
+                IconClass = "fa fa-search text-primary",
+                HotKeyTooltip = "Alt+O"
+            });
+
+            _menuItems.Add(new MenuItem()
+            {
+                Title = $"Clear",
+                Name = $"clear",
+                Kind = MenuItemKinds.Item,
+                IconClass = "fa fa-times text-danger",
+                HotKeyTooltip = "Alt+Delete"
+
+            });
+
+            _menuItems.Add(new MenuItem() { Kind = BBComponents.Enums.MenuItemKinds.Delimiter });
+
+            _menuItems.Add(new MenuItem()
+            {
+                Title = $"Close",
+                Name = $"close",
+                Kind = MenuItemKinds.Item,
+                IconClass = "fa fa-times text-secondary"
+            });
+
+        }
 
         protected override async Task OnParametersSetAsync()
         {
@@ -297,7 +339,7 @@ namespace BBComponents.Components
                     var propValue = item.GetType().GetProperty(ValueName);
                     var propText = item.GetType().GetProperty(TextName);
 
-                    var value = (TValue) propValue?.GetValue(item);
+                    var value = (TValue)propValue?.GetValue(item);
                     var text = propText?.GetValue(item)?.ToString();
 
                     var isDeleted = false;
@@ -309,7 +351,7 @@ namespace BBComponents.Components
                         isDeleted = isDeletedValue == null ? false : (bool)isDeletedValue;
                     }
 
-                    _source.Add(new SelectItem<TValue>(text,value, isDeleted));
+                    _source.Add(new SelectItem<TValue>(text, value, isDeleted));
                 }
             }
 
@@ -336,7 +378,7 @@ namespace BBComponents.Components
         private async Task OnOpenClick(MouseEventArgs args)
         {
 
-           _inputElementInfo =  await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+            _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
 
             _searchString = "";
             _isOpen = !_isOpen;
@@ -348,7 +390,7 @@ namespace BBComponents.Components
             await Clear();
         }
 
-     
+
 
         private void OnInput(ChangeEventArgs e)
         {
@@ -407,7 +449,7 @@ namespace BBComponents.Components
                 _isAddOpen = false;
             }
 
-           await InvokeAsync(() => { this.StateHasChanged(); });
+            await InvokeAsync(() => { this.StateHasChanged(); });
         }
 
         private async Task OnInputKeyPress(KeyboardEventArgs e)
@@ -444,24 +486,12 @@ namespace BBComponents.Components
         {
             if (e.AltKey == true && e.Code == "KeyO")
             {
-                if (EqualityComparer<TValue>.Default.Equals(_value, default(TValue)))
-                {
-                    return;
-                }
-
-                var openArgs = new ComboBoxOpenArgs<TValue>()
-                {
-                    Id = Id,
-                    Text = _inputValue,
-                    Value = _value
-                };
-
-                await OpenClicked.InvokeAsync(openArgs);
+                await Open();
 
             }
-            else if( e.AltKey == true && e.Code == "Delete")
+            else if (e.AltKey == true && e.Code == "Delete")
             {
-               
+
                 if (IsDisabled)
                 {
                     return;
@@ -506,6 +536,35 @@ namespace BBComponents.Components
             await AddNewClicked.InvokeAsync(args);
         }
 
+        private void OnContextMenu(MouseEventArgs e)
+        {
+            _clientX = e.ClientX;
+            _clientY = e.ClientY;
+
+            _isCustomMenuOpen = true;
+
+        }
+
+        private async Task OnContextMenuClosed(IMenuItem item)
+        {
+            _isCustomMenuOpen = false;
+
+            if (item.Name == "clear")
+            {
+                if (IsDisabled)
+                {
+                    return;
+                }
+
+                await Clear();
+            }
+            else if (item.Name == "open")
+            {
+                await Open();
+            }
+
+        }
+
         private async Task Clear()
         {
             _inputValue = "";
@@ -516,6 +575,23 @@ namespace BBComponents.Components
             await TextChanged.InvokeAsync("");
             await ValueChanged.InvokeAsync(defaultValue);
             await Changed.InvokeAsync(defaultValue);
+        }
+
+        private async Task Open()
+        {
+            if (EqualityComparer<TValue>.Default.Equals(_value, default(TValue)))
+            {
+                return;
+            }
+
+            var openArgs = new ComboBoxOpenArgs<TValue>()
+            {
+                Id = Id,
+                Text = _inputValue,
+                Value = _value
+            };
+
+            await OpenClicked.InvokeAsync(openArgs);
         }
     }
 }

@@ -18,6 +18,8 @@ namespace BBComponents.Components
         private string _leftPx;
         private string _rightPx;
 
+        private bool _isVisible;
+
         [Parameter]
         public IEnumerable<IMenuItem> Items { get; set; } = new List<IMenuItem>();
 
@@ -117,6 +119,8 @@ namespace BBComponents.Components
             {
                 _leftPx = $"{(int)ClientX}px";
             }
+
+            _isVisible = true;
         }
     }
 }

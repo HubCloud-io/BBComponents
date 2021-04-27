@@ -12,5 +12,6 @@ namespace BBComponents.Abstract
         string Name { get; set; }
         string Title { get; set; }
         string IconClass { get; set; }
+        string HotKeyTooltip { get; set; }
     }
 }

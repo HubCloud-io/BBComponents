@@ -1,52 +1,54 @@
 ﻿@typeparam TValue
 @using BBComponents.Resources
 
-    <div class="input-group @SizeClass bb-combo-box">
+<div class="input-group @SizeClass bb-combo-box">
 
-        <input @ref=_inputElementReference class="form-control" type="text"
-               value="@_inputValue"
-               disabled=@IsDisabled
-               data-toggle="tooltip"
-               title="@Tooltip"
-               @oninput="(e=>OnInput(e))"
-               @onkeypress="(e=>OnInputKeyPress(e))" 
-               @onkeydown="@(e=>OnInputKeyDown(e))"/>
+    <input @ref=_inputElementReference class="form-control" type="text"
+           value="@_inputValue"
+           disabled=@IsDisabled
+           data-toggle="tooltip"
+           title="@Tooltip"
+           @oninput="(e=>OnInput(e))"
+           @onkeypress="(e=>OnInputKeyPress(e))"
+           @onkeydown="@(e=>OnInputKeyDown(e))"
+           @oncontextmenu:preventDefault
+           @oncontextmenu="(e=>OnContextMenu(e))" />
 
 
-        @if (!IsDisabled)
+    @if (!IsDisabled)
         {
-            <div class="input-group-append ">
+    <div class="input-group-append ">
 
-                <span class="input-group-text" style="cursor:pointer;" @onclick="(e=>OnOpenClick(e))">
-                    <i class="fa fa-chevron-down"></i>
-                </span>
-                @if (!IsValueSelected)
+        <span class="input-group-text" style="cursor:pointer;" @onclick="(e=>OnOpenClick(e))">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        @if (!IsValueSelected)
                 {
 
-                    <span class="input-group-text" style="cursor:pointer;" @onclick="OnClearClick">
-                        <i class="fa fa-times"></i>
-                    </span>
+        <span class="input-group-text" style="cursor:pointer;" @onclick="OnClearClick">
+            <i class="fa fa-times"></i>
+        </span>
                 }
 
-            </div>
+    </div>
         }
 
-        @if (_isOpen)
+    @if (_isOpen)
         {
-            <div class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
+    <div class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
 
-                <ul class="bb-combo-box__items">
-                    @foreach (var item in SourceFiltered)
+        <ul class="bb-combo-box__items">
+            @foreach (var item in SourceFiltered)
                     {
-                        <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
+            <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
                     }
 
-                </ul>
+        </ul>
 
-            </div>
+    </div>
         }
 
-        @if (_isAddOpen)
+    @if (_isAddOpen)
         {
     <div class="bb-combo-box bb-dropdown" style="min-width:280px; max-height:45px; top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
         <div style="height:40px; padding:5px 15px;">
@@ -63,4 +65,8 @@
     </div>
         }
 
-    </div>
+</div>
+@if (_isCustomMenuOpen)
+{
+    <BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
+}
