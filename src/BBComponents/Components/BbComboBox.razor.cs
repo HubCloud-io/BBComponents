@@ -62,6 +62,9 @@ namespace BBComponents.Components
         [Parameter]
         public string Tooltip { get; set; }
 
+        [Parameter]
+        public bool UseCustomMenu { get; set; }
+
         /// <summary>
         /// Event call back for value changed.
         /// </summary>
@@ -134,8 +137,6 @@ namespace BBComponents.Components
         public int DropdownWidth { get; set; } = 250;
 
         public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
-
-        public bool IsValueSelected => EqualityComparer<TValue>.Default.Equals(Value, default(TValue));
 
         public string DropdownPositionValue
         {
@@ -311,7 +312,7 @@ namespace BBComponents.Components
                 Name = $"clear",
                 Kind = MenuItemKinds.Item,
                 IconClass = "fa fa-times text-danger",
-                HotKeyTooltip = "Alt+Delete"
+                HotKeyTooltip = "Alt+X"
 
             });
 
@@ -489,7 +490,7 @@ namespace BBComponents.Components
                 await Open();
 
             }
-            else if (e.AltKey == true && e.Code == "Delete")
+            else if (e.AltKey == true && e.Code == "KeyX")
             {
 
                 if (IsDisabled)
@@ -538,6 +539,11 @@ namespace BBComponents.Components
 
         private void OnContextMenu(MouseEventArgs e)
         {
+            if (!UseCustomMenu)
+            {
+                return;
+            }
+
             _clientX = e.ClientX;
             _clientY = e.ClientY;
 

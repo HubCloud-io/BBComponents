@@ -11,7 +11,7 @@
            @oninput="(e=>OnInput(e))"
            @onkeypress="(e=>OnInputKeyPress(e))"
            @onkeydown="@(e=>OnInputKeyDown(e))"
-           @oncontextmenu:preventDefault
+           @oncontextmenu:preventDefault ="@UseCustomMenu"
            @oncontextmenu="(e=>OnContextMenu(e))" />
 
 
@@ -22,13 +22,7 @@
         <span class="input-group-text" style="cursor:pointer;" @onclick="(e=>OnOpenClick(e))">
             <i class="fa fa-chevron-down"></i>
         </span>
-        @if (!IsValueSelected)
-                {
-
-        <span class="input-group-text" style="cursor:pointer;" @onclick="OnClearClick">
-            <i class="fa fa-times"></i>
-        </span>
-                }
+      
 
     </div>
         }
