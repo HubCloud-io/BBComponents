@@ -11,7 +11,7 @@
            @oninput="(e=>OnInput(e))"
            @onkeypress="(e=>OnInputKeyPress(e))"
            @onkeydown="@(e=>OnInputKeyDown(e))"
-           @oncontextmenu:preventDefault ="@UseCustomMenu"
+           @oncontextmenu:preventDefault="@UseCustomMenu"
            @oncontextmenu="(e=>OnContextMenu(e))" />
 
 
@@ -22,14 +22,14 @@
         <span class="input-group-text" style="cursor:pointer;" @onclick="(e=>OnOpenClick(e))">
             <i class="fa fa-chevron-down"></i>
         </span>
-      
+
 
     </div>
         }
 
     @if (_isOpen)
         {
-    <div class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
+    <div class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
 
         <ul class="bb-combo-box__items">
             @foreach (var item in SourceFiltered)
@@ -62,5 +62,5 @@
 </div>
 @if (_isCustomMenuOpen)
 {
-    <BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
+<BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
 }

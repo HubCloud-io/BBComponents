@@ -17,6 +17,7 @@ namespace BBComponents.Components
     public partial class BbComboBox<TValue> : ComponentBase
     {
         private const int InputTimerInterval = 500;
+        private const int DefaultDropdownWidth = 250;
 
         private TValue _value;
         private string _inputValue;
@@ -134,7 +135,7 @@ namespace BBComponents.Components
         public DropdownPositions DropdownPosition { get; set; } = DropdownPositions.Absolute;
 
         [Parameter]
-        public int DropdownWidth { get; set; } = 250;
+        public int DropdownWidth { get; set; } = DefaultDropdownWidth;
 
         public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
 
@@ -163,7 +164,9 @@ namespace BBComponents.Components
             {
                 if (DropdownPosition == DropdownPositions.Fixed)
                 {
-                    return $"{DropdownWidth}px";
+                    var width = DropdownWidth > 0 ? DropdownWidth : DefaultDropdownWidth;
+
+                    return $"{width}px";
                 }
 
                 return "100%";
