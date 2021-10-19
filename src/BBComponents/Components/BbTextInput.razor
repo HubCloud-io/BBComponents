@@ -1,13 +1,20 @@
 ﻿
 <input type="text"
        autocomplete="off"
-       id="@Id" 
-       class="bb-number-input @HtmlClass" 
-       style="@HtmlStyle" 
-       readonly=@IsReadOnly 
-       disabled=@IsDisabled 
-       data-toggle="tooltip" 
+       id="@Id"
+       class="bb-number-input @HtmlClass"
+       style="@HtmlStyle"
+       readonly=@IsReadOnly
+       disabled=@IsDisabled
+       data-toggle="tooltip"
        title="@Tooltip"
        placeholder="@Placeholder"
-       value="@_value" 
-       @onchange="(e => OnValueChange(e))"/>
+       value="@_value"
+       @onchange="(e => OnValueChange(e))" />
+
+@if (_showMaskDescription && !string.IsNullOrEmpty(MaskDescription))
+{
+    <div id="@(Id+"Feedback")" class="invalid-feedback" style="display:block">
+        @MaskDescription
+    </div>
+}

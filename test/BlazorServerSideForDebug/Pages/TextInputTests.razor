@@ -16,7 +16,15 @@
 <div class="row">
 
     <div class="col-sm-6">
-        <BbTextInput IsDisabled="true" @bind-Value="_textValue"></BbTextInput>
+        <BbTextInput IsDisabled="true" @bind-Value="_textValue" Mask="0000"></BbTextInput>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-sm-6">
+        <BbTextInput @bind-Value="_textValue" Mask="0000" MaskDescription="Введите 4 числа" Placeholder="Input four numbers" ></BbTextInput>
     </div>
 
 </div>
