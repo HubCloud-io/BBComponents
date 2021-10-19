@@ -9,5 +9,6 @@ namespace BlazorServerSideForDebug.Pages
     public partial class TextInputTests: ComponentBase
     {
         private string _textValue;
+        private string _textMaskedValue;
     }
 }

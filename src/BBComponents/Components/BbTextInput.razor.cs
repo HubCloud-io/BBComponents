@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,19 +89,21 @@ namespace BBComponents.Components
             _value = Value;
         }
 
+
         private async Task OnValueChange(ChangeEventArgs e)
         {
-            _value = e.Value?.ToString();
+            var inputValue = e.Value?.ToString();
 
             if (!string.IsNullOrEmpty(Mask))
             {
                 var provider = new MaskedTextProvider(Mask);
+                provider.Set(inputValue);
 
                 _showMaskDescription = false;
 
                 var sb = new StringBuilder();
                 var p = 0;
-                foreach (var ch in _value)
+                foreach (var ch in inputValue)
                 {
                     var checkResult = provider.VerifyChar(ch, p, out var charHInt);
 
@@ -117,10 +120,24 @@ namespace BBComponents.Components
                 }
 
                 _value = sb.ToString();
+
+
+                if (_value.Length != Mask.Length)
+                {
+                    _showMaskDescription = true;
+                }
+
+                this.StateHasChanged();
+
+            }
+            else
+            {
+                _value = inputValue;
             }
 
             await ValueChanged.InvokeAsync(_value);
             await Changed.InvokeAsync(_value);
+
         }
 
     }

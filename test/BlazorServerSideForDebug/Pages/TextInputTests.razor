@@ -24,7 +24,11 @@
 <div class="row">
 
     <div class="col-sm-6">
-        <BbTextInput @bind-Value="_textValue" Mask="0000" MaskDescription="Введите 4 числа" Placeholder="Input four numbers" ></BbTextInput>
+        <BbTextInput @bind-Value="_textMaskedValue" Mask="0000" MaskDescription="Введите 4 числа" Placeholder="Input four numbers"></BbTextInput>
+    </div>
+
+    <div class="col-sm-6">
+        @_textMaskedValue
     </div>
 
 </div>
