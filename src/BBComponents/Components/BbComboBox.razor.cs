@@ -127,6 +127,13 @@ namespace BBComponents.Components
         [Parameter]
         public bool IsDisabled { get; set; }
 
+        /// <summary>
+        /// Placeholder for input.
+        /// </summary>
+        [Parameter]
+        public string Placeholder { get; set; }
+
+
 
         [Parameter]
         public bool AllowAdd { get; set; }

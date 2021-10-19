@@ -46,6 +46,13 @@ namespace BBComponents.Components
         public bool IsDisabled { get; set; }
 
         /// <summary>
+        /// Placeholder for input.
+        /// </summary>
+        [Parameter]
+        public string Placeholder { get; set; }
+
+
+        /// <summary>
         /// Numeric value.
         /// </summary>
         [Parameter]
