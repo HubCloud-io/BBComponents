@@ -94,36 +94,33 @@ namespace BBComponents.Components
         {
             var inputValue = e.Value?.ToString();
 
-            if (!string.IsNullOrEmpty(Mask))
+            if (!string.IsNullOrEmpty(Mask) && !string.IsNullOrEmpty(inputValue))
             {
                 var provider = new MaskedTextProvider(Mask);
 
                 _showMaskDescription = false;
 
-                var sb = new StringBuilder();
-                var p = 0;
-                foreach (var ch in inputValue)
+                if (inputValue.Length != Mask.Length)
                 {
-                    var checkResult = provider.VerifyChar(ch, p, out var charHInt);
+                    _showMaskDescription = true;
+                    DropInputValue();
+                   
+                }
+                else
+                {
+                    var checkResult = provider.VerifyString(inputValue, out var position, out var hint);
 
-                    if (checkResult)
+                    if (!checkResult)
                     {
-                        sb.Append(ch);
+                        _showMaskDescription = true;
+                        DropInputValue();
+                       
                     }
                     else
                     {
-                        _showMaskDescription = true;
+                        _showMaskDescription = false;
+                        _value = inputValue;
                     }
-
-                    p++;
-                }
-
-                _value = sb.ToString();
-
-
-                if (_value.Length != Mask.Length)
-                {
-                    _showMaskDescription = true;
                 }
 
                 this.StateHasChanged();
@@ -139,5 +136,19 @@ namespace BBComponents.Components
 
         }
 
+        private void DropInputValue()
+        {
+
+            // Set different values because if set the same value UI don't updating.
+
+            if (_value == "")
+            {
+                _value = null;
+            }
+            else
+            {
+                _value = "";
+            }
+        }
     }
 }
