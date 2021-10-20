@@ -97,7 +97,6 @@ namespace BBComponents.Components
             if (!string.IsNullOrEmpty(Mask))
             {
                 var provider = new MaskedTextProvider(Mask);
-                provider.Set(inputValue);
 
                 _showMaskDescription = false;
 

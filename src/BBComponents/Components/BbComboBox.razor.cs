@@ -127,6 +127,7 @@ namespace BBComponents.Components
         [Parameter]
         public bool IsDisabled { get; set; }
 
+
         /// <summary>
         /// Placeholder for input.
         /// </summary>
@@ -134,9 +135,12 @@ namespace BBComponents.Components
         public string Placeholder { get; set; }
 
 
-
         [Parameter]
         public bool AllowAdd { get; set; }
+
+        [Parameter]
+        public bool AllowAddWhenDisabled { get; set; }
+
 
         [Parameter]
         public DropdownPositions DropdownPosition { get; set; } = DropdownPositions.Absolute;
@@ -306,6 +310,18 @@ namespace BBComponents.Components
         protected override void OnInitialized()
         {
             _menuItems = new List<IMenuItem>();
+
+            if (AllowAdd)
+            {
+                _menuItems.Add(new MenuItem()
+                {
+                    Title = $"Add",
+                    Name = $"add",
+                    Kind = MenuItemKinds.Item,
+                    IconClass = "fa fa-plus text-primary",
+                    HotKeyTooltip = "Alt+A"
+                });
+            }
 
             _menuItems.Add(new MenuItem()
             {
@@ -511,6 +527,10 @@ namespace BBComponents.Components
                 await Clear();
 
             }
+            else if (e.AltKey == true && e.Code == "KeyA")
+            {
+                await OnAddNewClick();
+            }
         }
 
         private async Task OnItemClick(MouseEventArgs e, SelectItem<TValue> item)
@@ -536,6 +556,16 @@ namespace BBComponents.Components
 
         private async Task OnAddNewClick()
         {
+            if (!AllowAdd)
+            {
+                return;
+            }
+
+            if (IsDisabled && !AllowAddWhenDisabled)
+            {
+                return;
+            }
+
             _isAddOpen = false;
             _isOpen = false;
 
@@ -577,6 +607,10 @@ namespace BBComponents.Components
             else if (item.Name == "open")
             {
                 await Open();
+            }
+            else if (item.Name == "add")
+            {
+                await OnAddNewClick();
             }
 
         }
