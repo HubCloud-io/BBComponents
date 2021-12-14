@@ -1,64 +1,71 @@
 ﻿
-    <div class="input-group @SizeClass bb-date-picker @HtmlClass" style="@HtmlStyle">
-        <input @ref=_inputElementReference
-               class="form-control" type="text"
-               data-toggle="tooltip"
-               title="@Tooltip"
-               value="@_stringValue"
-               disabled=@IsDisabled
-               placeholder="@Placeholder"
-               @onchange="(e=> OnStringValueChange(e))" />
+<div class="input-group @SizeClass bb-date-picker @HtmlClass" style="@HtmlStyle">
+    <input @ref=_inputElementReference
+           class="form-control" type="text"
+           data-toggle="tooltip"
+           title="@Tooltip"
+           value="@_stringValue"
+           disabled=@IsDisabled
+           placeholder="@Placeholder"
+           @oncontextmenu:preventDefault="@UseCustomMenu"
+           @oncontextmenu="(e=>OnContextMenu(e))"
+           @onkeydown="(e=>OnInputKeyDown(e))"
+           @onchange="(e=> OnStringValueChange(e))" />
 
-        @if (!IsDisabled)
+    @if (!IsDisabled)
         {
-            <div class="input-group-append ">
-                <span class="input-group-text" style="cursor:pointer;" @onclick="OnOpenClick">
-                    <i class="fa fa-chevron-down"></i>
-                </span>
-            </div>
+    <div class="input-group-append ">
+        <span class="input-group-text" style="cursor:pointer;" @onclick="OnOpenClick">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+    </div>
         }
 
-        @if (_isOpen)
+    @if (_isOpen)
         {
-            <div class="bb-calendar bb-dropdown" style="top:@DropdownTop;left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
+    <div class="bb-calendar bb-dropdown" style="top:@DropdownTop;left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
 
-                <div class="bb-calendar__header text-primary">
+        <div class="bb-calendar__header text-primary">
 
-                    <span class="bb-calendar__button float-left text-info" @onclick="OnPreviousMonthClick">&lt;</span>
+            <span class="bb-calendar__button float-left text-info" @onclick="OnPreviousMonthClick">&lt;</span>
 
-                    <span>@_monthName</span>&nbsp;
-                    <span>@_year</span>
+            <span>@_monthName</span>&nbsp;
+            <span>@_year</span>
 
-                    <span class="bb-calendar__button float-right text-info" @onclick="OnNextMonthClick">&gt;</span>
+            <span class="bb-calendar__button float-right text-info" @onclick="OnNextMonthClick">&gt;</span>
 
-                </div>
+        </div>
 
-                <div class="bb-calendar__week-days">
-                    @if (_dayNames != null)
+        <div class="bb-calendar__week-days">
+            @if (_dayNames != null)
                     {
-                        @foreach (var dayName in _dayNames)
+            @foreach (var dayName in _dayNames)
                         {
-                            <div class="bb-calendar__week-day text-primary">@dayName</div>
+            <div class="bb-calendar__week-day text-primary">@dayName</div>
                         }
                     }
-                </div>
+        </div>
 
-                @if (_weeks != null)
+        @if (_weeks != null)
                 {
-                    @foreach (var week in _weeks)
+        @foreach (var week in _weeks)
                     {
-                        <div class="bb-calendar__week">
-                            @foreach (var day in week)
+        <div class="bb-calendar__week">
+            @foreach (var day in week)
                             {
-                                <div class="bb-calendar__day @day.ModificatorClass" @onclick="(e=>OnDayClick(e, day))">@day.Day</div>
+            <div class="bb-calendar__day @day.ModificatorClass" @onclick="(e=>OnDayClick(e, day))">@day.Day</div>
                             }
-                        </div>
+        </div>
                     }
                 }
 
-            </div>
+    </div>
         }
 
-    </div>
+</div>
 
 
+@if (_isCustomMenuOpen)
+{
+<BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
+}
