@@ -1,6 +1,7 @@
 ﻿@typeparam TValue
 
-<input id="@Id"
+<input @ref="_inputReference"
+       id="@Id"
        class="bb-number-input @HtmlClass"
        style="@HtmlStyle"
        readonly=@IsReadOnly
@@ -9,6 +10,6 @@
        title="@Tooltip"
        placeholder="@Placeholder"
        value="@_stringValue"
-       @onchange="(e => OnValueChange(e))" />
+       @onchange="(e => OnValueChange(e))" @onfocus="OnInputFocus"/>
 
 
