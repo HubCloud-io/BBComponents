@@ -1,0 +1,121 @@
+﻿@page "/comboboxhl"
+
+@using BBComponents.Enums
+
+<h3>ComboBox High Load</h3>
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="card">
+
+            <div class="card-header">
+                <button class="btn btn-sm btn-outline-primary" @onclick="OnUpdateClick">
+                    @if (_isWaiting)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    }
+                    <span>
+                        Update
+                    </span>
+                </button>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-group form-row">
+                    <label class="col-sm-4">Items count</label>
+                    <div class="col-sm-8">
+                        <BbNumberInput TValue="int" HtmlClass="form-control form-control-sm" @bind-Value="@_itemsCount"></BbNumberInput>
+                    </div>
+                </div>
+
+                <div class="form-group form-row">
+                    <label class="col-sm-4">Rows count</label>
+                    <div class="col-sm-8">
+                        <BbNumberInput TValue="int" HtmlClass="form-control form-control-sm" @bind-Value="@_rowsCount"></BbNumberInput>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-sm-6">
+
+        <div class="form-group form-row">
+            <label class="col-sm-4">Duration, ms @(_duration)</label>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="card">
+
+            <div class="card-body" style="overflow-y:auto; max-height:500px;">
+
+                <table class="table table-hover">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Product</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <Virtualize TItem="OrderRow" Items="@_rows" Context="row" OverscanCount="10">
+
+                            <ItemContent>
+                                <tr>
+                                    <td>@row.Id</td>
+                                    <td>
+                                        <BbComboBox TValue="int"
+                                                    DropdownPosition="DropdownPositions.Fixed"
+                                                    DropdownWidth="150"
+                                                    ItemsSource="_products"
+                                                    TextName="Title"
+                                                    ValueName="Id"
+                                                    AllowAdd="true"
+                                                    Size="BootstrapElementSizes.Sm"
+                                                    IsDeletedName="IsDeleted"
+                                                    @bind-Value="@row.ProductId"></BbComboBox>
+                                    </td>
+                                    <td><BbNumberInput TValue="decimal" @bind-Value="@row.Amount"></BbNumberInput></td>
+                                </tr>
+                            </ItemContent>
+
+                            <Placeholder>
+
+
+                                <p>
+                                    Loading&hellip;
+                                </p>
+
+                            </Placeholder>
+
+                        </Virtualize>
+
+                      
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,5 +1,6 @@
 ﻿@typeparam TValue
 @using BBComponents.Resources
+@using BBComponents.Models
 
 <div class="input-group @SizeClass bb-combo-box">
 
@@ -37,6 +38,10 @@
                     {
             <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
                     }
+
+            @*<Virtualize TItem="SelectItem<TValue>" Items="@SourceFiltered" Context="item">
+                <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
+            </Virtualize>*@
 
         </ul>
 

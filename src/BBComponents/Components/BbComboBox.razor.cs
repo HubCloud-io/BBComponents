@@ -5,6 +5,7 @@ using BBComponents.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Timers;
 
 namespace BBComponents.Components
 {
-    public partial class BbComboBox<TValue> : ComponentBase
+    public partial class BbComboBox<TValue> : ComponentBase, IDisposable
     {
         private const int InputTimerInterval = 500;
         private const int DefaultDropdownWidth = 250;
@@ -40,6 +41,7 @@ namespace BBComponents.Components
         private Timer _timer;
 
         private List<SelectItem<TValue>> _source = new List<SelectItem<TValue>>();
+        private bool disposedValue;
 
         [Inject]
         public IJSRuntime JsRuntime { get; set; }
@@ -354,50 +356,39 @@ namespace BBComponents.Components
 
         }
 
-        protected override async Task OnParametersSetAsync()
+        protected override void OnParametersSet()
         {
             _value = Value;
-            _source = new List<SelectItem<TValue>>();
 
-            if (ItemsSource != null)
-            {
-                foreach (var item in ItemsSource)
-                {
-                    var propValue = item.GetType().GetProperty(ValueName);
-                    var propText = item.GetType().GetProperty(TextName);
-
-                    var value = (TValue)propValue?.GetValue(item);
-                    var text = propText?.GetValue(item)?.ToString();
-
-                    var isDeleted = false;
-
-                    if (!string.IsNullOrEmpty(IsDeletedName))
-                    {
-                        var propIsDeleted = item.GetType().GetProperty(IsDeletedName);
-                        var isDeletedValue = propIsDeleted?.GetValue(item);
-                        isDeleted = isDeletedValue == null ? false : (bool)isDeletedValue;
-                    }
-
-                    _source.Add(new SelectItem<TValue>(text, value, isDeleted));
-                }
-            }
-
-            // Set initial value
-            var selectedItem = _source.FirstOrDefault(x => EqualityComparer<TValue>.Default.Equals(x.Value, Value));
-
-            if (selectedItem != null)
-            {
-                _value = selectedItem.Value;
-                if (_inputValue != selectedItem.Text)
-                {
-                    _inputValue = selectedItem.Text;
-                    await TextChanged.InvokeAsync(_inputValue);
-                }
-
-            }
-            else if (string.IsNullOrEmpty(Text))
+            if (!string.IsNullOrEmpty(Text))
             {
                 _inputValue = Text;
+            }
+            else
+            {
+                if (ItemsSource != null)
+                {
+                    var firstItem = ItemsSource.FirstOrDefault();
+
+                    if (firstItem != null)
+                    {
+                        var propValue = firstItem.GetType().GetProperty(ValueName);
+                        var propText = firstItem.GetType().GetProperty(TextName);
+
+                        foreach (var item in ItemsSource)
+                        {
+
+                            var value = (TValue)propValue?.GetValue(item);
+
+                            if (EqualityComparer<TValue>.Default.Equals(value, _value))
+                            {
+                                var text = propText?.GetValue(item)?.ToString();
+                                _inputValue = text;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
         }
@@ -410,6 +401,11 @@ namespace BBComponents.Components
             _searchString = "";
             _isOpen = !_isOpen;
             _isAddOpen = false;
+
+            if (_isOpen)
+            {
+                FillSource();
+            }
         }
 
         private async Task OnClearClick()
@@ -456,6 +452,7 @@ namespace BBComponents.Components
             {
                 _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
                 _isOpen = true;
+                FillSource();
             }
 
 
@@ -642,6 +639,79 @@ namespace BBComponents.Components
             };
 
             await OpenClicked.InvokeAsync(openArgs);
+        }
+
+        private void FillSource()
+        {
+
+            if (ItemsSource == null)
+            {
+                return;
+            }
+
+            //if (_source.Count() == ItemsSource.Count())
+            //{
+            //    return;
+            //}
+
+            _source = new List<SelectItem<TValue>>();
+
+            var firstItem = ItemsSource.FirstOrDefault();
+
+            if (firstItem != null)
+            {
+                var propValue = firstItem.GetType().GetProperty(ValueName);
+                var propText = firstItem.GetType().GetProperty(TextName);
+
+                foreach (var item in ItemsSource)
+                {
+
+                    var value = (TValue)propValue?.GetValue(item);
+                    var text = propText?.GetValue(item)?.ToString();
+
+                    var isDeleted = false;
+
+                    if (!string.IsNullOrEmpty(IsDeletedName))
+                    {
+                        var propIsDeleted = item.GetType().GetProperty(IsDeletedName);
+                        var isDeletedValue = propIsDeleted?.GetValue(item);
+                        isDeleted = isDeletedValue == null ? false : (bool)isDeletedValue;
+                    }
+
+                    _source.Add(new SelectItem<TValue>(text, value, isDeleted));
+                }
+            }
+
+
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (_source != null)
+                    {
+                        _source = null;
+                    }
+
+                    if (_timer != null)
+                    {
+                        _timer = null;
+                    }
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
