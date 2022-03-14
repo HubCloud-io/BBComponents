@@ -37,6 +37,7 @@ namespace BBComponents.Components
 
         private ElementReference _inputElementReference;
         private HtmlElementInfo _inputElementInfo;
+        private string _inputKey;
 
         private Timer _timer;
 
@@ -700,6 +701,7 @@ namespace BBComponents.Components
                     {
                         _timer = null;
                     }
+
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

@@ -4,7 +4,10 @@
 
 <div class="input-group @SizeClass bb-combo-box">
 
-    <input @ref=_inputElementReference class="form-control" type="text"
+    <input @ref=_inputElementReference
+           id="@Id"
+           class="form-control" 
+           type="text"
            value="@_inputValue"
            disabled=@IsDisabled
            data-toggle="tooltip"
