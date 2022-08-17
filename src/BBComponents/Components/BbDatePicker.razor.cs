@@ -38,6 +38,11 @@ namespace BBComponents.Components
         [Inject]
         public IJSRuntime JsRuntime { get; set; }
 
+        /// <summary>
+        /// Id of HTML input. Optional.
+        /// </summary>
+        [Parameter]
+        public string Id { get; set; }
 
         [Parameter]
         public DateTime Value { get; set; }

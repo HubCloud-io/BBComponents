@@ -32,12 +32,14 @@ namespace BBComponents.Components
         private double _clientX;
         private double _clientY;
 
+
         private List<IMenuItem> _menuItems = new List<IMenuItem>();
 
 
         private ElementReference _inputElementReference;
         private HtmlElementInfo _inputElementInfo;
         private string _inputKey;
+        private string _inputGroupKey;
 
         private Timer _timer;
 
@@ -49,7 +51,7 @@ namespace BBComponents.Components
 
 
         [Parameter]
-        public string Id { get; set; }
+        public string Id { get; set; } 
 
         [Parameter]
         public BootstrapElementSizes Size { get; set; }
@@ -310,7 +312,7 @@ namespace BBComponents.Components
             }
         }
 
-        protected override void OnInitialized()
+        protected async override Task OnInitializedAsync()
         {
             _menuItems = new List<IMenuItem>();
 
@@ -355,6 +357,16 @@ namespace BBComponents.Components
                 IconClass = "fa fa-times text-secondary"
             });
 
+            _inputGroupKey = "input_"+Guid.NewGuid().ToString();
+            try
+            {
+                await JsRuntime.InvokeAsync<object>("outsideClickHandler.addEvent", _inputGroupKey, DotNetObjectReference.Create(this));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"BbComboBox. Cannot register outside clicke handler. Message: {ex.Message}");
+            }
+
         }
 
         protected override void OnParametersSet()
@@ -396,8 +408,14 @@ namespace BBComponents.Components
 
         private async Task OnOpenClick(MouseEventArgs args)
         {
-
-            _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+            try
+            {
+                _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
             _searchString = "";
             _isOpen = !_isOpen;
@@ -451,7 +469,15 @@ namespace BBComponents.Components
 
             if (!_isOpen)
             {
-                _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+                try
+                {
+                    _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+
                 _isOpen = true;
                 FillSource();
             }
@@ -683,6 +709,17 @@ namespace BBComponents.Components
                 }
             }
 
+
+        }
+
+        [JSInvokable]
+        public async Task InvokeClickOutside()
+        {
+          
+            _isOpen = false;
+            _isAddOpen = false;
+
+            StateHasChanged();
 
         }
 

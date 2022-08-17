@@ -2,7 +2,7 @@
 @using BBComponents.Resources
 @using BBComponents.Models
 
-<div class="input-group @SizeClass bb-combo-box">
+<div id="@_inputGroupKey" class="input-group @SizeClass bb-combo-box">
 
     <input @ref=_inputElementReference
            id="@Id"
@@ -34,7 +34,7 @@
 
     @if (_isOpen)
         {
-    <div class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
+    <div  class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
 
         <ul class="bb-combo-box__items">
             @foreach (var item in SourceFiltered)
