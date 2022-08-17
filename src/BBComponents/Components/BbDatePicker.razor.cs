@@ -272,19 +272,37 @@ namespace BBComponents.Components
 
         }
 
-        private void OnPreviousMonthClick()
+        private async Task OnPreviousMonthClick()
         {
+            if (Value == DateTime.MaxValue || Value == DateTime.MinValue)
+            {
+                Value = DateTime.Now;
+            }
+
             Value = Value.AddMonths(-1);
 
             InitCalendar();
 
+            await ValueChanged.InvokeAsync(Value);
+            await Changed.InvokeAsync(Value);
+
+
         }
 
-        private void OnNextMonthClick()
+        private async Task OnNextMonthClick()
         {
+            if (Value == DateTime.MaxValue || Value == DateTime.MinValue)
+            {
+                Value = DateTime.Now;
+            }
+
             Value = Value.AddMonths(1);
 
             InitCalendar();
+
+            await ValueChanged.InvokeAsync(Value);
+            await Changed.InvokeAsync(Value);
+
 
         }
 
