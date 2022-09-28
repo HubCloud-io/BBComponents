@@ -1,13 +1,13 @@
-﻿
-@foreach (var alert in _alerts)
+﻿@foreach (var alert in _alerts)
 {
-
-    <div class="@alert.HtmlClass" style="position:fixed; z-index:1000; @CalcAlertPosition(alert)" role="alert">
-        @alert.Text
-        &nbsp;
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close" @onclick="(e=> OnCloseClick(e, alert))">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    <div>
+        <div class="@alert.HtmlClass" style="position:fixed; z-index:1000; @CalcAlertPosition(alert)" role="alert">
+            @alert.Text
+            &nbsp;
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" @onclick="(e=> OnCloseClick(e, alert))">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     </div>
 
 }
