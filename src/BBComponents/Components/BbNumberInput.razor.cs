@@ -1,6 +1,8 @@
 ﻿using BBComponents.Helpers;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -14,6 +16,7 @@ namespace BBComponents.Components
     {
         private string _stringValue;
         private NumberFormatInfo _nfi;
+        private ElementReference _inputReference;
 
         /// <summary>
         /// Id of HTML input. Optional.
@@ -95,6 +98,9 @@ namespace BBComponents.Components
         [Parameter]
         public string GroupSeparator { get; set; } = " ";
 
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
+
         protected override void OnInitialized()
         {
             var valueType = Value.GetType();
@@ -146,6 +152,18 @@ namespace BBComponents.Components
                 await Changed.InvokeAsync(Value);
             }
 
+        }
+
+        private void OnInputFocus()
+        {
+            try
+            {
+                JsRuntime.InvokeVoidAsync("bbComponents.selectInputText", _inputReference);
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Cannot invoke JS. Message: {e.Message}");
+            }
         }
 
         public static string ToNumericString(string initialString, char? decimalSeparator)

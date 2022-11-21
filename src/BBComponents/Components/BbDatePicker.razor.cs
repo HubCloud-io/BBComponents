@@ -1,4 +1,5 @@
-﻿using BBComponents.Enums;
+﻿using BBComponents.Abstract;
+using BBComponents.Enums;
 using BBComponents.Helpers;
 using BBComponents.Models;
 using Microsoft.AspNetCore.Components;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +16,9 @@ namespace BBComponents.Components
 {
     public partial class BbDatePicker : ComponentBase
     {
+        private double _windowWidth;
+        private double _windowHeight;
+        
         private string _stringValue;
         private bool _isOpen;
         private string _monthName;
@@ -27,9 +32,21 @@ namespace BBComponents.Components
         private CultureInfo _culture;
         private List<List<CalendarDay>> _weeks;
 
+        private bool _isCustomMenuOpen;
+        private double _clientX;
+        private double _clientY;
+
+        private List<IMenuItem> _menuItems = new List<IMenuItem>();
+
+
         [Inject]
         public IJSRuntime JsRuntime { get; set; }
 
+        /// <summary>
+        /// Id of HTML input. Optional.
+        /// </summary>
+        [Parameter]
+        public string Id { get; set; }
 
         [Parameter]
         public DateTime Value { get; set; }
@@ -85,7 +102,11 @@ namespace BBComponents.Components
         public string HtmlClass { get; set; }
 
         [Parameter]
-        public int DropdownWidth { get; set; } = 230;
+        public int DropdownWidth { get; set; } = 210;
+
+        [Parameter]
+        public bool UseCustomMenu { get; set; }
+
 
         public string SizeClass => HtmlClassBuilder.BuildSizeClass("input-group", Size);
 
@@ -166,6 +187,7 @@ namespace BBComponents.Components
                 if (DropdownPosition == DropdownPositions.Fixed)
                 {
                     int topValue;
+                    var dropHeight = 210;
                     switch (Size)
                     {
                         case BootstrapElementSizes.Sm:
@@ -179,6 +201,12 @@ namespace BBComponents.Components
                             break;
                     }
 
+                    if (_clientY > _windowHeight - dropHeight)
+                    {
+                        // Control is close to bottom. Open drop over the control.
+                        topValue =  - dropHeight-topValue/2;
+                    }
+
                     return $"{topValue}px";
                 }
 
@@ -189,9 +217,32 @@ namespace BBComponents.Components
         protected override void OnInitialized()
         {
             _culture = Thread.CurrentThread.CurrentCulture;
+
+            _menuItems = new List<IMenuItem>();
+
+            _menuItems.Add(new MenuItem()
+            {
+                Title = $"Clear",
+                Name = $"clear",
+                Kind = MenuItemKinds.Item,
+                IconClass = "fa fa-times text-danger",
+                HotKeyTooltip = "Alt+X"
+
+            });
+
+            _menuItems.Add(new MenuItem() { Kind = MenuItemKinds.Delimiter });
+
+            _menuItems.Add(new MenuItem()
+            {
+                Title = $"Close",
+                Name = $"close",
+                Kind = MenuItemKinds.Item,
+                IconClass = "fa fa-times text-secondary"
+            });
+
         }
 
-        protected override void OnParametersSet()
+        protected override async Task OnParametersSetAsync()
         {
 
             // Fill day names
@@ -211,13 +262,24 @@ namespace BBComponents.Components
                 _dayNames[6] = dayNamesTmp[0];
 
             }
+            
+            try
+            {
+                _windowHeight = await JsRuntime.InvokeAsync<double>("bbComponents.windowHeight");
+                _windowWidth = await JsRuntime.InvokeAsync<double>("bbComponents.windowWidth");
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"JS call error. Message: {e.Message}");
+            }
 
             InitCalendar();
 
 
         }
 
-        private async Task OnOpenClick()
+        private async Task OnOpenClick(MouseEventArgs e)
         {
             _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
 
@@ -226,25 +288,45 @@ namespace BBComponents.Components
                 Value = DateTime.Now;
             }
 
+            _clientX = e.ClientX;
+            _clientY = e.ClientY;
 
             _isOpen = !_isOpen;
             InitCalendar();
 
         }
 
-        private void OnPreviousMonthClick()
+        private async Task OnPreviousMonthClick()
         {
+            if (Value == DateTime.MaxValue || Value == DateTime.MinValue)
+            {
+                Value = DateTime.Now;
+            }
+
             Value = Value.AddMonths(-1);
 
             InitCalendar();
 
+            await ValueChanged.InvokeAsync(Value);
+            await Changed.InvokeAsync(Value);
+
+
         }
 
-        private void OnNextMonthClick()
+        private async Task OnNextMonthClick()
         {
+            if (Value == DateTime.MaxValue || Value == DateTime.MinValue)
+            {
+                Value = DateTime.Now;
+            }
+
             Value = Value.AddMonths(1);
 
             InitCalendar();
+
+            await ValueChanged.InvokeAsync(Value);
+            await Changed.InvokeAsync(Value);
+
 
         }
 
@@ -287,6 +369,13 @@ namespace BBComponents.Components
 
             _stringValue = e.Value?.ToString();
 
+            if (string.IsNullOrWhiteSpace(_stringValue))
+            {
+                await Clear();
+
+                return;
+            }
+
             if (DateTime.TryParseExact(_stringValue, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
             {
                 Value = dateTime;
@@ -302,11 +391,67 @@ namespace BBComponents.Components
             }
         }
 
+        private async Task OnInputKeyDown(KeyboardEventArgs e)
+        {
+           
+            if (e.AltKey  && e.Code == "KeyX")
+            {
+
+                if (IsDisabled)
+                {
+                    return;
+                }
+
+                await Clear();
+
+            }
+          
+        }
+
+        private void OnContextMenu(MouseEventArgs e)
+        {
+            if (!UseCustomMenu)
+            {
+                return;
+            }
+
+            _clientX = e.ClientX;
+            _clientY = e.ClientY;
+
+            _isCustomMenuOpen = true;
+
+        }
+
+        private async Task OnContextMenuClosed(IMenuItem item)
+        {
+            _isCustomMenuOpen = false;
+
+            if (item.Name == "clear")
+            {
+                if (IsDisabled)
+                {
+                    return;
+                }
+
+                await Clear();
+            }
+          
+
+        }
+
+        private async Task Clear()
+        {
+            Value = DateTime.MinValue;
+            _stringValue = "";
+            await ValueChanged.InvokeAsync(Value);
+            await Changed.InvokeAsync(Value);
+        }
+
         public static DateTime GetFirstCalendarDate(DateTime value, FirstWeekDays firstWeekDay)
         {
             var startDay = new DateTime(value.Year, value.Month, 1);
 
-            var shift = 0;
+            int shift;
             if (firstWeekDay == FirstWeekDays.Sunday)
             {
                 shift = (int)startDay.DayOfWeek;

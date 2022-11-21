@@ -55,8 +55,14 @@ namespace BBComponents.Components
 
         private void OnCloseClick(MouseEventArgs e, AlertInstance alert)
         {
+
+            alert.OnAlertHide -= OnAlertHide;
+
             _alerts.Remove(alert);
-            this.StateHasChanged();
+            // this.StateHasChanged();
+
+            InvokeAsync(() => { this.StateHasChanged(); });
+
         }
 
         private void OnAlertAdd(AlertInstance alert)
@@ -74,6 +80,8 @@ namespace BBComponents.Components
 
         private void OnAlertHide(AlertInstance alert)
         {
+            alert.OnAlertHide -= OnAlertHide;
+
             _alerts.Remove(alert);
 
             InvokeAsync(() => { this.StateHasChanged(); });
@@ -95,7 +103,7 @@ namespace BBComponents.Components
 
                 sb.Append($"top: {top}px;");
 
-            } 
+            }
             else if (Bottom.HasValue)
             {
                 var bottom = Bottom.Value;

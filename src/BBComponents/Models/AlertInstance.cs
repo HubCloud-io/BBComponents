@@ -64,6 +64,8 @@ namespace BBComponents.Models
             {
                 _timer.Dispose();
             }
+
+            OnAlertHide = null;
         }
     }
 }

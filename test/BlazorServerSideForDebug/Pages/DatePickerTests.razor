@@ -54,6 +54,24 @@
 <div class="row" style="margin-top: 10px;">
 
     <div class="col-sm-6">
+        <BbDatePicker Format="dd.MM.yyyy"
+                      Size="BBComponents.Enums.BootstrapElementSizes.Sm" 
+                      @bind-Value="_testDate" 
+                      UseCustomMenu="true"></BbDatePicker>
+    </div>
+
+    <div class="col-sm-6">
+
+        <p>@_testDate</p>
+
+    </div>
+
+</div>
+
+
+<div class="row" style="margin-top: 10px;">
+
+    <div class="col-sm-6">
         <BbDatePicker Format="MM/dd/yyyy"
                       FirstWeekDay="FirstWeekDays.Sunday"
                       Size="BootstrapElementSizes.Sm"
@@ -70,5 +88,7 @@
     </div>
 
 </div>
+
+
 
 

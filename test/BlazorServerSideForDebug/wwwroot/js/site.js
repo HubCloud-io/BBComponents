@@ -23,6 +23,31 @@ window.bbComponents = {
     windowWidth: function () {
         return window.innerWidth;
     },
+    setDocumentTitle: function (title) {
+
+        document.title = title;
+
+    },
+    selectInputText: function (element) {
+
+        if (element == null) {
+            return;
+        }
+
+        element.select();
+    }
 
 
+};
+
+window.outsideClickHandler = {
+    addEvent: function (elementId, dotnetHelper) {
+        window.addEventListener("click", function (e) {
+            if (document.getElementById(elementId) != null) {
+                if (!document.getElementById(elementId).contains(e.target)) {
+                    dotnetHelper.invokeMethodAsync("InvokeClickOutside");
+                }
+            }
+        });
+    }
 };
