@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,9 @@ namespace BBComponents.Components
 {
     public partial class BbDatePicker : ComponentBase
     {
+        private double _windowWidth;
+        private double _windowHeight;
+        
         private string _stringValue;
         private bool _isOpen;
         private string _monthName;
@@ -183,6 +187,7 @@ namespace BBComponents.Components
                 if (DropdownPosition == DropdownPositions.Fixed)
                 {
                     int topValue;
+                    var dropHeight = 210;
                     switch (Size)
                     {
                         case BootstrapElementSizes.Sm:
@@ -194,6 +199,12 @@ namespace BBComponents.Components
                         default:
                             topValue = 39;
                             break;
+                    }
+
+                    if (_clientY > _windowHeight - dropHeight)
+                    {
+                        // Control is close to bottom. Open drop over the control.
+                        topValue =  - dropHeight-topValue/2;
                     }
 
                     return $"{topValue}px";
@@ -231,7 +242,7 @@ namespace BBComponents.Components
 
         }
 
-        protected override void OnParametersSet()
+        protected override async Task OnParametersSetAsync()
         {
 
             // Fill day names
@@ -251,13 +262,24 @@ namespace BBComponents.Components
                 _dayNames[6] = dayNamesTmp[0];
 
             }
+            
+            try
+            {
+                _windowHeight = await JsRuntime.InvokeAsync<double>("bbComponents.windowHeight");
+                _windowWidth = await JsRuntime.InvokeAsync<double>("bbComponents.windowWidth");
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"JS call error. Message: {e.Message}");
+            }
 
             InitCalendar();
 
 
         }
 
-        private async Task OnOpenClick()
+        private async Task OnOpenClick(MouseEventArgs e)
         {
             _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
 
@@ -266,6 +288,8 @@ namespace BBComponents.Components
                 Value = DateTime.Now;
             }
 
+            _clientX = e.ClientX;
+            _clientY = e.ClientY;
 
             _isOpen = !_isOpen;
             InitCalendar();
@@ -370,7 +394,7 @@ namespace BBComponents.Components
         private async Task OnInputKeyDown(KeyboardEventArgs e)
         {
            
-            if (e.AltKey == true && e.Code == "KeyX")
+            if (e.AltKey  && e.Code == "KeyX")
             {
 
                 if (IsDisabled)
@@ -427,7 +451,7 @@ namespace BBComponents.Components
         {
             var startDay = new DateTime(value.Year, value.Month, 1);
 
-            var shift = 0;
+            int shift;
             if (firstWeekDay == FirstWeekDays.Sunday)
             {
                 shift = (int)startDay.DayOfWeek;
