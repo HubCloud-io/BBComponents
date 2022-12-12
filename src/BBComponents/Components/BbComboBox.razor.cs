@@ -32,6 +32,8 @@ namespace BBComponents.Components
         private double _clientX;
         private double _clientY;
 
+        private double _windowWidth;
+        private double _windowHeight;
 
         private List<IMenuItem> _menuItems = new List<IMenuItem>();
 
@@ -224,6 +226,7 @@ namespace BBComponents.Components
                 if (DropdownPosition == DropdownPositions.Fixed)
                 {
                     int topValue;
+                    var dropHeight = 210;
                     switch (Size)
                     {
                         case BootstrapElementSizes.Sm:
@@ -236,6 +239,13 @@ namespace BBComponents.Components
                             topValue = 39;
                             break;
                     }
+
+                    if (_inputElementInfo.Top > _windowHeight - dropHeight)
+                    {
+                        // Control is close to bottom. Open drop over the control.
+                        topValue = -dropHeight - topValue / 2;
+                    }
+
 
                     return $"{topValue}px";
                 }
@@ -369,7 +379,7 @@ namespace BBComponents.Components
 
         }
 
-        protected override void OnParametersSet()
+        protected override async Task OnParametersSetAsync()
         {
             _value = Value;
 
@@ -404,6 +414,16 @@ namespace BBComponents.Components
                 }
             }
 
+            try
+            {
+                _windowHeight = await JsRuntime.InvokeAsync<double>("bbComponents.windowHeight");
+                _windowWidth = await JsRuntime.InvokeAsync<double>("bbComponents.windowWidth");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"JS call error. Message: {e.Message}");
+            }
+
         }
 
         private async Task OnOpenClick(MouseEventArgs args)
@@ -420,6 +440,10 @@ namespace BBComponents.Components
             _searchString = "";
             _isOpen = !_isOpen;
             _isAddOpen = false;
+
+            _clientX = args.ClientX;
+            _clientY = args.ClientY;
+
 
             if (_isOpen)
             {

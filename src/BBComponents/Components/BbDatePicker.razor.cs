@@ -28,6 +28,8 @@ namespace BBComponents.Components
 
         private ElementReference _inputElementReference;
         private HtmlElementInfo _inputElementInfo;
+        private string _inputGroupKey;
+
 
         private CultureInfo _culture;
         private List<List<CalendarDay>> _weeks;
@@ -207,6 +209,10 @@ namespace BBComponents.Components
                         topValue =  - dropHeight-topValue/2;
                     }
 
+#if DEBUG
+                    Console.WriteLine($"Dropdown top {topValue}px. {_clientY}, {_windowHeight}, {dropHeight}");
+#endif
+
                     return $"{topValue}px";
                 }
 
@@ -214,7 +220,7 @@ namespace BBComponents.Components
             }
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             _culture = Thread.CurrentThread.CurrentCulture;
 
@@ -239,6 +245,16 @@ namespace BBComponents.Components
                 Kind = MenuItemKinds.Item,
                 IconClass = "fa fa-times text-secondary"
             });
+
+            _inputGroupKey = "datepicker_" + Guid.NewGuid().ToString();
+            try
+            {
+                await JsRuntime.InvokeAsync<object>("outsideClickHandler.addEvent", _inputGroupKey, DotNetObjectReference.Create(this));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"DatePicker. Cannot register outside clicke handler. Message: {ex.Message}");
+            }
 
         }
 
@@ -267,11 +283,10 @@ namespace BBComponents.Components
             {
                 _windowHeight = await JsRuntime.InvokeAsync<double>("bbComponents.windowHeight");
                 _windowWidth = await JsRuntime.InvokeAsync<double>("bbComponents.windowWidth");
-
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"JS call error. Message: {e.Message}");
+                Console.WriteLine($"JS call error. Message: {e.Message}");
             }
 
             InitCalendar();
@@ -290,6 +305,10 @@ namespace BBComponents.Components
 
             _clientX = e.ClientX;
             _clientY = e.ClientY;
+
+#if DEBUG
+            Console.WriteLine($"Date picker open click: {_clientX}, {_clientY}");
+#endif
 
             _isOpen = !_isOpen;
             InitCalendar();
@@ -436,6 +455,16 @@ namespace BBComponents.Components
                 await Clear();
             }
           
+
+        }
+
+        [JSInvokable]
+        public async Task InvokeClickOutside()
+        {
+
+            _isOpen = false;
+
+            StateHasChanged();
 
         }
 
