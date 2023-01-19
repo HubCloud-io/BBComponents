@@ -24,10 +24,16 @@ namespace BBComponents.Components
         public string HtmlStyle { get; set; }
 
         /// <summary>
-        /// Colllection to show.
+        /// Collection to show.
         /// </summary>
         [Parameter]
         public IEnumerable<TValue> ItemsSource { get; set; }
+        
+        /// <summary>
+        /// Item selected in list.
+        /// </summary>
+        [Parameter]
+        public TValue SelectedItem { get; set; }
 
         /// <summary>
         /// Callback for item onclick event. 
@@ -55,9 +61,17 @@ namespace BBComponents.Components
 
         protected override void OnParametersSet()
         {
-            if (ItemsSource.Any() && _selectedItem == null)
+            if (ItemsSource.Any() )
             {
-                _selectedItem = ItemsSource.FirstOrDefault();
+                if (SelectedItem != null)
+                {
+                    _selectedItem = SelectedItem;
+                }
+                else if (_selectedItem == null)
+                {
+                    _selectedItem = ItemsSource.FirstOrDefault();
+                }
+                
             }
         }
 
