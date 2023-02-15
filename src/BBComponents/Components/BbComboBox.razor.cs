@@ -134,20 +134,20 @@ namespace BBComponents.Components
         [Parameter]
         public bool IsDisabled { get; set; }
 
-
         /// <summary>
         /// Placeholder for input.
         /// </summary>
         [Parameter]
         public string Placeholder { get; set; }
 
-
         [Parameter]
         public bool AllowAdd { get; set; }
 
         [Parameter]
         public bool AllowAddWhenDisabled { get; set; }
-
+        
+        [Parameter]
+        public bool IsFilterCaseSensitive { get; set; }
 
         [Parameter]
         public DropdownPositions DropdownPosition { get; set; } = DropdownPositions.Absolute;
@@ -308,14 +308,6 @@ namespace BBComponents.Components
 
                 }
 
-                //if (AllowAdd)
-                //{
-                //    _isAddOpen = !sourceFiltered.Any();
-                //    if (_isAddOpen)
-                //    {
-                //        _isOpen = false;
-                //    }
-                //}
 
 
                 return sourceFiltered;
@@ -389,29 +381,7 @@ namespace BBComponents.Components
             }
             else
             {
-                if (ItemsSource != null)
-                {
-                    var firstItem = ItemsSource.FirstOrDefault();
-
-                    if (firstItem != null)
-                    {
-                        var propValue = firstItem.GetType().GetProperty(ValueName);
-                        var propText = firstItem.GetType().GetProperty(TextName);
-
-                        foreach (var item in ItemsSource)
-                        {
-
-                            var value = (TValue)propValue?.GetValue(item);
-
-                            if (EqualityComparer<TValue>.Default.Equals(value, _value))
-                            {
-                                var text = propText?.GetValue(item)?.ToString();
-                                _inputValue = text;
-                                break;
-                            }
-                        }
-                    }
-                }
+                SetInputTextFromItemsSource();
             }
 
             try
@@ -734,6 +704,56 @@ namespace BBComponents.Components
             }
 
 
+        }
+
+        private void SetInputTextFromItemsSource()
+        {
+            if (ItemsSource == null)
+            {
+                return;
+            }
+            
+            var firstItem = ItemsSource.FirstOrDefault();
+
+            if (firstItem != null)
+            {
+                var propValue = firstItem.GetType().GetProperty(ValueName);
+                var propText = firstItem.GetType().GetProperty(TextName);
+
+                foreach (var item in ItemsSource)
+                {
+
+                    var value = (TValue) propValue?.GetValue(item);
+
+                    var isEqual = false;
+                    if (typeof(TValue) == typeof(string))
+                    {
+                        var elementValueStr = value?.ToString();
+                        var componentValueStr = _value?.ToString();
+
+                        var stringComparision = IsFilterCaseSensitive
+                            ? StringComparison.Ordinal
+                            : StringComparison.OrdinalIgnoreCase;
+
+                        isEqual = elementValueStr?.Equals(componentValueStr, stringComparision) ??
+                                  false;
+                    }
+                    else
+                    {
+                        isEqual = EqualityComparer<TValue>.Default.Equals(value, _value);
+
+                    }
+
+                    if (isEqual)
+                    {
+                        var text = propText?.GetValue(item)?.ToString();
+                        _inputValue = text;
+                        break;
+                        
+                    }
+
+                }
+            }
         }
 
         [JSInvokable]

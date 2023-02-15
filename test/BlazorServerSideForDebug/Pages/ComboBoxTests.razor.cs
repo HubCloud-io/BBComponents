@@ -12,6 +12,8 @@ namespace BlazorServerSideForDebug.Pages
     public partial class ComboBoxTests : ComponentBase
     {
         private List<Product> _products;
+        private List<CatalogItem> _fields;
+        private string _fieldName = "Id";
 
         private int _selectedId;
         private string _selectedText;
@@ -71,6 +73,12 @@ namespace BlazorServerSideForDebug.Pages
                 var currentRow = new OrderRow();
                 _orderTable.Add(currentRow);
             }
+
+            _fields = new List<CatalogItem>();
+            _fields.Add(new CatalogItem(){Name = "id", Title = "Id"});
+            _fields.Add(new CatalogItem(){Name = "Uid", Title = "Uid"});
+            _fields.Add(new CatalogItem(){Name = "name", Title = "Name"});
+            _fields.Add(new CatalogItem(){Name = "Title", Title = "Title"});
 
         }
 
