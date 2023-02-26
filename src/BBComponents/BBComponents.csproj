@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>6.0.19</Version>
+    <Version>6.0.20</Version>
     <Authors>Mikhail Zyubin</Authors>
     <Description>Free components for Blazor created with Bootstrap css framework</Description>
     <PackageId>HubCloud.BBComponents</PackageId>

@@ -152,39 +152,39 @@
         <div style="height:300px; overflow-y:auto">
             <table @ref=_tableElementReference class="table table-bordered table-hover">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Period</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                    </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Period</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var row in _orderTable)
-                    {
-                        <tr>
-                            <td>@(_orderTable.IndexOf(row)+1)</td>
-                            <td>
-                                <BbDatePicker DropdownPosition="DropdownPositions.Fixed"
-                                              Size="BootstrapElementSizes.Sm"
-                                              Format="dd.MM.yyyy HH:mm:ss"
-                                              @bind-Value="@row.Period"></BbDatePicker>
-                            </td>
-                            <td>
-                                <BbComboBox TValue="int"
-                                            DropdownPosition="DropdownPositions.Fixed"
-                                            DropdownWidth="150"
-                                            ItemsSource="_products"
-                                            TextName="Title"
-                                            ValueName="Id"
-                                            AllowAdd="true"
-                                            Size="BootstrapElementSizes.Sm"
-                                            IsDeletedName="IsDeleted"
-                                            @bind-Value="@row.ProductId"></BbComboBox>
-                            </td>
-                            <td><BbNumberInput TValue="decimal" @bind-Value="@row.Amount"></BbNumberInput></td>
-                        </tr>
-                    }
+                @foreach (var row in _orderTable)
+                {
+                    <tr>
+                        <td>@(_orderTable.IndexOf(row)+1)</td>
+                        <td>
+                            <BbDatePicker DropdownPosition="DropdownPositions.Fixed"
+                                          Size="BootstrapElementSizes.Sm"
+                                          Format="dd.MM.yyyy HH:mm:ss"
+                                          @bind-Value="@row.Period"></BbDatePicker>
+                        </td>
+                        <td>
+                            <BbComboBox TValue="int"
+                                        DropdownPosition="DropdownPositions.Fixed"
+                                        DropdownWidth="150"
+                                        ItemsSource="_products"
+                                        TextName="Title"
+                                        ValueName="Id"
+                                        AllowAdd="true"
+                                        Size="BootstrapElementSizes.Sm"
+                                        IsDeletedName="IsDeleted"
+                                        @bind-Value="@row.ProductId"></BbComboBox>
+                        </td>
+                        <td><BbNumberInput TValue="decimal" @bind-Value="@row.Amount"></BbNumberInput></td>
+                    </tr>
+                }
 
                 </tbody>
             </table>
@@ -197,4 +197,26 @@
 
     </div>
 </div>
+
+<hr/>
+
+<div class="row">
+    
+    <div class="col-sm-6">
+        <BbComboBox TValue="string"
+                    ItemsSource="@_fields" 
+                    TextName="Name" 
+                    ValueName="Name"  
+                    Size="BootstrapElementSizes.Sm" 
+                    @bind-Value="@_fieldName"></BbComboBox>
+    </div>
+    
+    <div class="col-sm-6">
+        
+        <BbTextInput @bind-Value="@_fieldName"></BbTextInput>
+    </div>
+    
+</div>
+
+<div style="height: 150px;"></div>
 
