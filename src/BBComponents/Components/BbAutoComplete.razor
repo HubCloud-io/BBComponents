@@ -1,0 +1,29 @@
+﻿
+<input @ref=_inputElementReference 
+       type="text"
+       autocomplete="off"
+       id="@Id"
+       class="bb-number-input @HtmlClass"
+       style="@HtmlStyle"
+       readonly=@IsReadOnly
+       disabled=@IsDisabled
+       data-toggle="tooltip"
+       title="@Tooltip"
+       placeholder="@Placeholder"
+       value="@_value"
+       @onchange="(e => OnValueChange(e))" />
+       
+@if (_isOpen)
+{
+    <div  class="bb-combo-box bb-dropdown" style="top:@DropdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: fixed;">
+
+        <ul class="bb-combo-box__items">
+            @foreach (var item in SourceFiltered)
+            {
+                <li class="bb-combo-box__item" @onclick="(e=>OnItemClick(item))">@item</li>
+            }
+
+        </ul>
+
+    </div>
+}
