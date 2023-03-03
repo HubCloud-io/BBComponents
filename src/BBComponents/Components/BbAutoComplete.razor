@@ -11,13 +11,15 @@
        title="@Tooltip"
        placeholder="@Placeholder"
        value="@_value"
+       @oninput="(e=>OnInput(e))"
+       @onfocusout="(e=>OnFocusOut(e))"
        @onchange="(e => OnValueChange(e))" />
        
 @if (_isOpen)
 {
-    <div  class="bb-combo-box bb-dropdown" style="top:@DropdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: fixed;">
+    <div  class="bb-combo-box bb-dropdown" style="top:@DropdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTopValue; position: fixed;">
 
-        <ul class="bb-combo-box__items">
+        <ul class="bb-combo-box__items" style="border: 1px solid #ececec;">
             @foreach (var item in SourceFiltered)
             {
                 <li class="bb-combo-box__item" @onclick="(e=>OnItemClick(item))">@item</li>

@@ -5,25 +5,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using BBComponents.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 namespace BBComponents.Components;
 
-public partial class BbAutoComplete:ComponentBase
+public partial class BbAutoComplete : ComponentBase
 {
     private const int DefaultDropdownWidth = 250;
+    private const int DefaultDropdownMarginTop = 32;
 
-    
+
     private string _value;
+    private string _inputValue;
     private bool _isOpen;
-    
+
     private ElementReference _inputElementReference;
     private HtmlElementInfo _inputElementInfo;
-    
+
     private double _windowWidth;
     private double _windowHeight;
 
-    
+
     /// <summary>
     /// Id of HTML input. Optional.
     /// </summary>
@@ -65,16 +68,17 @@ public partial class BbAutoComplete:ComponentBase
     /// </summary>
     [Parameter]
     public string Placeholder { get; set; }
-    
-    [Parameter]
-    public int DropdownWidth { get; set; } = DefaultDropdownWidth;
-    
+
+    [Parameter] public int DropdownWidth { get; set; } = DefaultDropdownWidth;
+
+    [Parameter] public int DropdownMarginTop { get; set; } = DefaultDropdownMarginTop;
+
     /// <summary>
     /// Colllection for select options.
     /// </summary>
     [Parameter]
     public IEnumerable<string> ItemsSource { get; set; }
-    
+
     /// <summary>
     /// String value.
     /// </summary>
@@ -93,73 +97,62 @@ public partial class BbAutoComplete:ComponentBase
     /// </summary>
     [Parameter]
     public EventCallback<string> Changed { get; set; }
-    
-    [Inject]
-    public IJSRuntime JsRuntime { get; set; }
+
+    [Inject] public IJSRuntime JsRuntime { get; set; }
 
     public List<string> SourceFiltered
     {
         get
         {
-            if (string.IsNullOrEmpty(_value))
+            if (string.IsNullOrEmpty(_inputValue))
             {
                 return ItemsSource.ToList();
             }
 
             var sourceFiltered = ItemsSource
-                .Where(x => x.Equals(_value, StringComparison.OrdinalIgnoreCase))
+                .Where(x => x.Contains(_inputValue, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             return sourceFiltered;
         }
     }
-    
+
     public string DropdownTop
     {
-        get
-        {
-                return $"{_inputElementInfo.TopInt}px";
-         
-        }
+        get { return $"{_inputElementInfo.TopInt}px"; }
     }
-    
-    public string DropdownMarginTop
+
+    public string DropdownMarginTopValue
     {
         get
         {
-                int topValue;
-                var dropHeight = 210;
-                topValue = 39;
+            int topValue;
+            var dropHeight = 210;
+            topValue = DropdownMarginTop;
 
-                if (_inputElementInfo.Top > _windowHeight - dropHeight)
-                {
-                    // Control is close to bottom. Open drop over the control.
-                    topValue = -dropHeight - topValue / 2;
-                }
+            if (_inputElementInfo.Top > _windowHeight - dropHeight)
+            {
+                // Control is close to bottom. Open drop over the control.
+                topValue = -dropHeight - topValue / 2;
+            }
 
-                return $"{topValue}px";
-            
+            return $"{topValue}px";
         }
     }
-    
+
     public string DropdownWidthValue
     {
         get
         {
-                var width = DropdownWidth > 0 ? DropdownWidth : DefaultDropdownWidth;
+            var width = DropdownWidth > 0 ? DropdownWidth : DefaultDropdownWidth;
 
-                return $"{width}px";
-
+            return $"{width}px";
         }
     }
 
     public string DropdownLeft
     {
-        get
-        {
-                return $"{_inputElementInfo.LeftInt}px";
-
-        }
+        get { return $"{_inputElementInfo.LeftInt}px"; }
     }
 
     protected override async Task OnInitializedAsync()
@@ -181,30 +174,61 @@ public partial class BbAutoComplete:ComponentBase
 
         await ValueChanged.InvokeAsync(_value);
         await Changed.InvokeAsync(_value);
+    }
 
-        if (SourceFiltered.Any())
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        Debug.WriteLine($"Input: {e.Value}");
+
+        _inputValue = e.Value?.ToString();
+
+        if (_isOpen)
         {
-            try
+            if (!SourceFiltered.Any())
             {
-                _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+                _isOpen = false;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($@"JS call error getElementInfo. Message: {ex.Message}");
-            }
-            
-            _isOpen = true;
         }
+        else
+        {
+            if (SourceFiltered.Any())
+            {
+                try
+                {
+                    _inputElementInfo =
+                        await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($@"JS call error getElementInfo. Message: {ex.Message}");
+                }
 
+                _isOpen = true;
+            }
+        }
+    }
+
+    private async Task OnFocusOut(FocusEventArgs e)
+    {
+        _isOpen = false;
+
+        if (SourceFiltered.Count == 1)
+        {
+            _value = SourceFiltered.First();
+            _inputValue = _value;
+                
+            StateHasChanged();
+            await ValueChanged.InvokeAsync(_value);
+            await Changed.InvokeAsync(_value);
+        }
     }
 
     private async Task OnItemClick(string value)
     {
         _value = value;
         _isOpen = false;
-        
+
         await ValueChanged.InvokeAsync(_value);
         await Changed.InvokeAsync(_value);
     }
-
 }
