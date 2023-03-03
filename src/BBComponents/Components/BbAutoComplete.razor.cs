@@ -19,6 +19,7 @@ public partial class BbAutoComplete : ComponentBase
     private string _value;
     private string _inputValue;
     private bool _isOpen;
+    private bool _isMouseOverDrop;
 
     private ElementReference _inputElementReference;
     private HtmlElementInfo _inputElementInfo;
@@ -168,6 +169,33 @@ public partial class BbAutoComplete : ComponentBase
         }
     }
 
+    protected override void OnParametersSet()
+    {
+        _value = Value;
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            _isOpen = false;
+        }
+        else if (e.Key == "Enter")
+        {
+            _isOpen = false;
+            if (SourceFiltered.Count == 1)
+            {
+                var val = SourceFiltered[0];
+
+                _value = val;
+                _inputValue = val;
+                StateHasChanged();
+                await ValueChanged.InvokeAsync(val);
+                await Changed.InvokeAsync(val);
+            }
+        }
+    }
+
     private async Task OnValueChange(ChangeEventArgs e)
     {
         _value = e.Value?.ToString();
@@ -178,8 +206,6 @@ public partial class BbAutoComplete : ComponentBase
 
     private async Task OnInput(ChangeEventArgs e)
     {
-        Debug.WriteLine($"Input: {e.Value}");
-
         _inputValue = e.Value?.ToString();
 
         if (_isOpen)
@@ -210,10 +236,16 @@ public partial class BbAutoComplete : ComponentBase
 
     private async Task OnFocusOut(FocusEventArgs e)
     {
+        if (_isMouseOverDrop)
+        {
+            return;
+        }
+
         _isOpen = false;
 
         if (SourceFiltered.Count == 1)
         {
+
             _value = SourceFiltered.First();
             _inputValue = _value;
                 
@@ -227,8 +259,19 @@ public partial class BbAutoComplete : ComponentBase
     {
         _value = value;
         _isOpen = false;
+        _isMouseOverDrop = false;
 
         await ValueChanged.InvokeAsync(_value);
         await Changed.InvokeAsync(_value);
+    }
+
+    private void OnDropMouseOver()
+    {
+        _isMouseOverDrop = true;
+    }
+
+    private void OnDropMouseOut()
+    {
+        _isMouseOverDrop = false;
     }
 }

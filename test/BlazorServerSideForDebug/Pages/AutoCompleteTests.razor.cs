@@ -7,7 +7,7 @@ namespace BlazorServerSideForDebug.Pages;
 public partial class AutoCompleteTests:ComponentBase
 {
     private List<string> _fieldSource = new List<string>();
-    private string _field1;
+    private string _field1 = "$h.id";
     private string _field2;
 
 
