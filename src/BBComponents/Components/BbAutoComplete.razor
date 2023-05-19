@@ -1,0 +1,35 @@
+﻿
+<input @ref=_inputElementReference
+       type="text"
+       autocomplete="off"
+       id="@Id"
+       class="bb-text-input @HtmlClass"
+       style="@HtmlStyle"
+       readonly=@IsReadOnly
+       disabled=@IsDisabled
+       data-toggle="tooltip"
+       title="@Tooltip"
+       placeholder="@Placeholder"
+       value="@_value"
+       @oninput="(e=>OnInput(e))"
+       @onfocusout="(e=>OnFocusOut(e))"
+       @onkeydown="(e=>OnKeyDown(e))"
+       @onchange="(e => OnValueChange(e))" />
+
+@if (_isOpen)
+{
+    <div class="bb-combo-box bb-dropdown"
+     @onmouseover="OnDropMouseOver"
+     @onmouseout="OnDropMouseOut"
+     style="top:@DropdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTopValue; position: fixed; background-color:white; max-height:210px; min-height:210px; height:210px; overflow-y:auto; border: 1px solid #ececec;">
+
+        <ul class="bb-combo-box__items">
+            @foreach (var item in SourceFiltered)
+            {
+                <li class="bb-combo-box__item" @onclick="(e=>OnItemClick(item))">@item</li>
+            }
+
+        </ul>
+
+    </div>
+}

@@ -40,6 +40,12 @@ namespace BBComponents.Components
         /// </summary>
         [Parameter]
         public double ClientY { get; set; }
+        
+        /// <summary>
+        /// If true, no ClientX set to Left, ClientY set to Top.
+        /// </summary>
+        [Parameter]
+        public bool DisableGeometryCalculations { get; set; }
 
         /// <summary>
         /// Event callback for closed event.
@@ -75,6 +81,16 @@ namespace BBComponents.Components
 
         private void CalcGeometry()
         {
+
+            if (DisableGeometryCalculations)
+            {
+                _topPx = $"{(int)ClientY}px";
+                _leftPx = $"{(int)ClientX}px";
+                _isVisible = true;
+                
+                return;
+            }
+            
             if (_windowHeight > 0)
             {
                 if (ClientY > _windowHeight / 2)
@@ -121,6 +137,7 @@ namespace BBComponents.Components
             }
 
             _isVisible = true;
+
         }
     }
 }

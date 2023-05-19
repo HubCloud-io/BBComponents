@@ -1,0 +1,22 @@
+﻿@page "/autocomplete"
+
+<h3>AutoCompleteTests</h3>
+
+<div class="row">
+    
+    <div class="col-sm-6">
+        
+        <BbAutoComplete ItemsSource="@_fieldSource" 
+                        @bind-Value="@_field1"></BbAutoComplete>
+        
+    </div>
+    
+     <div class="col-sm-6">
+            
+            <BbAutoComplete ItemsSource="@_fieldSource" 
+                            @bind-Value="@_field2"></BbAutoComplete>
+            
+        </div>
+    
+</div>
+
