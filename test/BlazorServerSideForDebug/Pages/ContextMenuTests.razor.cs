@@ -13,6 +13,7 @@ namespace BlazorServerSideForDebug.Pages
     {
 
         private bool _isCustomMenuOpen;
+        private bool _disableGeometryCalculations;
         private double _clientX;
         private double _clientY;
 
