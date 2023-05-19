@@ -1,0 +1,148 @@
+﻿@page "/buttons"
+
+@using BBComponents.Enums
+
+<div class="row">
+    <div class="col-sm-12">
+        <BbButton Color="BootstrapColors.Primary"
+                  Text="Default"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Primary"
+                  Size="BootstrapButtonSizes.Sm"
+                  Text="Small"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Primary"
+                  Size="BootstrapButtonSizes.Lg"
+                  Text="Large"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+    </div>
+</div>
+
+<div class="row" style="margin-top:5px;">
+    <div class="col-sm-12">
+
+        <BbButton Color="BootstrapColors.Primary"
+                  Size="BootstrapButtonSizes.Sm"
+                  Text="Primary"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Secondary"
+                  Size="BootstrapButtonSizes.Sm"
+                  Text="Secondary"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Success"
+                  Size="BootstrapButtonSizes.Sm"
+                  Text="Success"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Warning"
+                  Size="BootstrapButtonSizes.Sm"
+                  Text="Warning"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Danger"
+                  Size="BootstrapButtonSizes.Sm"
+                  Text="Danger"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Info"
+                  Size="BootstrapButtonSizes.Sm"
+                  Text="Info"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+    </div>
+</div>
+
+<div class="row" style="margin-top:5px;">
+    <div class="col-sm-12">
+
+        <BbButton Color="BootstrapColors.Primary"
+                  Size="BootstrapButtonSizes.Sm"
+                  ButtonStyle="BootstrapButtonStyles.Default"
+                  Text="Primary"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Secondary"
+                  Size="BootstrapButtonSizes.Sm"
+                  ButtonStyle="BootstrapButtonStyles.Default"
+                  Text="Secondary"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Success"
+                  Size="BootstrapButtonSizes.Sm"
+                  ButtonStyle="BootstrapButtonStyles.Default"
+                  Text="Success"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Warning"
+                  Size="BootstrapButtonSizes.Sm"
+                  ButtonStyle="BootstrapButtonStyles.Default"
+                  Text="Warning"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Danger"
+                  Size="BootstrapButtonSizes.Sm"
+                  ButtonStyle="BootstrapButtonStyles.Default"
+                  Text="Danger"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Info"
+                  Size="BootstrapButtonSizes.Sm"
+                  ButtonStyle="BootstrapButtonStyles.Default"
+                  Text="Info"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+    </div>
+</div>
+
+<div class="row" style="margin-top:5px">
+    <div class="col-sm-12">
+        <BbButton Color="BootstrapColors.Success"
+                  Text="With icon"
+                  IconClass="oi oi-plus"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Info"
+                  Text="Disabled"
+                  IconClass="oi oi-plus"
+                  IsDisabled="true"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Primary"
+                  Clicked="OnBtnClicked">
+            <div>
+                <span class="oi oi-arrow-left"></span>
+                <span>Custom child content</span>
+                <span class="oi oi-arrow-right"></span>
+            </div>
+        </BbButton>
+
+        <BbButton Color="BootstrapColors.Primary"
+                  IsWaiting="true"
+                  Text="Is waiting"
+                  Clicked="OnBtnClicked">
+        </BbButton>
+
+    </div>
+</div>
+
+
+<BbAlertHub></BbAlertHub>

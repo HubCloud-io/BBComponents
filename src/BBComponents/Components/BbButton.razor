@@ -1,0 +1,30 @@
+﻿
+<button id="@Id" 
+        class="@ComponentClass()" 
+        style="@HtmlStyle" 
+        disabled="@IsDisabled" 
+        @onclick="OnClicked">
+    
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        @if (IsWaiting)
+        {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span>&nbsp;</span>
+        }
+        @if (!string.IsNullOrWhiteSpace(IconClass))
+        {
+            <span class="@IconClass"></span>
+            <span>&nbsp;</span>
+        }
+        @if (!string.IsNullOrWhiteSpace(Text))
+        {
+            <span>@Text</span>
+        }
+
+    }
+</button>
