@@ -26,7 +26,7 @@ namespace BBComponents.Components
         private string _searchString;
         private bool _isOpen;
         private bool _isAddOpen;
-        private bool _stopListenOnInputValueChange;
+        private bool _isWaiting;
 
         private bool _isCustomMenuOpen;
         private double _clientX;
@@ -53,7 +53,7 @@ namespace BBComponents.Components
 
 
         [Parameter]
-        public string Id { get; set; } 
+        public string Id { get; set; }
 
         [Parameter]
         public BootstrapElementSizes Size { get; set; }
@@ -104,11 +104,17 @@ namespace BBComponents.Components
         [Parameter]
         public EventCallback<ComboBoxOpenArgs<TValue>> OpenClicked { get; set; }
 
+        [Parameter]
+        public ComboBoxDataRegimes DataRegime { get; set; }
+
         /// <summary>
         /// Colllection for select options.
         /// </summary>
         [Parameter]
         public IEnumerable<object> ItemsSource { get; set; }
+
+        [Parameter]
+        public IComboBoxDataProvider<TValue> DataProvider { get; set; }
 
         /// <summary>
         /// Name of property with option Value.
@@ -145,7 +151,7 @@ namespace BBComponents.Components
 
         [Parameter]
         public bool AllowAddWhenDisabled { get; set; }
-        
+
         [Parameter]
         public bool IsFilterCaseSensitive { get; set; }
 
@@ -359,7 +365,7 @@ namespace BBComponents.Components
                 IconClass = "fa fa-times text-secondary"
             });
 
-            _inputGroupKey = "input_"+Guid.NewGuid().ToString();
+            _inputGroupKey = "input_" + Guid.NewGuid().ToString();
             try
             {
                 await JsRuntime.InvokeAsync<object>("outsideClickHandler.addEvent", _inputGroupKey, DotNetObjectReference.Create(this));
@@ -381,7 +387,7 @@ namespace BBComponents.Components
             }
             else
             {
-                SetInputTextFromItemsSource();
+               await SetInputTextFromItemsSourceAsync();
             }
 
             try
@@ -402,7 +408,7 @@ namespace BBComponents.Components
             {
                 _inputElementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _inputElementReference);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -414,10 +420,9 @@ namespace BBComponents.Components
             _clientX = args.ClientX;
             _clientY = args.ClientY;
 
-
             if (_isOpen)
             {
-                FillSource();
+               await FillSourceAsync();
             }
         }
 
@@ -473,7 +478,7 @@ namespace BBComponents.Components
                 }
 
                 _isOpen = true;
-                FillSource();
+               await FillSourceAsync();
             }
 
 
@@ -508,7 +513,6 @@ namespace BBComponents.Components
             {
                 if (SourceFiltered.Count == 1)
                 {
-                    _stopListenOnInputValueChange = true;
 
                     var item = SourceFiltered[0];
 
@@ -662,104 +666,118 @@ namespace BBComponents.Components
             await OpenClicked.InvokeAsync(openArgs);
         }
 
-        private void FillSource()
+        private async Task FillSourceAsync()
         {
-
-            if (ItemsSource == null)
+            if (DataRegime == ComboBoxDataRegimes.List)
             {
-                return;
-            }
-
-            //if (_source.Count() == ItemsSource.Count())
-            //{
-            //    return;
-            //}
-
-            _source = new List<SelectItem<TValue>>();
-
-            var firstItem = ItemsSource.FirstOrDefault();
-
-            if (firstItem != null)
-            {
-                var propValue = firstItem.GetType().GetProperty(ValueName);
-                var propText = firstItem.GetType().GetProperty(TextName);
-
-                foreach (var item in ItemsSource)
+                if (ItemsSource == null)
                 {
+                    return;
+                }
 
-                    var value = (TValue)propValue?.GetValue(item);
-                    var text = propText?.GetValue(item)?.ToString();
+                _source = new List<SelectItem<TValue>>();
 
-                    var isDeleted = false;
+                var firstItem = ItemsSource.FirstOrDefault();
 
-                    if (!string.IsNullOrEmpty(IsDeletedName))
+                if (firstItem != null)
+                {
+                    var propValue = firstItem.GetType().GetProperty(ValueName);
+                    var propText = firstItem.GetType().GetProperty(TextName);
+
+                    foreach (var item in ItemsSource)
                     {
-                        var propIsDeleted = item.GetType().GetProperty(IsDeletedName);
-                        var isDeletedValue = propIsDeleted?.GetValue(item);
-                        isDeleted = isDeletedValue == null ? false : (bool)isDeletedValue;
-                    }
 
-                    _source.Add(new SelectItem<TValue>(text, value, isDeleted));
+                        var value = (TValue)propValue?.GetValue(item);
+                        var text = propText?.GetValue(item)?.ToString();
+
+                        var isDeleted = false;
+
+                        if (!string.IsNullOrEmpty(IsDeletedName))
+                        {
+                            var propIsDeleted = item.GetType().GetProperty(IsDeletedName);
+                            var isDeletedValue = propIsDeleted?.GetValue(item);
+                            isDeleted = isDeletedValue == null ? false : (bool)isDeletedValue;
+                        }
+
+                        _source.Add(new SelectItem<TValue>(text, value, isDeleted));
+                    }
                 }
             }
+            else if (DataRegime == ComboBoxDataRegimes.Server)
+            {
+                _isWaiting = true;
 
+                _source = await DataProvider.GetCollectionAsync();
+
+                _isWaiting = false;
+            }
 
         }
 
-        private void SetInputTextFromItemsSource()
+        private async Task SetInputTextFromItemsSourceAsync()
         {
-            if (ItemsSource == null)
-            {
-                return;
-            }
-            
-            var firstItem = ItemsSource.FirstOrDefault();
 
-            if (firstItem != null)
+            if(DataRegime == ComboBoxDataRegimes.List)
             {
-                var propValue = firstItem.GetType().GetProperty(ValueName);
-                var propText = firstItem.GetType().GetProperty(TextName);
-
-                foreach (var item in ItemsSource)
+                if (ItemsSource == null)
                 {
+                    return;
+                }
 
-                    var value = (TValue) propValue?.GetValue(item);
+                var firstItem = ItemsSource.FirstOrDefault();
 
-                    var isEqual = false;
-                    if (typeof(TValue) == typeof(string))
+                if (firstItem != null)
+                {
+                    var propValue = firstItem.GetType().GetProperty(ValueName);
+                    var propText = firstItem.GetType().GetProperty(TextName);
+
+                    foreach (var item in ItemsSource)
                     {
-                        var elementValueStr = value?.ToString();
-                        var componentValueStr = _value?.ToString();
 
-                        var stringComparision = IsFilterCaseSensitive
-                            ? StringComparison.Ordinal
-                            : StringComparison.OrdinalIgnoreCase;
+                        var value = (TValue)propValue?.GetValue(item);
 
-                        isEqual = elementValueStr?.Equals(componentValueStr, stringComparision) ??
-                                  false;
+                        var isEqual = false;
+                        if (typeof(TValue) == typeof(string))
+                        {
+                            var elementValueStr = value?.ToString();
+                            var componentValueStr = _value?.ToString();
+
+                            var stringComparision = IsFilterCaseSensitive
+                                ? StringComparison.Ordinal
+                                : StringComparison.OrdinalIgnoreCase;
+
+                            isEqual = elementValueStr?.Equals(componentValueStr, stringComparision) ??
+                                      false;
+                        }
+                        else
+                        {
+                            isEqual = EqualityComparer<TValue>.Default.Equals(value, _value);
+
+                        }
+
+                        if (isEqual)
+                        {
+                            var text = propText?.GetValue(item)?.ToString();
+                            _inputValue = text;
+                            break;
+
+                        }
+
                     }
-                    else
-                    {
-                        isEqual = EqualityComparer<TValue>.Default.Equals(value, _value);
-
-                    }
-
-                    if (isEqual)
-                    {
-                        var text = propText?.GetValue(item)?.ToString();
-                        _inputValue = text;
-                        break;
-                        
-                    }
-
                 }
             }
+            else if (DataRegime == ComboBoxDataRegimes.Server)
+            {
+                var item = await DataProvider.GetItemAsync(_value);
+                _inputValue = item?.Text ?? String.Empty;
+            }
+         
         }
 
         [JSInvokable]
         public async Task InvokeClickOutside()
         {
-          
+
             _isOpen = false;
             _isAddOpen = false;
 
