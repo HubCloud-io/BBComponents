@@ -14,6 +14,7 @@ namespace BBComponents.Models
 
         public string Text { get; set; }
         public BootstrapColors Color { get; set; }
+        public int ZIndex { get; set; } = 10000;
         public int DismissTimeSeconds { get; set; }
 
         public string HtmlClass => $"alert {HtmlClassBuilder.BuildColorClass("alert", Color)}";
@@ -29,7 +30,7 @@ namespace BBComponents.Models
             Color = color;
         }
 
-        public AlertInstance(string text, BootstrapColors color, int dismissTimeSeconds)
+        public AlertInstance(string text, BootstrapColors color, int dismissTimeSeconds, int zIndex = 10000)
         {
             Text = text;
             Color = color;
@@ -44,8 +45,10 @@ namespace BBComponents.Models
                 _timer.Start();
 
             }
-        }
 
+            ZIndex = zIndex;
+        }
+  
         private void OnTimerTick(object sender, ElapsedEventArgs e)
         {
 

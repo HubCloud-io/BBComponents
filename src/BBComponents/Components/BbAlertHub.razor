@@ -1,7 +1,7 @@
 ﻿@foreach (var alert in _alerts)
 {
     <div>
-        <div class="@alert.HtmlClass" style="position:fixed; z-index:1000; @CalcAlertPosition(alert)" role="alert">
+        <div class="@alert.HtmlClass" style="position:fixed; z-index:@alert.ZIndex; @CalcAlertPosition(alert)" role="alert">
             @alert.Text
             &nbsp;
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" @onclick="(e=> OnCloseClick(e, alert))">
