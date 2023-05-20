@@ -27,6 +27,7 @@ namespace BBComponents.Components
         private bool _isOpen;
         private bool _isAddOpen;
         private bool _isWaiting;
+        private bool _isInitialized;
 
         private bool _isCustomMenuOpen;
         private double _clientX;
@@ -379,16 +380,36 @@ namespace BBComponents.Components
 
         protected override async Task OnParametersSetAsync()
         {
+            var isEqual = ValuesCompare(_value, Value);
+
             _value = Value;
 
-            if (!string.IsNullOrEmpty(Text))
+            if (!_isInitialized)
             {
-                _inputValue = Text;
+                if (!string.IsNullOrEmpty(Text))
+                {
+                    _inputValue = Text;
+                }
+                else
+                {
+                    _isWaiting = true;
+                    await SetInputTextFromItemsSourceAsync();
+                    _isWaiting = false;
+                }
+
+                _isInitialized = true;
             }
             else
             {
-               await SetInputTextFromItemsSourceAsync();
+                if (!isEqual)
+                {
+                    _isWaiting = true;
+                    await SetInputTextFromItemsSourceAsync();
+                    _isWaiting = false;
+                }
             }
+
+         
 
             try
             {
@@ -422,7 +443,11 @@ namespace BBComponents.Components
 
             if (_isOpen)
             {
+                _isWaiting = true;
+                StateHasChanged();
+
                await FillSourceAsync();
+                _isWaiting = false;
             }
         }
 
@@ -478,7 +503,10 @@ namespace BBComponents.Components
                 }
 
                 _isOpen = true;
+                _isWaiting = true;
+
                await FillSourceAsync();
+                _isWaiting = false;
             }
 
 
@@ -705,11 +733,13 @@ namespace BBComponents.Components
             }
             else if (DataRegime == ComboBoxDataRegimes.Server)
             {
-                _isWaiting = true;
+
+                if (DataProvider == null)
+                    return;
 
                 _source = await DataProvider.GetCollectionAsync();
 
-                _isWaiting = false;
+               
             }
 
         }
@@ -736,24 +766,24 @@ namespace BBComponents.Components
 
                         var value = (TValue)propValue?.GetValue(item);
 
-                        var isEqual = false;
-                        if (typeof(TValue) == typeof(string))
-                        {
-                            var elementValueStr = value?.ToString();
-                            var componentValueStr = _value?.ToString();
+                        var isEqual = ValuesCompare(value, _value);
+                        //if (typeof(TValue) == typeof(string))
+                        //{
+                        //    var elementValueStr = value?.ToString();
+                        //    var componentValueStr = _value?.ToString();
 
-                            var stringComparision = IsFilterCaseSensitive
-                                ? StringComparison.Ordinal
-                                : StringComparison.OrdinalIgnoreCase;
+                        //    var stringComparision = IsFilterCaseSensitive
+                        //        ? StringComparison.Ordinal
+                        //        : StringComparison.OrdinalIgnoreCase;
 
-                            isEqual = elementValueStr?.Equals(componentValueStr, stringComparision) ??
-                                      false;
-                        }
-                        else
-                        {
-                            isEqual = EqualityComparer<TValue>.Default.Equals(value, _value);
+                        //    isEqual = elementValueStr?.Equals(componentValueStr, stringComparision) ??
+                        //              false;
+                        //}
+                        //else
+                        //{
+                        //    isEqual = EqualityComparer<TValue>.Default.Equals(value, _value);
 
-                        }
+                        //}
 
                         if (isEqual)
                         {
@@ -768,10 +798,41 @@ namespace BBComponents.Components
             }
             else if (DataRegime == ComboBoxDataRegimes.Server)
             {
+                if (DataProvider == null)
+                    return;
+
                 var item = await DataProvider.GetItemAsync(_value);
-                _inputValue = item?.Text ?? String.Empty;
+                if (item != null)
+                {
+                    _inputValue = item.Text;
+                }
+                
             }
          
+        }
+
+        private bool ValuesCompare(TValue firstValue, TValue secondValue)
+        {
+            bool isEqual;
+            if (typeof(TValue) == typeof(string))
+            {
+                var firstValueStr = firstValue?.ToString();
+                var secondValueStr = secondValue?.ToString();
+
+                var stringComparision = IsFilterCaseSensitive
+                    ? StringComparison.Ordinal
+                    : StringComparison.OrdinalIgnoreCase;
+
+                isEqual = firstValueStr?.Equals(secondValueStr, stringComparision) ??
+                          false;
+            }
+            else
+            {
+                isEqual = EqualityComparer<TValue>.Default.Equals(firstValue, secondValue);
+
+            }
+
+            return isEqual;
         }
 
         [JSInvokable]
