@@ -51,6 +51,20 @@
             <label class="col-sm-4">Duration, ms @(_duration)</label>
 
         </div>
+        <div class="form-group form-row">
+            <BbButton Text="Set 25" Clicked="OnSetProductClicked"></BbButton>
+        </div>
+         <div class="form-group form-row">
+            <BbButton Text="Set second 33" Clicked="OnSetSecondProductClicked"></BbButton>
+        </div>
+        <div class="form-group form-row">
+            <label>Product id</label>
+            <span>@_productId</span>
+        </div>
+          <div class="form-group form-row">
+            <label>Second product id</label>
+            <span>@_secondProductId</span>
+        </div>
 
     </div>
 
@@ -107,7 +121,7 @@
 
                         </Virtualize>
 
-                      
+
                     </tbody>
 
                 </table>
@@ -115,6 +129,36 @@
             </div>
 
         </div>
+
+    </div>
+    <div class="col-sm-6">
+
+        <div class="form-group form-row">
+
+               <BbComboBox TValue="int"
+                    DropdownPosition="DropdownPositions.Fixed"
+                    DropdownWidth="150"
+                    DataRegime = "ComboBoxDataRegimes.Server"
+                    DataProvider = "@_dataProvider"
+                    Size="BootstrapElementSizes.Sm"
+                    @bind-Value="@_productId"></BbComboBox>
+
+        </div>
+
+        <div class="form-group form-row">
+
+              <BbComboBox TValue="int"
+                    DropdownPosition="DropdownPositions.Fixed"
+                    DropdownWidth="150"
+                    DataRegime = "ComboBoxDataRegimes.Server"
+                    DataProvider = "@_dataProvider"
+                    Size="BootstrapElementSizes.Sm"
+                    Text="@_secondProductTitle"
+                    @bind-Value="@_secondProductId"></BbComboBox>
+
+        </div>
+
+     
 
     </div>
 

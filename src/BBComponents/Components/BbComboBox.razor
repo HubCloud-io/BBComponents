@@ -6,7 +6,7 @@
 
     <input @ref=_inputElementReference
            id="@Id"
-           class="form-control" 
+           class="form-control"
            type="text"
            value="@_inputValue"
            disabled=@IsDisabled
@@ -21,55 +21,63 @@
 
 
     @if (!IsDisabled)
-        {
-    <div class="input-group-append ">
+    {
+        <div class="input-group-append ">
 
-        <span class="input-group-text" style="cursor:pointer;" @onclick="(e=>OnOpenClick(e))">
-            <i class="fa fa-chevron-down"></i>
-        </span>
+            <span class="input-group-text" style="cursor:pointer;" @onclick="(e=>OnOpenClick(e))">
+                @if (_isWaiting)
+                {
+                    <i class="spinner-border text-primary" style="width:1rem; height:1rem;" role="status"></i>
+                }
+                else
+                {
+                    <i class="fa fa-chevron-down"></i>
+                }
+            </span>
 
-
-    </div>
-        }
-
-    @if (_isOpen)
-        {
-    <div  class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
-
-        <ul class="bb-combo-box__items">
-            @foreach (var item in SourceFiltered)
-                    {
-            <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
-                    }
-
-            @*<Virtualize TItem="SelectItem<TValue>" Items="@SourceFiltered" Context="item">
-                <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
-            </Virtualize>*@
-
-        </ul>
-
-    </div>
-        }
-
-    @if (_isAddOpen)
-        {
-    <div class="bb-combo-box bb-dropdown" style="min-width:280px; max-height:45px; top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
-        <div style="height:40px; padding:5px 15px;">
-            <span class="text-danger">@BbResources.CannotFindItem</span>
-            <button class="btn btn-outline-secondary btn-sm btn-default" style="font-size:10px;" @onclick="OnCancelAddNewClick">
-                <span>@BbResources.Cancel</span>
-            </button>
-            <button class="btn btn-primary btn-sm btn-primary" style="font-size:10px;" @onclick="OnAddNewClick">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span>@BbResources.Add</span>
-            </button>
 
         </div>
-    </div>
-        }
+    }
+
+    @if (_isOpen)
+    {
+        <div class="bb-combo-box bb-dropdown" style="top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; min-width:@DropdownWidthValue; max-width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
+
+            <ul class="bb-combo-box__items">
+
+                @foreach (var item in SourceFiltered)
+                {
+                    <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
+                }
+
+                @*<Virtualize TItem="SelectItem<TValue>" Items="@SourceFiltered" Context="item">
+                    <li class="bb-combo-box__item @(item.IsDeleted ? "bb-combo-box__item_deleted":"")" @onclick="(e=>OnItemClick(e, item))">@item.Text</li>
+                    </Virtualize>*@
+
+            </ul>
+
+        </div>
+    }
+
+    @if (_isAddOpen)
+    {
+        <div class="bb-combo-box bb-dropdown" style="min-width:280px; max-height:45px; top:@DrowdownTop; left:@DropdownLeft; width:@DropdownWidthValue; margin-top:@DropdownMarginTop; position: @DropdownPositionValue">
+            <div style="height:40px; padding:5px 15px;">
+                <span class="text-danger">@BbResources.CannotFindItem</span>
+                <button class="btn btn-outline-secondary btn-sm btn-default" style="font-size:10px;" @onclick="OnCancelAddNewClick">
+                    <span>@BbResources.Cancel</span>
+                </button>
+                <button class="btn btn-primary btn-sm btn-primary" style="font-size:10px;" @onclick="OnAddNewClick">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>@BbResources.Add</span>
+                </button>
+
+            </div>
+        </div>
+    }
 
 </div>
 @if (_isCustomMenuOpen)
 {
-<BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
+    <BbContextMenu ClientX="_clientX" ClientY="_clientY" Items="_menuItems" Closed="OnContextMenuClosed"></BbContextMenu>
 }

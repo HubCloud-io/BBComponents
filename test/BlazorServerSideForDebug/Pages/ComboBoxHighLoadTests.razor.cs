@@ -1,4 +1,5 @@
-﻿using BlazorServerSideForDebug.Data;
+﻿using BBComponents.Abstract;
+using BlazorServerSideForDebug.Data;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,11 @@ namespace BlazorServerSideForDebug.Pages
         private List<Product> _products = new List<Product>();
         private List<OrderRow> _rows = new List<OrderRow>();
 
+        private IComboBoxDataProvider<int> _dataProvider;
+        private int _productId;
+        private int _secondProductId = 2;
+        private string _secondProductTitle = "Second product";
+
         private int _itemsCount = 10;
         private int _rowsCount = 10;
 
@@ -20,9 +26,15 @@ namespace BlazorServerSideForDebug.Pages
         private bool _isWaiting;
         private bool disposedValue;
 
+        protected override void OnInitialized()
+        {
+            _dataProvider = new ProductDataProvider(10000);
+        }
+
         protected override void OnAfterRender(bool firstRender)
         {
             Debug.WriteLine($"OnAfterRender: {DateTime.Now}");
+          
 
         }
 
@@ -32,6 +44,7 @@ namespace BlazorServerSideForDebug.Pages
             this.StateHasChanged();
 
             GenerateProducts();
+
 
             var timer = new Stopwatch();
             timer.Start();
@@ -83,6 +96,16 @@ namespace BlazorServerSideForDebug.Pages
             public int Id { get; set; }
             public int ProductId { get; set; }
             public decimal Amount { get; set; }
+        }
+
+        private void OnSetProductClicked()
+        {
+            _productId = 25;
+        }
+
+        private void OnSetSecondProductClicked()
+        {
+            _secondProductId = 33;
         }
 
         protected virtual void Dispose(bool disposing)
