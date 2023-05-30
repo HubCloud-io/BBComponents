@@ -409,7 +409,7 @@ namespace BBComponents.Components
                 }
             }
 
-         
+
 
             try
             {
@@ -443,11 +443,19 @@ namespace BBComponents.Components
 
             if (_isOpen)
             {
-                _isWaiting = true;
-                StateHasChanged();
+                if (DataRegime == ComboBoxDataRegimes.List)
+                {
+                    FillSourceFromList();
+                }
+                else if (DataRegime == ComboBoxDataRegimes.Server)
+                {
 
-               await FillSourceAsync();
-                _isWaiting = false;
+                    if (DataProvider == null)
+                        return;
+
+                    _source = await DataProvider.GetCollectionAsync();
+
+                }
             }
         }
 
@@ -505,7 +513,7 @@ namespace BBComponents.Components
                 _isOpen = true;
                 _isWaiting = true;
 
-               await FillSourceAsync();
+                await FillSourceAsync();
                 _isWaiting = false;
             }
 
@@ -694,42 +702,47 @@ namespace BBComponents.Components
             await OpenClicked.InvokeAsync(openArgs);
         }
 
+        private void FillSourceFromList()
+        {
+            if (ItemsSource == null)
+            {
+                return;
+            }
+
+            _source = new List<SelectItem<TValue>>();
+
+            var firstItem = ItemsSource.FirstOrDefault();
+
+            if (firstItem != null)
+            {
+                var propValue = firstItem.GetType().GetProperty(ValueName);
+                var propText = firstItem.GetType().GetProperty(TextName);
+
+                foreach (var item in ItemsSource)
+                {
+
+                    var value = (TValue)propValue?.GetValue(item);
+                    var text = propText?.GetValue(item)?.ToString();
+
+                    var isDeleted = false;
+
+                    if (!string.IsNullOrEmpty(IsDeletedName))
+                    {
+                        var propIsDeleted = item.GetType().GetProperty(IsDeletedName);
+                        var isDeletedValue = propIsDeleted?.GetValue(item);
+                        isDeleted = isDeletedValue == null ? false : (bool)isDeletedValue;
+                    }
+
+                    _source.Add(new SelectItem<TValue>(text, value, isDeleted));
+                }
+            }
+        }
+
         private async Task FillSourceAsync()
         {
             if (DataRegime == ComboBoxDataRegimes.List)
             {
-                if (ItemsSource == null)
-                {
-                    return;
-                }
-
-                _source = new List<SelectItem<TValue>>();
-
-                var firstItem = ItemsSource.FirstOrDefault();
-
-                if (firstItem != null)
-                {
-                    var propValue = firstItem.GetType().GetProperty(ValueName);
-                    var propText = firstItem.GetType().GetProperty(TextName);
-
-                    foreach (var item in ItemsSource)
-                    {
-
-                        var value = (TValue)propValue?.GetValue(item);
-                        var text = propText?.GetValue(item)?.ToString();
-
-                        var isDeleted = false;
-
-                        if (!string.IsNullOrEmpty(IsDeletedName))
-                        {
-                            var propIsDeleted = item.GetType().GetProperty(IsDeletedName);
-                            var isDeletedValue = propIsDeleted?.GetValue(item);
-                            isDeleted = isDeletedValue == null ? false : (bool)isDeletedValue;
-                        }
-
-                        _source.Add(new SelectItem<TValue>(text, value, isDeleted));
-                    }
-                }
+                FillSourceFromList();
             }
             else if (DataRegime == ComboBoxDataRegimes.Server)
             {
@@ -739,7 +752,7 @@ namespace BBComponents.Components
 
                 _source = await DataProvider.GetCollectionAsync();
 
-               
+
             }
 
         }
@@ -747,7 +760,7 @@ namespace BBComponents.Components
         private async Task SetInputTextFromItemsSourceAsync()
         {
 
-            if(DataRegime == ComboBoxDataRegimes.List)
+            if (DataRegime == ComboBoxDataRegimes.List)
             {
                 if (ItemsSource == null)
                 {
@@ -806,9 +819,9 @@ namespace BBComponents.Components
                 {
                     _inputValue = item.Text;
                 }
-                
+
             }
-         
+
         }
 
         private bool ValuesCompare(TValue firstValue, TValue secondValue)
