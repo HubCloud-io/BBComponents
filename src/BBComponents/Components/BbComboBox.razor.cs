@@ -500,6 +500,10 @@ namespace BBComponents.Components
         private async Task OnTimerTick()
         {
             Debug.WriteLine($"Timer tick: {_inputValueTmp}");
+
+            if (_timer == null)
+                return;
+
             _timer.Stop();
 
             _searchString = _inputValueTmp;
