@@ -13,6 +13,8 @@ namespace BlazorServerSideForDebug.Pages
     {
         private List<Product> _products = new List<Product>();
         private List<OrderRow> _rows = new List<OrderRow>();
+        private List<MetaObject> _metaObjects = new List<MetaObject>();
+        private Guid _selectedMetaObjectUid = Guid.Parse("{796789C2-A51D-41B6-BACC-DE7B9FAEB1CB}");
 
         private IComboBoxDataProvider<int> _dataProvider;
         private int _productId;
@@ -106,6 +108,21 @@ namespace BlazorServerSideForDebug.Pages
         private void OnSetSecondProductClicked()
         {
             _secondProductId = 33;
+        }
+
+        private void OnLoadMetaObjects()
+        {
+            _metaObjects.Add(new MetaObject()
+            {
+                Uid = _selectedMetaObjectUid,
+                Title = "Test object"
+            });
+
+            _metaObjects.Add(new MetaObject()
+            {
+                Uid = Guid.NewGuid(),
+                Title = "Another object"
+            });
         }
 
         protected virtual void Dispose(bool disposing)

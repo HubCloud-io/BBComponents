@@ -163,3 +163,26 @@
     </div>
 
 </div>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+         <BbComboBox TValue="Guid"
+                    DropdownPosition="DropdownPositions.Fixed"
+                    DropdownWidth="250"
+                    ItemsSource="@_metaObjects"
+                    DataRegime = "ComboBoxDataRegimes.List"
+                    ValueName="Uid"
+                    TextName="Title"
+                    Size="BootstrapElementSizes.Sm"
+                    @bind-Value="@_selectedMetaObjectUid"></BbComboBox>
+
+    </div>
+    <div class="col-sm-6">
+        <BbButton Clicked="OnLoadMetaObjects">Fill meta objects</BbButton>
+    </div>
+
+</div>

@@ -382,6 +382,11 @@ namespace BBComponents.Components
         {
             var isEqual = ValuesCompare(_value, Value);
 
+            if (_source!= null && !_source.Any())
+            {
+                await SetInputTextFromItemsSourceAsync();
+            }
+
             _value = Value;
 
             if (!_isInitialized)
@@ -735,6 +740,8 @@ namespace BBComponents.Components
 
                     _source.Add(new SelectItem<TValue>(text, value, isDeleted));
                 }
+
+                
             }
         }
 
