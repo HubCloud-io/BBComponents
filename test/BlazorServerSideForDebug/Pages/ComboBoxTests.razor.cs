@@ -107,6 +107,11 @@ namespace BlazorServerSideForDebug.Pages
             _selectedId2 = 0;
         }
 
+        private void OnSetValueClick()
+        {
+            _selectedId2 = 7;
+        }
+
       
 
         private class OrderRow
