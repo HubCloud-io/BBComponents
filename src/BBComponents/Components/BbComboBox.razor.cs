@@ -778,6 +778,24 @@ namespace BBComponents.Components
                     return;
                 }
 
+                if (_value == null)
+                {
+                    _inputValue = "";
+                    return;
+                }
+
+                if (typeof(TValue) == typeof(int) 
+                    || typeof(TValue) == typeof(long))
+                {
+                    var zeroValue = (TValue)Convert.ChangeType(0, typeof(TValue));
+                    if (ValuesCompare(_value, zeroValue))
+                    {
+                        _inputValue = "";
+                        return;
+                    }
+                }
+               
+
                 var firstItem = ItemsSource.FirstOrDefault();
 
                 if (firstItem != null)
@@ -791,23 +809,6 @@ namespace BBComponents.Components
                         var value = (TValue)propValue?.GetValue(item);
 
                         var isEqual = ValuesCompare(value, _value);
-                        //if (typeof(TValue) == typeof(string))
-                        //{
-                        //    var elementValueStr = value?.ToString();
-                        //    var componentValueStr = _value?.ToString();
-
-                        //    var stringComparision = IsFilterCaseSensitive
-                        //        ? StringComparison.Ordinal
-                        //        : StringComparison.OrdinalIgnoreCase;
-
-                        //    isEqual = elementValueStr?.Equals(componentValueStr, stringComparision) ??
-                        //              false;
-                        //}
-                        //else
-                        //{
-                        //    isEqual = EqualityComparer<TValue>.Default.Equals(value, _value);
-
-                        //}
 
                         if (isEqual)
                         {

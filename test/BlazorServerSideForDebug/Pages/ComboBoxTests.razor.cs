@@ -102,6 +102,13 @@ namespace BlazorServerSideForDebug.Pages
            var elementInfo = await JsRuntime.InvokeAsync<HtmlElementInfo>("getElementInfo", _tableElementReference);
         }
 
+        private void OnClearValueClick()
+        {
+            _selectedId2 = 0;
+        }
+
+      
+
         private class OrderRow
         {
             public DateTime Period { get; set; }
