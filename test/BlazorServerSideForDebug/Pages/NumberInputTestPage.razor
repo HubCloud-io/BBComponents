@@ -1,0 +1,18 @@
+﻿@page "/numberinput"
+
+<h3>Number input</h3>
+<hr />
+
+<div class="row">
+
+    <div class="col-sm-6">
+        <BbNumberInput TValue="decimal" 
+            Digits="3" 
+            @bind-Value="_value" 
+            EditCancelled="OnEditCancelled"></BbNumberInput>
+    </div>
+    <div class="col-sm-6">
+        @_value
+    </div>
+
+</div>

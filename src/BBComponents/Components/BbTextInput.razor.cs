@@ -84,6 +84,9 @@ namespace BBComponents.Components
         [Parameter]
         public EventCallback<string> Changed { get; set; }
 
+        [Parameter]
+        public EventCallback EditCancelled { get; set; }
+
         protected override void OnParametersSet()
         {
             _value = Value;
@@ -134,6 +137,14 @@ namespace BBComponents.Components
             await ValueChanged.InvokeAsync(_value);
             await Changed.InvokeAsync(_value);
 
+        }
+
+        private async Task OnKeyDown(KeyboardEventArgs e)
+        {
+            if (e.Key.ToUpper() == "ESCAPE")
+            {
+                await EditCancelled.InvokeAsync(null);
+            }
         }
 
         private void DropInputValue()

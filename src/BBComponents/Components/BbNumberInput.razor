@@ -10,6 +10,8 @@
        title="@Tooltip"
        placeholder="@Placeholder"
        value="@_stringValue"
-       @onchange="(e => OnValueChange(e))" @onfocus="OnInputFocus"/>
+       @onkeydown="(e=> OnKeyDown(e))"
+       @onchange="(e => OnValueChange(e))" 
+       @onfocus="OnInputFocus"/>
 
 

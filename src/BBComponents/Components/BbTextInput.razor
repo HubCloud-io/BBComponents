@@ -10,6 +10,7 @@
        title="@Tooltip"
        placeholder="@Placeholder"
        value="@_value"
+@onkeydown="(e=> OnKeyDown(e))"
        @onchange="(e => OnValueChange(e))" />
 
 @if (_showMaskDescription && !string.IsNullOrEmpty(MaskDescription))

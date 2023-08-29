@@ -1,5 +1,6 @@
 ﻿using BBComponents.Helpers;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System;
 using System.Diagnostics;
@@ -79,6 +80,9 @@ namespace BBComponents.Components
         /// </summary>
         [Parameter]
         public EventCallback<TValue> Changed { get; set; }
+
+        [Parameter]
+        public EventCallback EditCancelled { get; set; }
 
         /// <summary>
         /// Number of decimal digits in number presentation. Default value is 2.
@@ -163,6 +167,14 @@ namespace BBComponents.Components
             catch(Exception e)
             {
                 Debug.WriteLine($"Cannot invoke JS. Message: {e.Message}");
+            }
+        }
+
+        private async Task OnKeyDown(KeyboardEventArgs e)
+        {
+            if (e.Key.ToUpper() == "ESCAPE")
+            {
+                await EditCancelled.InvokeAsync(null);
             }
         }
 
